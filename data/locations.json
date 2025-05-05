@@ -1,0 +1,2496 @@
+[
+  {
+    "id": "beginville",
+    "type": "area",
+    "name": {
+      "zh": "启程镇",
+      "en": "Beginville"
+    },
+    "description": "位于豫都地区东部平原，地势平坦，农业发达。居民以农民和小商贩为主，生活简单朴实。镇中心是启航广场，北有古老的钟楼，东有银杏研究所，南通农田，西接丰收大道。这里是许多训练家梦想开始的地方。",
+    "inspired_by": "河南乡村",
+    "environment": "东部平原，农业发达，气候温和",
+    "architecture": "乡村风格，木质和砖石结构的平房和小院，外观朴素自然",
+    "features": [
+      "启航广场 (Beginville Square)",
+      "古老的钟楼 (Clocktower)",
+      "银杏研究所 (Professor Ginkgo's Lab)",
+      "镇外农田 (Fields)",
+      "秘境果园 (Mystic Orchard - nearby)"
+    ],
+    "exits": {
+      "square": "beginville_square"
+    }
+  },
+  {
+    "id": "beginville_square",
+    "type": "location",
+    "name": {
+      "zh": "启航广场",
+      "en": "Beginville Square"
+    },
+    "description": "启程镇的中心广场，铺着干净的石板。一座古老的钟楼矗立在北面，东边是银杏研究所，南边通往镇外的农田。西边的小路通向丰收大道。广场中央有一个小喷泉，周围有几个长椅供人休息。",
+    "environment": "城镇中心",
+    "architecture": "乡村广场",
+    "features": ["新手引导NPC", "小喷泉", "休息长椅"],
+    "exits": {
+      "north": "beginville_clocktower_entrance",
+      "east": "beginville_lab_entrance",
+      "south": "beginville_fields_path_entry",
+      "west": "beginville_path_yr01"
+    }
+  },
+  {
+    "id": "beginville_clocktower_entrance",
+    "type": "location",
+    "name": {
+      "zh": "钟楼入口",
+      "en": "Clocktower Entrance"
+    },
+    "description": "你站在古老钟楼的入口前，斑驳的石墙诉说着岁月的痕迹。门楣上刻着模糊的图案，似乎与某种传说有关。",
+    "features": ["古老石墙", "模糊的刻印"],
+    "exits": {
+      "south": "beginville_square",
+      "enter": "beginville_clocktower"
+    }
+  },
+  {
+    "id": "beginville_clocktower",
+    "type": "location",
+    "name": {
+      "zh": "钟楼内部",
+      "en": "Clocktower Interior"
+    },
+    "description": "钟楼内部空间不大，巨大的齿轮缓慢转动，发出低沉的咔哒声响。角落里堆放着一些废弃的工具，墙壁上挂着一张褪色的地图。",
+    "features": ["巨大齿轮", "废弃工具堆", "褪色地图"],
+    "exits": {
+      "out": "beginville_clocktower_entrance"
+    }
+  },
+  {
+    "id": "beginville_lab_entrance",
+    "type": "location",
+    "name": {
+      "zh": "研究所入口",
+      "en": "Lab Entrance"
+    },
+    "description": "银杏研究所的大门敞开着，门旁种着几株银杏树。可以看到里面摆放着一些闪烁着指示灯的研究设备。",
+    "features": ["银杏树", "研究设备"],
+    "exits": {
+      "west": "beginville_square",
+      "enter": "beginville_lab"
+    }
+  },
+  {
+    "id": "beginville_lab",
+    "type": "location",
+    "name": {
+      "zh": "银杏研究所",
+      "en": "Professor Ginkgo's Lab"
+    },
+    "description": "研究所内部整洁明亮，书架上摆满了书籍和资料。银杏教授正在实验台前忙碌着。中央的设备用于发放初始宝可梦，旁边还有一个宝可梦治疗仪。",
+    "features": ["银杏教授NPC", "初始宝可梦选择点", "宝可梦治疗仪", "研究书架"],
+    "exits": {
+      "out": "beginville_lab_entrance"
+    }
+  },
+  {
+    "id": "beginville_fields_path_entry",
+    "type": "location",
+    "name": {
+      "zh": "通往农田的小路",
+      "en": "Path to Fields"
+    },
+    "description": "一条泥土小路蜿蜒向南，路边是低矮的篱笆。空气中弥漫着泥土和作物的清香，通往启程镇外的广阔农田。",
+    "features": ["泥土小路", "篱笆"],
+    "exits": {
+      "north": "beginville_square",
+      "south": "beginville_fields_edge"
+    },
+    "items": ["potion"]
+  },
+  {
+    "id": "beginville_fields_edge",
+    "type": "location",
+    "name": {
+      "zh": "农田边缘",
+      "en": "Fields Edge"
+    },
+    "description": "你来到了农田的边缘，可以看到成片的作物随风摇摆，像绿色的波浪。田埂上偶尔能看到农夫的身影。西边似乎有一条通往果园的隐蔽小径。",
+    "features": ["田埂", "农夫NPC (可能)", "作物"],
+    "exits": {
+      "north": "beginville_fields_path_entry",
+      "south": "beginville_fields_center",
+      "west": "beginville_orchard_path"
+    },
+    "items": ["potion"]
+  },
+  {
+    "id": "beginville_fields_center",
+    "type": "location",
+    "name": {
+      "zh": "农田中心",
+      "en": "Fields Center"
+    },
+    "description": "你正身处农田之中，周围是高高的庄稼，几乎要将你淹没。偶尔能看到一些小型的虫和草系宝可梦在田间嬉戏或觅食。田地中央有一个小小的稻草人。",
+    "features": ["低等级宝可梦遭遇点", "高高的庄稼", "稻草人"],
+    "exits": {
+      "north": "beginville_fields_edge"
+    }
+  },
+  {
+    "id": "beginville_orchard_path",
+    "type": "location",
+    "name": {
+      "zh": "通往果园的小径",
+      "en": "Path to Orchard"
+    },
+    "description": "这条隐蔽的小径被灌木丛遮掩，地面散落着一些成熟掉落的野果。路边有些奇特的浆果树，散发着诱人的香气。",
+    "features": ["灌木丛", "野果", "奇特浆果树"],
+    "exits": {
+      "east": "beginville_fields_edge",
+      "west": "mystic_orchard"
+    },
+    "items": ["potion"]
+  },
+  {
+    "id": "mystic_orchard",
+    "type": "location",
+    "name": {
+      "zh": "秘境果园",
+      "en": "Mystic Orchard"
+    },
+    "description": "一片隐藏在启程镇附近丘陵中的神秘果园，空气清新，阳光透过树叶洒下斑驳的光影。传说这里的果实拥有特殊的效果。一位隐居的老农正在哼着小曲，打理着挂满奇特浆果的果树。",
+    "inspired_by": "河南丘陵地带的果园",
+    "environment": "丘陵，果园，气候适宜",
+    "architecture": "简易农舍，篱笆围栏，浆果树丛",
+    "features": ["特殊浆果树", "老农NPC", "简易农舍", "清新的空气"],
+    "exits": {
+      "east": "beginville_orchard_path"
+    },
+    "items": ["potion"]
+  },
+  {
+    "id": "beginville_path_yr01",
+    "type": "location",
+    "name": {
+      "zh": "镇西出口(往丰收大道)",
+      "en": "West Town Exit (to Harvest Road)"
+    },
+    "description": "这里是启程镇通往西边丰收大道的出口。路口立着一个指示牌，标明了前往郑都的方向和距离。",
+    "features": ["道路指示牌"],
+    "exits": {
+      "east": "beginville_square",
+      "west": "route_yr01_start"
+    },
+    "items": ["pokeball"]
+  },
+  {
+    "id": "route_yr01",
+    "type": "route",
+    "name": {
+      "zh": "丰收大道",
+      "en": "Harvest Road"
+    },
+    "description": "连接启程镇与郑都的道路，全长约18km。道路两旁是广阔的麦田景观带，秋季时金色的麦浪十分壮观。设有农耕文化体验区和供旅人休息的驿站。通行方式为观光马车或自行车道。危险等级低。",
+    "features": [
+      "麦田景观带",
+      "农耕文化体验区 (可互动)",
+      "丰收节马车巡游 (特定时间)",
+      "道路驿站",
+      "观光马车停靠点",
+      "自行车道"
+    ],
+    "environment": "道路，农田",
+    "exits": {
+      "start": "route_yr01_start",
+      "mid": "route_yr01_mid",
+      "end": "route_yr01_end"
+    }
+  },
+  {
+    "id": "route_yr01_start",
+    "type": "location",
+    "name": {
+      "zh": "丰收大道起点",
+      "en": "Harvest Road Start"
+    },
+    "description": "你踏上了连接启程镇和郑都的丰收大道。东边是启程镇，西边是延伸的道路，两旁是广阔的麦田。路边有一个小小的农产品摊位，售卖新鲜的农产品。",
+    "environment": "道路，农田",
+    "features": ["麦田景观", "农产品摊位"],
+    "exits": {
+      "east": "beginville_path_yr01",
+      "west": "route_yr01_mid"
+    },
+    "items": ["pokeball"]
+  },
+  {
+    "id": "route_yr01_mid",
+    "type": "location",
+    "name": {
+      "zh": "丰收大道中段 (农耕体验区)",
+      "en": "Harvest Road Midpoint (Farming Area)"
+    },
+    "description": "道路笔直地延伸，可以看到远处的城镇轮廓。这里是农耕文化体验区，有一些展示农具的小屋和供游客体验耕作的小块田地。旁边设有一个驿站供旅人休息。",
+    "environment": "道路，农田",
+    "features": ["农耕文化体验区", "农具展示小屋", "体验田地", "道路驿站", "休息长椅"],
+    "exits": {
+      "east": "route_yr01_start",
+      "west": "route_yr01_end"
+    }
+  },
+  {
+    "id": "route_yr01_end",
+    "type": "location",
+    "name": {
+      "zh": "丰收大道终点",
+      "en": "Harvest Road End"
+    },
+    "description": "丰收大道的西端，前方不远处就是现代化的都市——郑都。可以看到城市的轮廓和高耸的建筑。西边是郑都的东入口。",
+    "environment": "道路，靠近城市",
+    "features": ["城市远景"],
+    "exits": {
+      "east": "route_yr01_mid",
+      "west": "zhengtown_east_gate"
+    }
+  },
+  {
+    "id": "zhengtown",
+    "type": "area",
+    "name": {
+      "zh": "郑都",
+      "en": "Zhengtown"
+    },
+    "description": "地处豫都地区中心，是交通枢纽和商业中心。城市地势平坦，水资源丰富。居民来自不同地区，注重商业和经济发展。分为东部的商业购物区、南部的电视塔休闲区、西部的道馆挑战区和北部的住宅行政区。交通网络发达。",
+    "inspired_by": "郑州",
+    "environment": "区域中心，地势平坦，河流湖泊，气候四季分明",
+    "architecture": "现代化都市风格，高楼大厦，商业综合体",
+    "features": [
+      "郑都中心广场 (Zhengtown Center)",
+      "东门商业街 (Main Street East)",
+      "西门道馆区 (Main Street West)",
+      "电视塔广场 (TV Tower Plaza)",
+      "大型购物中心 (Mall)",
+      "郑都道馆 (Zhengtown Gym)",
+      "地铁站 (未开放)",
+      "北门 (North Gate)"
+    ],
+    "exits": {
+      "center": "zhengtown_center",
+      "east_gate": "zhengtown_east_gate",
+      "west_gate": "zhengtown_west_gate",
+      "north_gate": "zhengtown_north_gate"
+    }
+  },
+  {
+    "id": "zhengtown_center",
+    "type": "location",
+    "name": {
+      "zh": "郑都中心广场",
+      "en": "Zhengtown Center Plaza"
+    },
+    "description": "郑都的中心广场，几条主干道在此交汇。广场中央有一个现代艺术雕塑，周围环绕着喷泉和花坛。人流量很大，是城市的交通核心。",
+    "environment": "城市中心广场",
+    "features": ["现代艺术雕塑", "喷泉", "花坛", "信息公告牌"],
+    "exits": {
+      "east": "zhengtown_main_street_east",
+      "west": "zhengtown_main_street_west",
+      "north": "zhengtown_north_avenue",
+      "south": "zhengtown_south_avenue"
+    }
+  },
+  {
+    "id": "zhengtown_east_gate",
+    "type": "location",
+    "name": {
+      "zh": "郑都东门",
+      "en": "Zhengtown East Gate"
+    },
+    "description": "你通过现代化的东门进入了繁华的郑都。高楼大厦映入眼帘，街道上车水马龙。门内设有城市地图和信息咨询处。",
+    "features": ["城市地图", "信息咨询处"],
+    "exits": {
+      "east": "route_yr01_end",
+      "west": "zhengtown_main_street_east"
+    }
+  },
+  {
+    "id": "zhengtown_main_street_east",
+    "type": "location",
+    "name": {
+      "zh": "郑都主街道东段 (商业街)",
+      "en": "Zhengtown Main Street East (Shopping)"
+    },
+    "description": "宽阔的主街道向西延伸至中心广场，两旁是现代化的商店和建筑，霓虹灯闪烁。北边是大型购物中心的入口，南边可以看到高耸的电视塔。",
+    "features": ["各类商店", "餐厅", "咖啡馆", "霓虹灯"],
+    "exits": {
+      "east": "zhengtown_east_gate",
+      "west": "zhengtown_center",
+      "north": "zhengtown_mall_entrance",
+      "south": "zhengtown_tv_tower_plaza"
+    }
+  },
+  {
+    "id": "zhengtown_mall_entrance",
+    "type": "location",
+    "name": {
+      "zh": "购物中心入口",
+      "en": "Mall Entrance"
+    },
+    "description": "一个巨大的现代化购物中心入口，玻璃幕墙闪闪发光。自动门不断开合，进出的人络绎不绝。",
+    "features": ["玻璃幕墙", "自动门"],
+    "exits": {
+      "south": "zhengtown_main_street_east",
+      "enter": "zhengtown_mall_interior"
+    }
+  },
+  {
+    "id": "zhengtown_mall_interior",
+    "type": "location",
+    "name": {
+      "zh": "购物中心内部",
+      "en": "Mall Interior"
+    },
+    "description": "购物中心内部宽敞明亮，共分多层。中庭悬挂着巨大的装饰物。遍布各种品牌商店、美食广场、电影院和宝可梦用品专卖店。设有休息区和宝可梦中心服务台。",
+    "features": ["品牌商店", "美食广场", "电影院", "宝可梦用品专卖店", "休息区", "宝可梦中心服务台"],
+    "exits": {
+      "out": "zhengtown_mall_entrance"
+    }
+  },
+  {
+    "id": "zhengtown_tv_tower_plaza",
+    "type": "location",
+    "name": {
+      "zh": "电视塔广场",
+      "en": "TV Tower Plaza"
+    },
+    "description": "一个开阔的广场，中央矗立着高耸入云的郑都电视塔，塔顶设有观景台。广场上有滑板少年和散步的市民，有时会举办露天活动或表演。",
+    "features": ["郑都电视塔 (地标)", "观景台入口", "滑板区", "露天活动区"],
+    "exits": {
+      "north": "zhengtown_main_street_east",
+      "south": "zhengtown_south_avenue"
+    }
+  },
+   {
+    "id": "zhengtown_south_avenue",
+    "type": "location",
+    "name": {
+      "zh": "郑都南大道",
+      "en": "Zhengtown South Avenue"
+    },
+    "description": "连接中心广场和电视塔广场的宽阔大道。",
+    "features": ["现代路灯", "绿化带"],
+    "exits": {
+      "north": "zhengtown_center",
+      "south": "zhengtown_tv_tower_plaza"
+    }
+  },
+  {
+    "id": "zhengtown_main_street_west",
+    "type": "location",
+    "name": {
+      "zh": "郑都主街道西段 (道馆区)",
+      "en": "Zhengtown Main Street West (Gym Area)"
+    },
+    "description": "主街道继续向西延伸，通往城市的西门。这里的建筑风格略显庄重。北边是著名的郑都道馆入口，吸引着众多挑战者。",
+    "features": ["道馆挑战者聚集", "宝可梦对战信息板"],
+    "exits": {
+      "east": "zhengtown_center",
+      "west": "zhengtown_west_gate",
+      "north": "zhengtown_gym_entrance"
+    }
+  },
+  {
+    "id": "zhengtown_gym_entrance",
+    "type": "location",
+    "name": {
+      "zh": "郑都道馆入口",
+      "en": "Zhengtown Gym Entrance"
+    },
+    "description": "郑都道馆的大门，设计融合了现代感与力量感，门上悬挂着象征普通系的道馆徽章。门口有两尊威武的宝可梦雕像。",
+    "features": ["道馆徽章标志", "宝可梦雕像"],
+    "exits": {
+      "south": "zhengtown_main_street_west",
+      "enter": "zhengtown_gym_lobby"
+    }
+  },
+  {
+    "id": "zhengtown_gym_lobby",
+    "type": "location",
+    "name": {
+      "zh": "郑都道馆大厅",
+      "en": "Zhengtown Gym Lobby"
+    },
+    "description": "道馆的大厅宽敞明亮，墙上挂着历届优秀训练家的照片。接待员微笑着提供挑战信息。旁边设有挑战者等候区和战术讨论板。",
+    "features": ["道馆接待员NPC", "挑战登记点", "历届训练家照片墙", "等候区", "战术讨论板"],
+    "exits": {
+      "out": "zhengtown_gym_entrance",
+      "challenge": "zhengtown_gym_arena"
+    }
+  },
+   {
+    "id": "zhengtown_gym_arena",
+    "type": "location",
+    "name": {
+      "zh": "郑都道馆对战场地",
+      "en": "Zhengtown Gym Arena"
+    },
+    "description": "标准的室内对战场地，灯光明亮。观众席环绕四周。道馆馆主站立在场地另一端，等待着挑战者。",
+    "features": ["标准对战场地", "道馆馆主NPC (普通系)", "观众席"],
+    "exits": {
+      "lobby": "zhengtown_gym_lobby"
+    }
+  },
+  {
+    "id": "zhengtown_west_gate",
+    "type": "location",
+    "name": {
+      "zh": "郑都西门",
+      "en": "Zhengtown West Gate"
+    },
+    "description": "通过西门可以离开郑都，踏上充满历史气息的青铜古道，通往古都洛苑。门外设有前往洛苑的电瓶车站点。",
+    "features": ["电瓶车站点"],
+    "exits": {
+      "east": "zhengtown_main_street_west",
+      "west": "route_yr02_start"
+    }
+  },
+  {
+    "id": "zhengtown_north_avenue",
+    "type": "location",
+    "name": {
+      "zh": "郑都北大道",
+      "en": "Zhengtown North Avenue"
+    },
+    "description": "连接中心广场和北门的大道，通往住宅区和行政区方向。",
+    "features": ["行政建筑远景", "住宅楼"],
+    "exits": {
+      "south": "zhengtown_center",
+      "north": "zhengtown_north_gate"
+    }
+  },
+  {
+    "id": "zhengtown_north_gate",
+    "type": "location",
+    "name": {
+      "zh": "郑都北门",
+      "en": "Zhengtown North Gate"
+    },
+    "description": "郑都的北门，由此向北可以前往嵩谷或帝都。",
+    "features": ["道路指示牌 (嵩谷/帝都)"],
+    "exits": {
+      "south": "zhengtown_north_avenue",
+      "northwest": "route_yr07_start",
+      "northeast": "route_yr08_start"
+    }
+  },
+  {
+    "id": "route_yr02",
+    "type": "route",
+    "name": {
+      "zh": "青铜古道",
+      "en": "Bronze Path"
+    },
+    "description": "连接郑都与洛苑的道路，全长约25km。路面铺设商周青铜纹样地砖，路边有仿古青铜路灯和小型考古遗址展示区。设有青铜器制作工坊供参观。通行方式为电瓶车或徒步。危险等级中。",
+    "features": [
+      "仿古青铜路灯",
+      "考古遗址展示区",
+      "商周青铜纹样地砖",
+      "青铜器制作工坊 (可参观)",
+      "电瓶车道",
+      "徒步小径",
+      "古战场遗迹 (传说)"
+    ],
+    "environment": "道路，仿古装饰，丘陵",
+    "exits": {
+      "start": "route_yr02_start",
+      "mid": "route_yr02_mid",
+      "workshop": "route_yr02_workshop_area",
+      "end": "route_yr02_end"
+    }
+  },
+  {
+    "id": "route_yr02_start",
+    "type": "location",
+    "name": {
+      "zh": "青铜古道起点",
+      "en": "Bronze Path Start"
+    },
+    "description": "你离开了郑都，踏上了青铜古道。路面铺设着带有古代纹样的砖石，路边可以看到造型独特的仿古路灯。空气中似乎弥漫着一丝历史的尘埃。东边是郑都的西门。",
+    "environment": "道路，仿古装饰",
+    "features": ["仿古路灯", "青铜纹样地砖", "考古信息牌"],
+    "exits": {
+      "east": "zhengtown_west_gate",
+      "west": "route_yr02_mid"
+    }
+  },
+  {
+    "id": "route_yr02_mid",
+    "type": "location",
+    "name": {
+      "zh": "青铜古道中段 (遗址区)",
+      "en": "Bronze Path Midpoint (Ruins Area)"
+    },
+    "description": "古道蜿蜒穿过一片丘陵地带，两旁可见一些用玻璃罩保护起来的小型考古遗址，展示着古代的陶器碎片或基石。北边似乎有一个岔路通往青铜器工坊。",
+    "environment": "道路，丘陵，仿古装饰",
+    "features": ["考古遗址展示罩", "陶器碎片", "古代基石"],
+    "exits": {
+      "east": "route_yr02_start",
+      "west": "route_yr02_end",
+      "north": "route_yr02_workshop_path"
+    }
+  },
+  {
+    "id": "route_yr02_workshop_path",
+    "type": "location",
+    "name": {
+      "zh": "通往工坊的小路",
+      "en": "Path to Workshop"
+    },
+    "description": "一条石板小路向北延伸，通往山丘上的青铜器制作工坊，可以听到叮叮当当的敲打声。",
+    "features": ["石板小路", "敲打声"],
+    "exits": {
+      "south": "route_yr02_mid",
+      "north": "route_yr02_workshop_area"
+    }
+  },
+  {
+    "id": "route_yr02_workshop_area",
+    "type": "location",
+    "name": {
+      "zh": "青铜器制作工坊",
+      "en": "Bronze Casting Workshop"
+    },
+    "description": "一个仿古风格的工坊，匠人们正在用传统技艺制作青铜器复制品。可以参观制作过程，购买纪念品，甚至遇到使用钢系宝可梦的训练家。",
+    "features": ["匠人NPC", "青铜器制作展示", "纪念品商店", "钢系训练家"],
+    "exits": {
+      "south": "route_yr02_workshop_path"
+    }
+  },
+  {
+    "id": "route_yr02_end",
+    "type": "location",
+    "name": {
+      "zh": "青铜古道终点",
+      "en": "Bronze Path End"
+    },
+    "description": "青铜古道的尽头，前方就是历史名城洛苑的东门。可以看到古老的城墙和城楼轮廓。",
+    "environment": "道路，靠近古城",
+    "features": ["古城墙远景", "城楼远景"],
+    "exits": {
+      "east": "route_yr02_mid",
+      "west": "luoyard_east_gate"
+    }
+  },
+  {
+    "id": "luoyard",
+    "type": "area",
+    "name": {
+      "zh": "洛苑",
+      "en": "Luoyard"
+    },
+    "description": "位于豫都地区西部的历史文化名城，以牡丹和古都文化闻名。城市周围有伊河和邙山，自然风光优美。居民以文化工作者和旅游从业者为主。主要区域包括市中心的古街区、南郊的龙门石窟和白马寺、北部的牡丹园以及西部的现代住宅区。",
+    "inspired_by": "洛阳",
+    "environment": "西部，山河环绕，历史古都，气候温和湿润",
+    "architecture": "古代文化风格，仿古建筑，宫殿、庙宇、园林与现代建筑交融",
+    "features": [
+      "洛苑中心古街 (Luoyard Center)",
+      "龙门石窟景区 (Longmen Grottoes Area)",
+      "白马寺景区 (White Horse Temple Area)",
+      "牡丹园 (Peony Garden)",
+      "洛苑道馆 (Luoyard Gym - Rock Type)",
+      "龙门水路入口 (Dragon Gate Waterway Entry - YW01)",
+      "历史博物馆",
+      "仿古商业街"
+    ],
+    "exits": {
+      "center": "luoyard_center",
+      "east_gate": "luoyard_east_gate",
+      "south_gate": "luoyard_south_gate",
+      "north_gate": "luoyard_north_gate",
+      "west_district": "luoyard_west_district_entry",
+      "waterway_entry": "route_yw01_entry"
+    }
+  },
+  {
+    "id": "luoyard_center",
+    "type": "location",
+    "name": {
+      "zh": "洛苑中心 (古街区)",
+      "en": "Luoyard Center (Old Street)"
+    },
+    "description": "洛苑的中心区域，保留着古老的街道格局和仿古建筑。青石板路两旁是各种售卖古玩、字画、牡丹饼和地方特色小吃的店铺。中心有一个小广场，常有街头艺人表演。",
+    "environment": "古城中心街道",
+    "features": ["仿古店铺", "古玩字画", "牡丹饼", "地方小吃", "街头艺人", "青石板路"],
+    "exits": {
+      "east": "luoyard_east_street",
+      "west": "luoyard_west_street",
+      "north": "luoyard_north_street",
+      "south": "luoyard_south_street"
+    }
+  },
+  {
+    "id": "luoyard_east_gate",
+    "type": "location",
+    "name": {
+      "zh": "洛苑东门 (定鼎门)",
+      "en": "Luoyard East Gate (Dingding Gate)"
+    },
+    "description": "洛苑的东门，仿古的城楼名为定鼎门，连接着青铜古道。城门下有守卫和介绍洛苑历史的石碑。",
+    "features": ["定鼎门城楼", "守卫NPC", "历史石碑"],
+    "exits": {
+      "east": "route_yr02_end",
+      "west": "luoyard_east_street"
+    }
+  },
+  {
+    "id": "luoyard_east_street",
+    "type": "location",
+    "name": {
+      "zh": "洛苑东大街",
+      "en": "Luoyard East Street"
+    },
+    "description": "从东门延伸至中心区域的街道，两旁有一些客栈和茶馆。",
+    "features": ["客栈", "茶馆"],
+    "exits": {
+      "east": "luoyard_east_gate",
+      "west": "luoyard_center"
+    }
+  },
+  {
+    "id": "luoyard_south_gate",
+    "type": "location",
+    "name": {
+      "zh": "洛苑南门 (龙门大道)",
+      "en": "Luoyard South Gate (Longmen Avenue)"
+    },
+    "description": "洛苑的南门，由此向南是宽阔的龙门大道，通往著名的龙门石窟和白马寺方向，也可由此踏上美丽的牡丹花径 (YR03)。",
+    "features": ["龙门大道起点", "旅游指示牌"],
+    "exits": {
+      "north": "luoyard_south_street",
+      "south": "luoyard_longmen_avenue_start"
+    }
+  },
+  {
+    "id": "luoyard_south_street",
+    "type": "location",
+    "name": {
+      "zh": "洛苑南大街",
+      "en": "Luoyard South Street"
+    },
+    "description": "连接市中心和南门的街道，可以看到一些售卖旅游纪念品的商店。西边是洛苑道馆的入口。",
+    "features": ["旅游纪念品店"],
+    "exits": {
+      "north": "luoyard_center",
+      "south": "luoyard_south_gate",
+      "west": "luoyard_gym_entrance"
+    }
+  },
+  {
+    "id": "luoyard_gym_entrance",
+    "type": "location",
+    "name": {
+      "zh": "洛苑道馆入口",
+      "en": "Luoyard Gym Entrance"
+    },
+    "description": "洛苑道馆坐落在一座仿古的庭院内，入口处有巨大的岩石装饰，象征着岩石属性。门匾上书写着“磐石之心”。",
+    "features": ["仿古庭院", "巨大岩石装饰", "岩石属性道馆"],
+    "exits": {
+      "east": "luoyard_south_street",
+      "enter": "luoyard_gym_lobby"
+    }
+  },
+  {
+    "id": "luoyard_gym_lobby",
+    "type": "location",
+    "name": {
+      "zh": "洛苑道馆大厅",
+      "en": "Luoyard Gym Lobby"
+    },
+    "description": "道馆大厅以岩石和盆景装饰，风格沉稳。接待员身着传统服饰。墙上展示着各种珍稀的岩石标本和化石。",
+    "features": ["道馆接待员NPC", "岩石标本", "化石展示", "盆景"],
+    "exits": {
+      "out": "luoyard_gym_entrance",
+      "challenge": "luoyard_gym_arena"
+    }
+  },
+  {
+    "id": "luoyard_gym_arena",
+    "type": "location",
+    "name": {
+      "zh": "洛苑道馆对战场地",
+      "en": "Luoyard Gym Arena"
+    },
+    "description": "对战场地模拟了岩石洞窟的环境，地面崎岖不平，散布着巨大的岩石障碍。道馆馆主是一位沉稳的老者。",
+    "features": ["岩石洞窟环境", "岩石障碍", "岩石属性馆主NPC"],
+    "exits": {
+      "lobby": "luoyard_gym_lobby"
+    }
+  },
+  {
+    "id": "luoyard_longmen_avenue_start",
+    "type": "location",
+    "name": {
+      "zh": "龙门大道起点",
+      "en": "Longmen Avenue Start"
+    },
+    "description": "宽阔的龙门大道向南延伸。东边是通往牡丹花径(YR03)的小路，继续向南则前往龙门石窟和白马寺方向。",
+    "features": ["宽阔大道"],
+    "exits": {
+      "north": "luoyard_south_gate",
+      "south": "luoyard_longmen_avenue_mid",
+      "east": "route_yr03_start"
+    }
+  },
+  {
+    "id": "luoyard_longmen_avenue_mid",
+    "type": "location",
+    "name": {
+      "zh": "龙门大道中段",
+      "en": "Longmen Avenue Midpoint"
+    },
+    "description": "龙门大道中段，可以看到远处的伊河。西边是通往龙门石窟景区的入口，东边是前往白马寺景区的方向。",
+    "features": ["伊河远景"],
+    "exits": {
+      "north": "luoyard_longmen_avenue_start",
+      "west": "longmen_grottoes_entrance",
+      "east": "white_horse_temple_path"
+    }
+  },
+  {
+    "id": "longmen_grottoes_entrance",
+    "type": "location",
+    "name": {
+      "zh": "龙门石窟景区入口",
+      "en": "Longmen Grottoes Entrance"
+    },
+    "description": "龙门石窟景区的入口，设有售票处和游客中心。可以看到远处山壁上隐约的石窟。",
+    "features": ["售票处", "游客中心", "石窟远景"],
+    "exits": {
+      "east": "luoyard_longmen_avenue_mid",
+      "enter": "longmen_grottoes_area"
+    }
+  },
+  {
+    "id": "longmen_grottoes_area",
+    "type": "location",
+    "name": {
+      "zh": "龙门石窟区域",
+      "en": "Longmen Grottoes Area"
+    },
+    "description": "伊河两岸的山壁上布满了大大小小的石窟佛龛，雕刻精美，气势恢宏。著名的奉先寺卢舍那大佛就在此处。这里栖息着一些岩石和地面属性的宝可梦。",
+    "features": ["石窟佛龛", "奉先寺", "卢舍那大佛", "伊河", "岩石/地面属性宝可梦"],
+    "exits": {
+      "out": "longmen_grottoes_entrance",
+      "waterway": "route_yw01_entry"
+    }
+  },
+  {
+    "id": "white_horse_temple_path",
+    "type": "location",
+    "name": {
+      "zh": "通往白马寺的小路",
+      "en": "Path to White Horse Temple"
+    },
+    "description": "一条宁静的小路，两旁栽种着松柏，通往著名的白马寺。",
+    "features": ["松柏林"],
+    "exits": {
+      "west": "luoyard_longmen_avenue_mid",
+      "east": "white_horse_temple_entrance"
+    }
+  },
+  {
+    "id": "white_horse_temple_entrance",
+    "type": "location",
+    "name": {
+      "zh": "白马寺景区入口",
+      "en": "White Horse Temple Entrance"
+    },
+    "description": "白马寺的山门，红墙围绕，显得庄严肃穆。传说这里是中国佛教的发源地之一。",
+    "features": ["山门", "红墙"],
+    "exits": {
+      "west": "white_horse_temple_path",
+      "enter": "white_horse_temple_area"
+    }
+  },
+  {
+    "id": "white_horse_temple_area",
+    "type": "location",
+    "name": {
+      "zh": "白马寺区域",
+      "en": "White Horse Temple Area"
+    },
+    "description": "寺庙内部香火缭绕，殿宇重重。有大雄宝殿、齐云塔等著名建筑。气氛宁静祥和，可能会遇到一些修行者和幽灵或超能力属性的宝可梦。",
+    "features": ["大雄宝殿", "齐云塔", "香火", "修行者NPC", "幽灵/超能力宝可梦"],
+    "exits": {
+      "out": "white_horse_temple_entrance"
+    }
+  },
+   {
+    "id": "luoyard_north_gate",
+    "type": "location",
+    "name": {
+      "zh": "洛苑北门 (邙山入口)",
+      "en": "Luoyard North Gate (Mangshan Entry)"
+    },
+    "description": "洛苑的北门，由此可前往北部的邙山和著名的牡丹园。",
+    "features": ["邙山方向指示"],
+    "exits": {
+      "south": "luoyard_north_street",
+      "north": "luoyard_peony_garden_path"
+    }
+  },
+   {
+    "id": "luoyard_north_street",
+    "type": "location",
+    "name": {
+      "zh": "洛苑北大街",
+      "en": "Luoyard North Street"
+    },
+    "description": "连接市中心和北门的街道，有一些售卖牡丹相关产品的商店。",
+    "features": ["牡丹画", "牡丹茶", "牡丹香皂"],
+    "exits": {
+      "south": "luoyard_center",
+      "north": "luoyard_north_gate"
+    }
+  },
+  {
+    "id": "luoyard_peony_garden_path",
+    "type": "location",
+    "name": {
+      "zh": "通往牡丹园的小路",
+      "en": "Path to Peony Garden"
+    },
+    "description": "一条风景优美的小路，路边已经可以看到一些零星的牡丹花丛，通往洛苑著名的牡丹园。",
+    "features": ["牡丹花丛"],
+    "exits": {
+      "south": "luoyard_north_gate",
+      "north": "peony_garden_entrance"
+    }
+  },
+  {
+    "id": "peony_garden_entrance",
+    "type": "location",
+    "name": {
+      "zh": "牡丹园入口",
+      "en": "Peony Garden Entrance"
+    },
+    "description": "洛苑牡丹园的入口，装饰着牡丹图案，花季时节人头攒动。",
+    "features": ["牡丹图案装饰", "售票处"],
+    "exits": {
+      "south": "luoyard_peony_garden_path",
+      "enter": "peony_garden_area"
+    }
+  },
+  {
+    "id": "peony_garden_area",
+    "type": "location",
+    "name": {
+      "zh": "牡丹园区域",
+      "en": "Peony Garden Area"
+    },
+    "description": "广阔的园林内种植着各色品种的牡丹，花开时节姹紫嫣红，美不胜收。园内有观花亭、假山水榭等景观。这里是草系和妖精系宝可梦的天堂。",
+    "features": ["各色牡丹", "观花亭", "假山水榭", "草/妖精系宝可梦", "园丁NPC"],
+    "exits": {
+      "out": "peony_garden_entrance"
+    }
+  },
+   {
+    "id": "luoyard_west_district_entry",
+    "type": "location",
+    "name": {
+      "zh": "洛苑西区入口",
+      "en": "Luoyard West District Entry"
+    },
+    "description": "通往洛苑西部现代化住宅区的入口。",
+    "features": ["现代住宅楼"],
+    "exits": {
+      "east": "luoyard_west_street"
+    }
+  },
+   {
+    "id": "luoyard_west_street",
+    "type": "location",
+    "name": {
+      "zh": "洛苑西大街",
+      "en": "Luoyard West Street"
+    },
+    "description": "连接市中心和西区的街道，有一些现代化的便利设施。",
+    "features": ["便利店", "银行"],
+    "exits": {
+      "east": "luoyard_center",
+      "west": "luoyard_west_district_entry"
+    }
+  },
+  {
+    "id": "route_yw01",
+    "type": "route",
+    "name": {
+      "zh": "龙门水路",
+      "en": "Dragon Gate Waterway"
+    },
+    "description": "洛苑环城水系的一部分，连接龙门石窟区域。夜晚有夜光龙舟航行，并有鲤鱼跃龙门灯光秀。通行方式为夜光游船。危险等级中。",
+    "features": [
+      "夜光龙舟航道",
+      "鲤鱼跃龙门灯光秀",
+      "夜光游船",
+      "水系宝可梦"
+    ],
+    "environment": "水路，夜晚",
+    "exits": {
+      "entry": "route_yw01_entry",
+      "exit": "route_yw01_exit"
+    }
+  },
+  {
+    "id": "route_yw01_entry",
+    "type": "location",
+    "name": {
+      "zh": "龙门水路入口 (龙门石窟)",
+      "en": "Dragon Gate Waterway Entry (Grottoes)"
+    },
+    "description": "位于龙门石窟景区旁的码头，可以搭乘夜光游船进入龙门水路。",
+    "features": ["码头", "夜光游船", "售票员NPC"],
+    "exits": {
+      "land": "longmen_grottoes_area",
+      "boat": "route_yw01_exit"
+    }
+  },
+  {
+    "id": "route_yw01_exit",
+    "type": "location",
+    "name": {
+      "zh": "龙门水路出口 (洛苑中心)",
+      "en": "Dragon Gate Waterway Exit (Luoyard Center)"
+    },
+    "description": "位于洛苑中心古街区附近的水路码头，夜光游船在此停靠。",
+    "features": ["码头", "夜光游船"],
+    "exits": {
+      "land": "luoyard_center",
+      "boat": "route_yw01_entry"
+    }
+  },
+  {
+    "id": "route_yr03",
+    "type": "route",
+    "name": {
+      "zh": "牡丹花径",
+      "en": "Peony Trail"
+    },
+    "description": "连接洛苑与少峰的道路，全长约12km。沿途种植大量牡丹花，设有牡丹文化展示馆和花艺工坊。通行方式为花车或步行道。危险等级低。",
+    "features": [
+      "牡丹花海景观",
+      "牡丹文化展示馆",
+      "花艺工坊",
+      "观景平台",
+      "花车驿站",
+      "步行道"
+    ],
+    "environment": "道路，花海",
+    "exits": {
+      "start": "route_yr03_start",
+      "mid": "route_yr03_mid",
+      "end": "route_yr03_end"
+    }
+  },
+  {
+    "id": "route_yr03_start",
+    "type": "location",
+    "name": {
+      "zh": "牡丹花径起点",
+      "en": "Peony Trail Start"
+    },
+    "description": "你踏上了连接洛苑和少峰的牡丹花径。西边是洛苑的龙门大道，东边是延伸的花径，两旁开始出现成片的牡丹花丛。",
+    "environment": "道路，花丛",
+    "features": ["牡丹花丛", "花香弥漫"],
+    "exits": {
+      "west": "luoyard_longmen_avenue_start",
+      "east": "route_yr03_mid"
+    }
+  },
+  {
+    "id": "route_yr03_mid",
+    "type": "location",
+    "name": {
+      "zh": "牡丹花径中段 (文化馆)",
+      "en": "Peony Trail Midpoint (Culture Hall)"
+    },
+    "description": "花径蜿蜒，两旁是盛开的牡丹花海。这里设有一个牡丹文化展示馆，介绍牡丹的历史和品种。旁边有一个花艺工坊，可以学习插花。",
+    "environment": "道路，花海",
+    "features": ["牡丹文化展示馆", "花艺工坊", "观景平台", "花车驿站"],
+    "exits": {
+      "west": "route_yr03_start",
+      "east": "route_yr03_end"
+    }
+  },
+  {
+    "id": "route_yr03_end",
+    "type": "location",
+    "name": {
+      "zh": "牡丹花径终点",
+      "en": "Peony Trail End"
+    },
+    "description": "牡丹花径的尽头，前方就是少峰山脚下。可以看到远处高耸的山峰和庄严的寺院轮廓。",
+    "environment": "道路，靠近山脉",
+    "features": ["少峰远景", "山门轮廓"],
+    "exits": {
+      "west": "route_yr03_mid",
+      "east": "shaolpeak_entrance"
+    }
+  },
+  {
+    "id": "shaolpeak",
+    "type": "area",
+    "name": {
+      "zh": "少峰",
+      "en": "Shaolpeak"
+    },
+    "description": "坐落在豫都地区西部的山脉中，以武术文化闻名。这里地势险峻，风景秀丽，有茂密的森林和清澈的溪流。是武术修行者的圣地，也是格斗系宝可梦的天堂。",
+    "inspired_by": "少林寺",
+    "environment": "山地，森林，溪流",
+    "architecture": "寺院建筑，练武场",
+    "features": [
+      "少林寺 (Shaolin Temple)",
+      "武术广场 (Martial Arts Square)",
+      "练武场 (Training Ground)",
+      "藏经阁 (Scripture Hall)",
+      "清泉寺 (Clear Spring Temple)",
+      "格斗道馆 (Fighting Gym)"
+    ],
+    "exits": {
+      "entrance": "shaolpeak_entrance",
+      "center": "shaolpeak_center",
+      "temple": "shaolin_temple_entrance",
+      "gym": "shaolpeak_gym_entrance"
+    }
+  },
+  {
+    "id": "shaolpeak_entrance",
+    "type": "location",
+    "name": {
+      "zh": "少峰入口",
+      "en": "Shaolpeak Entrance"
+    },
+    "description": "少峰山脚下的入口区域，古朴的山门矗立在前方。台阶两侧摆放着威武的石狮，象征着武术圣地的庄严。西边是牡丹花径的终点，东边是通往武术天梯(YR04)的起点。",
+    "environment": "山脚，山门",
+    "features": ["山门", "石狮", "香火缭绕"],
+    "exits": {
+      "west": "route_yr03_end",
+      "enter": "shaolpeak_center",
+      "east": "route_yr04_start"
+    }
+  },
+  {
+    "id": "shaolpeak_center",
+    "type": "location",
+    "name": {
+      "zh": "少峰中心广场",
+      "en": "Shaolpeak Center Square"
+    },
+    "description": "少峰寺院的中心广场，古朴的石板铺就地面，四周是庄严的建筑群。僧人们在此处习武打坐，格斗系宝可梦也常在此修行。",
+    "environment": "寺院广场",
+    "features": ["石板地面", "习武僧人", "格斗系宝可梦", "香炉"],
+    "exits": {
+      "north": "shaolin_temple_entrance",
+      "south": "shaolpeak_entrance",
+      "east": "shaolpeak_training_ground",
+      "west": "shaolpeak_scripture_hall"
+    }
+  },
+  {
+    "id": "shaolin_temple_entrance",
+    "type": "location",
+    "name": {
+      "zh": "少林寺大殿入口",
+      "en": "Shaolin Temple Main Hall Entrance"
+    },
+    "description": "少林寺主殿的入口，金碧辉煌。几位武僧正在殿前习武，展示着精湛的武艺。",
+    "features": ["武僧NPC", "香火"],
+    "exits": {
+      "south": "shaolpeak_center",
+      "enter": "shaolin_temple_main_hall"
+    }
+  },
+  {
+    "id": "shaolin_temple_main_hall",
+    "type": "location",
+    "name": {
+      "zh": "少林寺大殿内部",
+      "en": "Shaolin Temple Main Hall Interior"
+    },
+    "description": "大殿内部庄严肃穆，供奉着巨大的佛像。香火缭绕，气氛宁静。",
+    "features": ["佛像", "蒲团", "香火"],
+    "exits": {
+      "out": "shaolin_temple_entrance"
+    }
+  },
+  {
+    "id": "shaolpeak_training_ground",
+    "type": "location",
+    "name": {
+      "zh": "练武场",
+      "en": "Training Ground"
+    },
+    "description": "宽阔的练武场，布置着各种训练器械，如木人桩、石锁等。这里是武僧和格斗系宝可梦切磋技艺的地方，经常能看到精彩的对战。东边是格斗道馆的入口。",
+    "features": ["训练器械", "木人桩", "石锁", "对战场地", "休息区"],
+    "exits": {
+      "west": "shaolpeak_center",
+      "east": "shaolpeak_gym_entrance"
+    }
+  },
+  {
+    "id": "shaolpeak_scripture_hall",
+    "type": "location",
+    "name": {
+      "zh": "藏经阁",
+      "en": "Scripture Hall"
+    },
+    "description": "古老的藏经阁，收藏着大量的佛经和武功秘籍。阁内光线幽暗，空气中飘散着淡淡的檀香。一位老僧正在打扫。",
+    "features": ["佛经书架", "武功秘籍 (不可阅读)", "檀香", "老僧NPC"],
+    "exits": {
+      "east": "shaolpeak_center"
+    }
+  },
+  {
+    "id": "shaolpeak_gym_entrance",
+    "type": "location",
+    "name": {
+      "zh": "格斗道馆入口",
+      "en": "Fighting Gym Entrance"
+    },
+    "description": "少峰格斗道馆的入口，门前矗立着两尊威武的铜人像。这里是格斗系道馆，以严格的训练和强大的实力闻名。",
+    "features": ["铜人像", "道馆标志 (拳头)", "训练家NPC"],
+    "exits": {
+      "west": "shaolpeak_training_ground",
+      "enter": "shaolpeak_gym_lobby"
+    }
+  },
+  {
+    "id": "shaolpeak_gym_lobby",
+    "type": "location",
+    "name": {
+      "zh": "格斗道馆大厅",
+      "en": "Fighting Gym Lobby"
+    },
+    "description": "道馆大厅宽敞明亮，墙上挂满了历届冠军的照片和各种拳法图解。接待员身着武术服，正在为挑战者提供服务。",
+    "features": ["道馆接待员NPC", "冠军照片", "拳法图解", "武术服"],
+    "exits": {
+      "out": "shaolpeak_gym_entrance",
+      "challenge": "shaolpeak_gym_arena"
+    }
+  },
+  {
+    "id": "shaolpeak_gym_arena",
+    "type": "location",
+    "name": {
+      "zh": "格斗道馆对战场",
+      "en": "Fighting Gym Arena"
+    },
+    "description": "道馆内部的对战场地，地面是特制的实木地板，四周是观众席。墙上挂满了历代馆主的画像。道馆馆主，一位精神矍铄的武僧，正在中央等待挑战者。",
+    "features": ["实木地板", "馆主画像", "格斗系馆主NPC", "观众席"],
+    "exits": {
+      "lobby": "shaolpeak_gym_lobby"
+    }
+  },
+  {
+    "id": "route_yr04",
+    "type": "route",
+    "name": {
+      "zh": "武术天梯",
+      "en": "Martial Arts Path"
+    },
+    "description": "连接少峰与安岭的道路，全长约30km。路上有九十九级青石台阶，每级都刻有武术招式图解。设有武术演武场和供休息的亭台。通行方式为徒步攀登或缆车。危险等级中。",
+    "features": [
+      "九十九级石阶",
+      "武术招式图解",
+      "演武场",
+      "休息亭台",
+      "索道缆车",
+      "观景平台"
+    ],
+    "environment": "山路，石阶，亭台",
+    "exits": {
+      "start": "route_yr04_start",
+      "mid": "route_yr04_mid",
+      "end": "route_yr04_end"
+    }
+  },
+  {
+    "id": "route_yr04_start",
+    "type": "location",
+    "name": {
+      "zh": "武术天梯起点",
+      "en": "Martial Arts Path Start"
+    },
+    "description": "位于少峰东侧的石阶起点。一座高大的石牌坊矗立在前方，上书“武术天梯”四个大字。每一级台阶都刻有武术招式的详细图解。",
+    "environment": "山路，石阶",
+    "features": ["石牌坊", "武术招式图解", "石阶"],
+    "exits": {
+      "west": "shaolpeak_entrance",
+      "up": "route_yr04_mid"
+    }
+  },
+  {
+    "id": "route_yr04_mid",
+    "type": "location",
+    "name": {
+      "zh": "武术天梯中段 (演武场)",
+      "en": "Martial Arts Path Midpoint (Training Ground)"
+    },
+    "description": "位于半山腰的演武场，提供休息和练习的场所。这里可以看到不少武术爱好者在练习台阶上刻画的招式。旁边有休息亭和索道站。",
+    "environment": "山路，演武场",
+    "features": ["演武场", "休息亭", "索道站", "武术爱好者"],
+    "exits": {
+      "down": "route_yr04_start",
+      "up": "route_yr04_end",
+      "cablecar": "route_yr04_cablecar_station"
+    }
+  },
+  {
+    "id": "route_yr04_cablecar_station",
+    "type": "location",
+    "name": {
+      "zh": "武术天梯索道站",
+      "en": "Martial Arts Path Cable Car Station"
+    },
+    "description": "武术天梯中段的索道站，可以乘坐缆车快速到达山顶或山脚。",
+    "features": ["缆车", "售票员NPC"],
+    "exits": {
+      "walk": "route_yr04_mid",
+      "ride_up": "route_yr04_end",
+      "ride_down": "route_yr04_start"
+    }
+  },
+  {
+    "id": "route_yr04_end",
+    "type": "location",
+    "name": {
+      "zh": "武术天梯终点",
+      "en": "Martial Arts Path End"
+    },
+    "description": "九十九级台阶的终点，前方就是水城开封府的南门。站在这里可以俯瞰整个山路，远处的开封府水波粼粼。",
+    "environment": "山路顶端",
+    "features": ["观景台", "指示牌 (开封府)", "休息区"],
+    "exits": {
+      "down": "route_yr04_mid",
+      "east": "kaifengfu_south_gate",
+      "cablecar": "route_yr04_cablecar_station"
+    }
+  },
+  {
+    "id": "anyridge",
+    "type": "area",
+    "name": {
+      "zh": "安岭",
+      "en": "Anyridge"
+    },
+    "description": "位于豫都地区的北部，是一座以考古为主题的城市。城市周围有山脉和丘陵，地下蕴藏着丰富的文物资源。这里是考古学家和地面系宝可梦的乐园。",
+    "inspired_by": "安阳",
+    "environment": "丘陵，考古遗址",
+    "architecture": "仿古建筑与考古遗址",
+    "features": [
+      "殷墟遗址 (Yin Ruins)",
+      "中国文字博物馆 (Writing Museum)",
+      "考古研究所 (Archaeological Institute)",
+      "甲骨文广场 (Oracle Square)",
+      "古城墙遗址 (Ancient Wall Ruins)",
+      "地面系道馆 (Ground-type Gym)"
+    ],
+    "exits": {
+      "center": "anyridge_center",
+      "east_gate": "anyridge_east_gate"
+    }
+  },
+  {
+    "id": "anyridge_west_gate",
+    "type": "location",
+    "name": {
+      "zh": "安岭西门",
+      "en": "Anyridge West Gate"
+    },
+    "description": "安岭的西门，连接着武术天梯道路。",
+    "features": ["道路指示牌 (少峰)"],
+    "exits": {
+      "west": "route_yr04_end",
+      "east": "anyridge_center"
+    }
+  },
+  {
+    "id": "anyridge_center",
+    "type": "location",
+    "name": {
+      "zh": "安岭中心 (甲骨文广场)",
+      "en": "Anyridge Center (Oracle Square)"
+    },
+    "description": "安岭市的中心广场，地面铺设着仿古砖石，中央矗立着巨大的甲骨文雕塑。这里是通往城市各主要地点的枢纽。",
+    "environment": "城市中心广场",
+    "features": ["甲骨文雕塑", "考古信息板", "纪念品商店"],
+    "exits": {
+      "north": "writing_museum_entrance",
+      "east": "anyridge_east_gate",
+      "south": "archaeological_institute_entrance",
+      "west": "yin_ruins_entrance",
+      "southeast": "anyridge_gym_entrance"
+    }
+  },
+  {
+    "id": "yin_ruins_entrance",
+    "type": "location",
+    "name": {
+      "zh": "殷墟遗址入口",
+      "en": "Yin Ruins Entrance"
+    },
+    "description": "通往著名的殷墟遗址的入口。设有售票处和遗址介绍牌，可以看到远处广阔的遗址区域。",
+    "environment": "考古遗址区入口",
+    "features": ["售票处", "遗址介绍牌", "考古挖掘工具展示"],
+    "exits": {
+      "east": "anyridge_center",
+      "enter": "yin_ruins_area"
+    }
+  },
+  {
+    "id": "yin_ruins_area",
+    "type": "location",
+    "name": {
+      "zh": "殷墟遗址区域",
+      "en": "Yin Ruins Area"
+    },
+    "description": "广阔的殷墟遗址区，可以看到宫殿宗庙基址、王陵遗址、手工业作坊遗址等。地面散落着陶器碎片，偶尔能发现刻有甲骨文的卜骨。这里栖息着地面和幽灵属性的宝可梦。",
+    "environment": "考古遗址",
+    "features": ["宫殿基址", "王陵遗址", "作坊遗址", "陶器碎片", "甲骨卜骨 (可能)", "地面/幽灵宝可梦", "考古学家NPC"],
+    "exits": {
+      "out": "yin_ruins_entrance"
+    }
+  },
+  {
+    "id": "writing_museum_entrance",
+    "type": "location",
+    "name": {
+      "zh": "中国文字博物馆入口",
+      "en": "Writing Museum Entrance"
+    },
+    "description": "一座造型独特的现代化建筑，是中国文字博物馆的入口。门前的广场上装饰着各种字体的雕塑。",
+    "environment": "博物馆入口",
+    "features": ["现代建筑", "字体雕塑", "售票处"],
+    "exits": {
+      "south": "anyridge_center",
+      "enter": "writing_museum_interior"
+    }
+  },
+  {
+    "id": "writing_museum_interior",
+    "type": "location",
+    "name": {
+      "zh": "中国文字博物馆内部",
+      "en": "Writing Museum Interior"
+    },
+    "description": "博物馆内部展示了汉字的起源、发展和演变历程，从甲骨文、金文到现代汉字。设有互动展区和珍贵的文物展品。",
+    "environment": "博物馆内部",
+    "features": ["文字演变展板", "甲骨文展品", "金文展品", "互动展区", "研究员NPC"],
+    "exits": {
+      "out": "writing_museum_entrance"
+    }
+  },
+  {
+    "id": "archaeological_institute_entrance",
+    "type": "location",
+    "name": {
+      "zh": "考古研究所入口",
+      "en": "Archaeological Institute Entrance"
+    },
+    "description": "安岭考古研究所的大门，建筑风格严谨。可以看到研究人员进出，门口有研究所的铭牌。",
+    "environment": "研究机构入口",
+    "features": ["研究所铭牌", "研究人员NPC (可能)", "安保亭"],
+    "exits": {
+      "north": "anyridge_center",
+      "enter": "archaeological_institute_interior"
+    }
+  },
+  {
+    "id": "archaeological_institute_interior",
+    "type": "location",
+    "name": {
+      "zh": "考古研究所内部",
+      "en": "Archaeological Institute Interior"
+    },
+    "description": "研究所内部设有实验室、文物修复室和资料库。研究人员正在忙碌地整理和研究出土文物。气氛严谨而专注。",
+    "environment": "研究所内部",
+    "features": ["实验室", "文物修复室", "资料库", "研究人员NPC", "出土文物"],
+    "exits": {
+      "out": "archaeological_institute_entrance"
+    }
+  },
+  {
+    "id": "anyridge_gym_entrance",
+    "type": "location",
+    "name": {
+      "zh": "地面系道馆入口",
+      "en": "Ground-type Gym Entrance"
+    },
+    "description": "安岭地面系道馆的入口，设计融入了地层和岩石元素，显得坚固而古老。门上悬挂着象征地面系的徽章。",
+    "environment": "道馆入口",
+    "features": ["岩石地层设计", "地面系徽章", "挑战者公告板"],
+    "exits": {
+      "northwest": "anyridge_center",
+      "enter": "anyridge_gym_lobby"
+    }
+  },
+  {
+    "id": "anyridge_gym_lobby",
+    "type": "location",
+    "name": {
+      "zh": "地面系道馆大厅",
+      "en": "Ground-type Gym Lobby"
+    },
+    "description": "道馆大厅以黄土和岩石色调为主，墙上展示着各种地层剖面图和出土的古代工具。接待员穿着考古风格的服装。",
+    "environment": "道馆大厅",
+    "features": ["地层剖面图", "古代工具展示", "接待员NPC", "挑战登记处"],
+    "exits": {
+      "out": "anyridge_gym_entrance",
+      "challenge": "anyridge_gym_arena"
+    }
+  },
+  {
+    "id": "anyridge_gym_arena",
+    "type": "location",
+    "name": {
+      "zh": "地面系道馆对战场",
+      "en": "Ground-type Gym Arena"
+    },
+    "description": "对战场地模拟了考古发掘现场，地面是松软的沙土，散布着半埋的陶罐和基石作为障碍物。道馆馆主是一位经验丰富的考古学家。",
+    "environment": "模拟考古现场",
+    "features": ["沙土地面", "陶罐障碍", "基石障碍", "地面系馆主NPC", "观众席"],
+    "exits": {
+      "lobby": "anyridge_gym_lobby"
+    }
+  },
+   {
+    "id": "anyridge_east_gate",
+    "type": "location",
+    "name": {
+      "zh": "安岭东门",
+      "en": "Anyridge East Gate"
+    },
+    "description": "安岭的东门，由此向东踏上甲骨文小道(YR05)，通往开封府。",
+    "features": ["道路指示牌 (开封府)"],
+    "exits": {
+      "west": "anyridge_center",
+      "east": "route_yr05_start"
+    }
+  },
+  {
+    "id": "route_yr05",
+    "type": "route",
+    "name": {
+      "zh": "甲骨文小道",
+      "en": "Oracle Script Path"
+    },
+    "description": "连接安岭与开封府的道路，全长约15km。路边布满了甲骨文碑林，可供拓印体验。设有甲骨文解谜游戏区。通行方式为考古电瓶车。危险等级中。",
+    "features": [
+      "甲骨文碑林",
+      "拓印体验点",
+      "解谜游戏区",
+      "考古电瓶车站",
+      "文物展示区",
+      "休息亭"
+    ],
+    "environment": "丘陵，文化遗迹",
+    "exits": {
+      "start": "route_yr05_start",
+      "mid": "route_yr05_mid",
+      "end": "route_yr05_end"
+    }
+  },
+  {
+    "id": "route_yr05_start",
+    "type": "location",
+    "name": {
+      "zh": "甲骨文小道起点",
+      "en": "Oracle Script Path Start"
+    },
+    "description": "位于安岭东门外的小道起点，一座巨大的甲骨文石碑矗立在路旁。石碑上刻着古老的甲骨文字，述说着这条路的历史。",
+    "environment": "考古遗址，丘陵",
+    "features": ["甲骨文石碑", "拓印工具", "电瓶车站"],
+    "exits": {
+      "west": "anyridge_east_gate",
+      "east": "route_yr05_mid"
+    }
+  },
+  {
+    "id": "route_yr05_mid",
+    "type": "location",
+    "name": {
+      "zh": "甲骨文小道中段",
+      "en": "Oracle Script Path Midpoint"
+    },
+    "description": "道路中段设有甲骨文解谜游戏区，游客可以通过解读甲骨文获得奖励。这里还有一个小型的文物展示亭。",
+    "environment": "考古遗址",
+    "features": ["解谜游戏区", "文物展示亭", "甲骨文解说员NPC"],
+    "exits": {
+      "west": "route_yr05_start",
+      "east": "route_yr05_end"
+    }
+  },
+  {
+    "id": "route_yr05_end",
+    "type": "location",
+    "name": {
+      "zh": "甲骨文小道终点",
+      "en": "Oracle Script Path End"
+    },
+    "description": "小道的终点与开封府西门相接，远处可以看到开封府的轮廓。这里的最后一块甲骨文石碑记载着古代商旅往来的历史。",
+    "environment": "近城郊区",
+    "features": ["最后的石碑", "城墙远景", "休息亭"],
+    "exits": {
+      "west": "route_yr05_mid",
+      "east": "kaifengfu_west_gate"
+    }
+  },
+  {
+    "id": "kaifengfu",
+    "type": "area",
+    "name": {
+      "zh": "开封府",
+      "en": "Kaifengfu"
+    },
+    "description": "位于豫都地区东部的水城，以宋代文化和水系景观闻名。城市水网密布，湖泊众多。居民生活悠闲，文化氛围浓厚。分为古城区、湖景区和新城区。主要交通方式为船只和步行。",
+    "inspired_by": "开封",
+    "environment": "东部水城，湖泊众多，气候湿润",
+    "architecture": "宋代风格，亭台楼阁，水榭画舫，古朴典雅",
+    "features": [
+      "开封府衙 (Kaifengfu Office)",
+      "龙亭公园 (Dragon Pavilion Park)",
+      "铁塔公园 (Iron Pagoda Park)",
+      "清明上河园 (Riverside Scene Park)",
+      "大相国寺 (Daxiangguo Temple)",
+      "开封府道馆 (Kaifengfu Gym - Water Type)",
+      "水上集市 (Water Market)",
+      "画舫码头 (Painted Boat Dock)"
+    ],
+    "exits": {
+      "center": "kaifengfu_center",
+      "south_gate": "kaifengfu_south_gate",
+      "north_gate": "kaifengfu_north_gate",
+      "west_gate": "kaifengfu_west_gate",
+      "east_gate": "kaifengfu_east_gate"
+    }
+  },
+  {
+    "id": "kaifengfu_center",
+    "type": "location",
+    "name": {
+      "zh": "开封府中心 (鼓楼广场)",
+      "en": "Kaifengfu Center (Drum Tower Square)"
+    },
+    "description": "开封府的中心是鼓楼广场，一座高大的鼓楼矗立在此。广场周围是繁华的商业街，水道穿梭其间，小桥流水，极具水城特色。可以乘船前往水上集市或画舫码头。",
+    "environment": "水城中心广场",
+    "features": ["鼓楼", "商业街", "水道", "小桥", "画舫", "船夫NPC"],
+    "exits": {
+      "south": "kaifengfu_south_street",
+      "north": "kaifengfu_north_street",
+      "west": "kaifengfu_west_street",
+      "east": "kaifengfu_east_street",
+      "boat_market": "kaifengfu_water_market",
+      "boat_dock": "kaifengfu_boat_dock"
+    }
+  },
+  {
+    "id": "kaifengfu_south_gate",
+    "type": "location",
+    "name": {
+      "zh": "开封府南门",
+      "en": "Kaifengfu South Gate"
+    },
+    "description": "开封府的南门，连接着武术天梯(YR04)的终点。城门外有码头，可以乘船进入城内。",
+    "features": ["城门码头", "售票船夫"],
+    "exits": {
+      "west": "route_yr04_end",
+      "north": "kaifengfu_south_street",
+      "boat": "kaifengfu_waterway_south"
+    }
+  },
+  {
+    "id": "kaifengfu_south_street",
+    "type": "location",
+    "name": {
+      "zh": "开封府南大街",
+      "en": "Kaifengfu South Street"
+    },
+    "description": "从南门通往中心鼓楼广场的街道，两旁是售卖开封特产如花生糕、汴绣的店铺。",
+    "features": ["花生糕店", "汴绣店"],
+    "exits": {
+      "south": "kaifengfu_south_gate",
+      "north": "kaifengfu_center"
+    }
+  },
+  {
+    "id": "kaifengfu_north_gate",
+    "type": "location",
+    "name": {
+      "zh": "开封府北门",
+      "en": "Kaifengfu North Gate"
+    },
+    "description": "开封府的北门，由此向北可前往铁塔公园和龙亭公园。",
+    "features": ["公园指示牌"],
+    "exits": {
+      "south": "kaifengfu_north_street",
+      "north": "kaifengfu_park_avenue"
+    }
+  },
+   {
+    "id": "kaifengfu_north_street",
+    "type": "location",
+    "name": {
+      "zh": "开封府北大街",
+      "en": "Kaifengfu North Street"
+    },
+    "description": "从中心鼓楼广场通往北门的街道，可以看到一些书店和画廊。",
+    "features": ["书店", "画廊"],
+    "exits": {
+      "south": "kaifengfu_center",
+      "north": "kaifengfu_north_gate"
+    }
+  },
+   {
+    "id": "kaifengfu_park_avenue",
+    "type": "location",
+    "name": {
+      "zh": "公园大道",
+      "en": "Park Avenue"
+    },
+    "description": "连接北门与两大公园的道路。西边是龙亭公园入口，东边是铁塔公园入口。",
+    "features": ["绿化带"],
+    "exits": {
+      "south": "kaifengfu_north_gate",
+      "west": "dragon_pavilion_park_entrance",
+      "east": "iron_pagoda_park_entrance"
+    }
+  },
+  {
+    "id": "dragon_pavilion_park_entrance",
+    "type": "location",
+    "name": {
+      "zh": "龙亭公园入口",
+      "en": "Dragon Pavilion Park Entrance"
+    },
+    "description": "龙亭公园的入口，仿古的牌楼气势恢宏。",
+    "features": ["仿古牌楼"],
+    "exits": {
+      "east": "kaifengfu_park_avenue",
+      "enter": "dragon_pavilion_park_area"
+    }
+  },
+  {
+    "id": "dragon_pavilion_park_area",
+    "type": "location",
+    "name": {
+      "zh": "龙亭公园区域",
+      "en": "Dragon Pavilion Park Area"
+    },
+    "description": "公园内以龙亭大殿为中心，周围有潘家湖和杨家湖环绕。风景优美，可以划船游湖。传说湖中有水系神兽。",
+    "features": ["龙亭大殿", "潘家湖", "杨家湖", "游船码头", "水系宝可梦"],
+    "exits": {
+      "out": "dragon_pavilion_park_entrance"
+    }
+  },
+  {
+    "id": "iron_pagoda_park_entrance",
+    "type": "location",
+    "name": {
+      "zh": "铁塔公园入口",
+      "en": "Iron Pagoda Park Entrance"
+    },
+    "description": "铁塔公园的入口，可以远远望见高耸的铁塔。",
+    "features": ["铁塔远景"],
+    "exits": {
+      "west": "kaifengfu_park_avenue",
+      "enter": "iron_pagoda_park_area"
+    }
+  },
+  {
+    "id": "iron_pagoda_park_area",
+    "type": "location",
+    "name": {
+      "zh": "铁塔公园区域",
+      "en": "Iron Pagoda Park Area"
+    },
+    "description": "公园的核心是著名的开封铁塔，因其褐色琉璃瓦看似铁色而得名。塔身精美，是中国古代琉璃塔的杰作。公园内绿树成荫，环境清幽。",
+    "features": ["开封铁塔", "琉璃瓦", "绿树成荫"],
+    "exits": {
+      "out": "iron_pagoda_park_entrance"
+    }
+  },
+  {
+    "id": "kaifengfu_west_gate",
+    "type": "location",
+    "name": {
+      "zh": "开封府西门",
+      "en": "Kaifengfu West Gate"
+    },
+    "description": "开封府的西门，连接着甲骨文小道(YR05)的终点。由此向东进入城区，可前往大相国寺和清明上河园方向。",
+    "features": ["城门", "道路指示牌"],
+    "exits": {
+      "west": "route_yr05_end",
+      "east": "kaifengfu_west_street",
+      "north": "daxiangguo_temple_path",
+      "south": "riverside_scene_park_path"
+    }
+  },
+   {
+    "id": "kaifengfu_west_street",
+    "type": "location",
+    "name": {
+      "zh": "开封府西大街",
+      "en": "Kaifengfu West Street"
+    },
+    "description": "从中心鼓楼广场通往西门的街道，这里有著名的开封府衙入口。",
+    "features": ["开封府衙入口"],
+    "exits": {
+      "east": "kaifengfu_center",
+      "west": "kaifengfu_west_gate",
+      "north": "kaifengfu_office_entrance"
+    }
+  },
+  {
+    "id": "kaifengfu_office_entrance",
+    "type": "location",
+    "name": {
+      "zh": "开封府衙入口",
+      "en": "Kaifengfu Office Entrance"
+    },
+    "description": "著名的开封府衙入口，门前有“开封府题名记”碑，以及鸣冤鼓。",
+    "features": ["开封府题名记碑", "鸣冤鼓"],
+    "exits": {
+      "south": "kaifengfu_west_street",
+      "enter": "kaifengfu_office_area"
+    }
+  },
+  {
+    "id": "kaifengfu_office_area",
+    "type": "location",
+    "name": {
+      "zh": "开封府衙区域",
+      "en": "Kaifengfu Office Area"
+    },
+    "description": "府衙内部庄严肃穆，有大堂、议事厅等建筑。可以了解包拯审案的故事。这里可能会遇到一些正义感强的格斗系或钢系宝可梦训练家。",
+    "features": ["府衙大堂", "议事厅", "包拯故事展板", "格斗/钢系训练家"],
+    "exits": {
+      "out": "kaifengfu_office_entrance"
+    }
+  },
+  {
+    "id": "daxiangguo_temple_path",
+    "type": "location",
+    "name": {
+      "zh": "通往大相国寺的路",
+      "en": "Path to Daxiangguo Temple"
+    },
+    "description": "从西门附近通往著名皇家寺院大相国寺的道路。",
+    "features": ["香火气息"],
+    "exits": {
+      "south": "kaifengfu_west_gate",
+      "north": "daxiangguo_temple_entrance"
+    }
+  },
+  {
+    "id": "daxiangguo_temple_entrance",
+    "type": "location",
+    "name": {
+      "zh": "大相国寺入口",
+      "en": "Daxiangguo Temple Entrance"
+    },
+    "description": "大相国寺的山门，历史悠久，曾是皇家寺院。",
+    "features": ["皇家寺院牌匾"],
+    "exits": {
+      "south": "daxiangguo_temple_path",
+      "enter": "daxiangguo_temple_area"
+    }
+  },
+  {
+    "id": "daxiangguo_temple_area",
+    "type": "location",
+    "name": {
+      "zh": "大相国寺区域",
+      "en": "Daxiangguo Temple Area"
+    },
+    "description": "寺内规模宏大，有天王殿、大雄宝殿、八角琉璃殿等。著名的千手千眼观音像就在其中。这里气氛庄严，可能有僧侣NPC。",
+    "features": ["天王殿", "大雄宝殿", "八角琉璃殿", "千手千眼观音", "僧侣NPC"],
+    "exits": {
+      "out": "daxiangguo_temple_entrance"
+    }
+  },
+  {
+    "id": "riverside_scene_park_path",
+    "type": "location",
+    "name": {
+      "zh": "通往清明上河园的路",
+      "en": "Path to Riverside Scene Park"
+    },
+    "description": "从西门附近通往以《清明上河图》为蓝本建造的主题公园——清明上河园的道路。",
+    "features": ["仿宋风格路灯"],
+    "exits": {
+      "north": "kaifengfu_west_gate",
+      "west": "riverside_scene_park_entrance"
+    }
+  },
+  {
+    "id": "riverside_scene_park_entrance",
+    "type": "location",
+    "name": {
+      "zh": "清明上河园入口",
+      "en": "Riverside Scene Park Entrance"
+    },
+    "description": "清明上河园的入口，仿古的牌坊和水榭，仿佛穿越回宋代。",
+    "features": ["仿古牌坊", "水榭", "售票处"],
+    "exits": {
+      "east": "riverside_scene_park_path",
+      "enter": "riverside_scene_park_area"
+    }
+  },
+  {
+    "id": "riverside_scene_park_area",
+    "type": "location",
+    "name": {
+      "zh": "清明上河园区域",
+      "en": "Riverside Scene Park Area"
+    },
+    "description": "根据《清明上河图》建造的主题公园，再现了北宋汴京的繁华景象。园内有虹桥、市井街道、各种仿古表演。可以体验宋代生活，遇到各种NPC和宝可梦。",
+    "features": ["虹桥", "仿宋市井", "民俗表演", "特色小吃", "NPC", "宝可梦"],
+    "exits": {
+      "out": "riverside_scene_park_entrance"
+    }
+  },
+  {
+    "id": "kaifengfu_east_street",
+    "type": "location",
+    "name": {
+      "zh": "开封府东大街",
+      "en": "Kaifengfu East Street"
+    },
+    "description": "从中心鼓楼广场通往东门的街道。这里有水系道馆的入口。",
+    "features": ["水系道馆入口"],
+    "exits": {
+      "west": "kaifengfu_center",
+      "east": "kaifengfu_east_gate",
+      "north": "kaifengfu_gym_entrance"
+    }
+  },
+  {
+    "id": "kaifengfu_gym_entrance",
+    "type": "location",
+    "name": {
+      "zh": "水系道馆入口",
+      "en": "Water Gym Entrance"
+    },
+    "description": "开封府水系道馆的入口，设计如同波浪起伏的水榭，门上悬挂着象征水系的徽章。",
+    "features": ["水榭设计", "水系徽章"],
+    "exits": {
+      "south": "kaifengfu_east_street",
+      "enter": "kaifengfu_gym_lobby"
+    }
+  },
+  {
+    "id": "kaifengfu_gym_lobby",
+    "type": "location",
+    "name": {
+      "zh": "水系道馆大厅",
+      "en": "Water Gym Lobby"
+    },
+    "description": "道馆大厅如同水底世界，墙壁是流动的蓝色光影，装饰着珊瑚和水草。接待员穿着类似船夫的服装。",
+    "features": ["水底光影效果", "珊瑚装饰", "接待员NPC"],
+    "exits": {
+      "out": "kaifengfu_gym_entrance",
+      "challenge": "kaifengfu_gym_arena"
+    }
+  },
+  {
+    "id": "kaifengfu_gym_arena",
+    "type": "location",
+    "name": {
+      "zh": "水系道馆对战场",
+      "en": "Water Gym Arena"
+    },
+    "description": "对战场地是一个巨大的水池，中心有几个浮台供训练家和宝可梦站立。水面上漂浮着莲叶。道馆馆主是一位擅长利用水流的优雅女子。",
+    "features": ["水池场地", "浮台", "莲叶", "水系馆主NPC"],
+    "exits": {
+      "lobby": "kaifengfu_gym_lobby"
+    }
+  },
+  {
+    "id": "kaifengfu_water_market",
+    "type": "location",
+    "name": {
+      "zh": "水上集市",
+      "en": "Water Market"
+    },
+    "description": "位于开封府水道上的集市，商贩们摇着小船售卖各种商品，主要是水产、莲藕、菱角等。非常热闹。",
+    "features": ["船上商贩", "水产", "莲藕", "菱角", "热闹氛围"],
+    "exits": {
+      "boat_center": "kaifengfu_center"
+    }
+  },
+  {
+    "id": "kaifengfu_boat_dock",
+    "type": "location",
+    "name": {
+      "zh": "画舫码头",
+      "en": "Painted Boat Dock"
+    },
+    "description": "停靠着许多装饰华丽的画舫，可以租用画舫游览开封府的水道和湖泊。",
+    "features": ["画舫", "船夫NPC", "租船服务"],
+    "exits": {
+      "boat_center": "kaifengfu_center"
+    }
+  },
+  {
+    "id": "kaifengfu_east_gate",
+    "type": "location",
+    "name": {
+      "zh": "开封府东门",
+      "en": "Kaifengfu East Gate"
+    },
+    "description": "开封府的东门，由此向东踏上黄河滨道(YR06)，通往港口城市黄川。",
+    "features": ["城门", "道路指示牌 (黄川)"],
+    "exits": {
+      "west": "kaifengfu_east_street",
+      "east": "route_yr06_start"
+    }
+  },
+  {
+    "id": "route_yr06",
+    "type": "route",
+    "name": {
+      "zh": "黄河滨道",
+      "en": "Yellow River Road"
+    },
+    "description": "连接开封府与黄川的道路，全长约22km。沿黄河大堤修建，设有悬河观景台，可观赏地上河奇观。有黄河号子表演点。汛期危险等级高。通行方式为防汛观光车。",
+    "features": [
+      "悬河观景台",
+      "地上河奇观",
+      "黄河号子表演点",
+      "汛期观洪活动 (特定时间)",
+      "防汛观光车"
+    ],
+    "environment": "黄河大堤，观景台",
+    "exits": {
+      "start": "route_yr06_start",
+      "mid": "route_yr06_mid",
+      "end": "route_yr06_end"
+    }
+  },
+  {
+    "id": "route_yr06_start",
+    "type": "location",
+    "name": {
+      "zh": "黄河滨道起点",
+      "en": "Yellow River Road Start"
+    },
+    "description": "位于开封府东门外，黄河滨道的起点。可以看到宽阔的黄河大堤向东延伸。设有防汛观光车站点。",
+    "environment": "黄河大堤起点",
+    "features": ["黄河大堤", "观光车站点", "黄河远景"],
+    "exits": {
+      "west": "kaifengfu_east_gate",
+      "east": "route_yr06_mid"
+    }
+  },
+  {
+    "id": "route_yr06_mid",
+    "type": "location",
+    "name": {
+      "zh": "黄河滨道中段 (观景台)",
+      "en": "Yellow River Road Midpoint (Observatory)"
+    },
+    "description": "道路中段设有一个高耸的悬河观景台，可以俯瞰黄河以及著名的地上河景观。附近有一个黄河号子表演点。",
+    "environment": "黄河大堤",
+    "features": ["悬河观景台", "地上河景观", "黄河号子表演点", "望远镜"],
+    "exits": {
+      "west": "route_yr06_start",
+      "east": "route_yr06_end"
+    }
+  },
+  {
+    "id": "route_yr06_end",
+    "type": "location",
+    "name": {
+      "zh": "黄河滨道终点",
+      "en": "Yellow River Road End"
+    },
+    "description": "黄河滨道的终点，前方就是沿黄河的港口城市黄川。可以看到码头和船只的轮廓。",
+    "environment": "靠近港口城市",
+    "features": ["黄川远景", "码头轮廓"],
+    "exits": {
+      "west": "route_yr06_mid",
+      "east": "huangriver_west_gate"
+    }
+  },
+  {
+    "id": "huangriver",
+    "type": "area",
+    "name": {
+      "zh": "黄川",
+      "en": "Huangriver"
+    },
+    "description": "位于豫都地区北部，是一座沿黄河的港口城市。城市周围是广袤的黄河滩涂和湿地。居民以渔民和航运从业者为主，具有浓厚的黄河文化传统。",
+    "inspired_by": "黄河沿岸城市",
+    "environment": "北部港口，黄河沿岸，滩涂湿地",
+    "architecture": "砖石房屋，码头设施，朴实厚重",
+    "features": [
+      "黄川港口 (Huangriver Port)",
+      "黄河博物馆 (Yellow River Museum)",
+      "黄河水利枢纽 (观景点)",
+      "商业区",
+      "黄河滩涂湿地 (生态区)"
+    ],
+    "exits": {
+      "port": "huangriver_port",
+      "west_gate": "huangriver_west_gate"
+    }
+  },
+  {
+    "id": "huangriver_west_gate",
+    "type": "location",
+    "name": {
+      "zh": "黄川西门",
+      "en": "Huangriver West Gate"
+    },
+    "description": "黄川的西入口，连接着黄河滨道(YR06)。可以看到城市内部的景象。",
+    "features": ["城市入口标志", "码头方向指示"],
+    "exits": {
+      "west": "route_yr06_end",
+      "east": "huangriver_market_street"
+    }
+  },
+  {
+    "id": "huangriver_market_street",
+    "type": "location",
+    "name": {
+      "zh": "黄川商业街",
+      "en": "Huangriver Market Street"
+    },
+    "description": "通往港口的主要街道，两旁是售卖渔具、水产和当地特产的商店。",
+    "features": ["渔具店", "水产市场", "特产店"],
+    "exits": {
+      "west": "huangriver_west_gate",
+      "east": "huangriver_port",
+      "north": "huangriver_museum_entrance"
+    }
+  },
+  {
+    "id": "huangriver_port",
+    "type": "location",
+    "name": {
+      "zh": "黄川港口",
+      "en": "Huangriver Port"
+    },
+    "description": "繁忙的黄河港口，停泊着各种大小的船只。码头工人正在装卸货物，渔民们整理着渔网。空气中弥漫着河水和鱼腥味。",
+    "environment": "港口码头",
+    "features": ["码头", "船只", "起重机", "渔民NPC", "码头工人NPC"],
+    "exits": {
+      "west": "huangriver_market_street"
+    }
+  },
+  {
+    "id": "huangriver_museum_entrance",
+    "type": "location",
+    "name": {
+      "zh": "黄河博物馆入口",
+      "en": "Yellow River Museum Entrance"
+    },
+    "description": "黄河博物馆的入口，建筑设计融入了黄河波涛的元素。",
+    "features": ["博物馆标志", "售票处"],
+    "exits": {
+      "south": "huangriver_market_street",
+      "enter": "huangriver_museum_interior"
+    }
+  },
+  {
+    "id": "huangriver_museum_interior",
+    "type": "location",
+    "name": {
+      "zh": "黄河博物馆内部",
+      "en": "Yellow River Museum Interior"
+    },
+    "description": "博物馆内展示了黄河的历史、文化、治理以及沿岸的生态。有黄河古生物化石和治水工具的展品。",
+    "features": ["黄河历史展板", "治水工具", "古生物化石", "生态模型"],
+    "exits": {
+      "out": "huangriver_museum_entrance"
+    }
+  },
+  {
+    "id": "route_yr07",
+    "type": "route",
+    "name": {
+      "zh": "嵩山小径",
+      "en": "Song Mountain Trail"
+    },
+    "description": "连接郑都与嵩谷的山间小径，全长约20km。蜿蜒曲折，风景秀丽，途经瀑布和溪流。适合徒步。危险等级中。",
+    "features": [
+      "山间小径",
+      "瀑布景观",
+      "溪流",
+      "观景台",
+      "徒步路线"
+    ],
+    "environment": "山地，森林，溪流",
+    "exits": {
+      "start": "route_yr07_start",
+      "mid": "route_yr07_mid",
+      "end": "route_yr07_end"
+    }
+  },
+  {
+    "id": "route_yr07_start",
+    "type": "location",
+    "name": {
+      "zh": "嵩山小径起点 (郑都北)",
+      "en": "Song Mountain Trail Start (Zhengtown North)"
+    },
+    "description": "位于郑都北门外西北方向的小径起点。路口有一个指示牌指向嵩谷。",
+    "environment": "山脚，小径入口",
+    "features": ["指示牌 (嵩谷)", "山林气息"],
+    "exits": {
+      "southeast": "zhengtown_north_gate",
+      "northwest": "route_yr07_mid"
+    }
+  },
+  {
+    "id": "route_yr07_mid",
+    "type": "location",
+    "name": {
+      "zh": "嵩山小径中段 (瀑布)",
+      "en": "Song Mountain Trail Midpoint (Waterfall)"
+    },
+    "description": "小径行至一半，可以听到潺潺水声。旁边有一道美丽的瀑布从山崖上落下，形成一个清澈的水潭。设有休息亭。",
+    "environment": "山间，瀑布旁",
+    "features": ["瀑布", "水潭", "休息亭", "水系/岩石宝可梦"],
+    "exits": {
+      "southeast": "route_yr07_start",
+      "northwest": "route_yr07_end"
+    }
+  },
+  {
+    "id": "route_yr07_end",
+    "type": "location",
+    "name": {
+      "zh": "嵩山小径终点 (嵩谷入口)",
+      "en": "Song Mountain Trail End (Songvale Entrance)"
+    },
+    "description": "小径的终点，前方就是风景秀丽的嵩谷入口。",
+    "environment": "山谷入口",
+    "features": ["嵩谷远景", "指示牌"],
+    "exits": {
+      "southeast": "route_yr07_mid",
+      "northwest": "songvale_entrance"
+    }
+  },
+  {
+    "id": "songvale",
+    "type": "area",
+    "name": {
+      "zh": "嵩谷",
+      "en": "Songvale"
+    },
+    "description": "坐落在豫都地区西部的山谷中，地势险峻，风景秀丽。山谷中有茂密的森林和清澈的溪流，是一个天然的旅游胜地。建筑与自然环境融为一体。",
+    "inspired_by": "嵩山风景区",
+    "environment": "西部山谷，森林，溪流，瀑布，温泉",
+    "architecture": "木质石质房屋，客栈，与自然融合",
+    "features": [
+      "嵩谷入口 (Songvale Entrance)",
+      "瀑布景区",
+      "温泉旅馆",
+      "观景台",
+      "探险小径"
+    ],
+    "exits": {
+      "entrance": "songvale_entrance"
+    }
+  },
+  {
+    "id": "songvale_entrance",
+    "type": "location",
+    "name": {
+      "zh": "嵩谷入口",
+      "en": "Songvale Entrance"
+    },
+    "description": "进入嵩谷的入口，一座木制的牌坊立在路口，旁边有游客服务中心。",
+    "environment": "山谷入口",
+    "features": ["木制牌坊", "游客服务中心", "地图板"],
+    "exits": {
+      "southeast": "route_yr07_end",
+      "north": "songvale_visitor_area"
+    }
+  },
+  {
+    "id": "songvale_visitor_area",
+    "type": "location",
+    "name": {
+      "zh": "嵩谷游客区",
+      "en": "Songvale Visitor Area"
+    },
+    "description": "嵩谷的主要游客集散地，有几家客栈、餐馆和纪念品商店。可以由此前往瀑布、温泉或登山小径。",
+    "environment": "山谷中心",
+    "features": ["客栈", "餐馆", "纪念品店", "向导NPC"],
+    "exits": {
+      "south": "songvale_entrance",
+      "west": "songvale_waterfall_path",
+      "east": "songvale_hotspring_path",
+      "north": "songvale_peak_trail_start"
+    }
+  },
+  {
+    "id": "songvale_waterfall_path",
+    "type": "location",
+    "name": {
+      "zh": "通往瀑布的小径",
+      "en": "Path to Waterfall"
+    },
+    "description": "一条通往嵩谷著名瀑布的林间小径。",
+    "features": ["林间小径", "溪流声"],
+    "exits": {
+      "east": "songvale_visitor_area",
+      "west": "songvale_waterfall_view"
+    }
+  },
+  {
+    "id": "songvale_waterfall_view",
+    "type": "location",
+    "name": {
+      "zh": "嵩谷瀑布观景台",
+      "en": "Songvale Waterfall Viewpoint"
+    },
+    "description": "一个观景平台，可以欣赏到壮观的嵩谷大瀑布。水汽弥漫，空气清新。",
+    "features": ["大瀑布", "观景台", "水汽"],
+    "exits": {
+      "east": "songvale_waterfall_path"
+    }
+  },
+  {
+    "id": "songvale_hotspring_path",
+    "type": "location",
+    "name": {
+      "zh": "通往温泉的路",
+      "en": "Path to Hot Spring"
+    },
+    "description": "一条通往山谷深处温泉旅馆的小路。",
+    "features": ["石板路", "竹林"],
+    "exits": {
+      "west": "songvale_visitor_area",
+      "east": "songvale_hotspring_inn"
+    }
+  },
+  {
+    "id": "songvale_hotspring_inn",
+    "type": "location",
+    "name": {
+      "zh": "嵩谷温泉旅馆",
+      "en": "Songvale Hot Spring Inn"
+    },
+    "description": "一家隐藏在山谷中的温泉旅馆，提供住宿和泡温泉服务。环境清幽。",
+    "features": ["温泉", "旅馆", "老板娘NPC"],
+    "exits": {
+      "west": "songvale_hotspring_path"
+    }
+  },
+  {
+    "id": "songvale_peak_trail_start",
+    "type": "location",
+    "name": {
+      "zh": "登山小径起点",
+      "en": "Peak Trail Start"
+    },
+    "description": "通往嵩谷更高处山峰的登山小径起点。",
+    "features": ["登山指示牌", "崎岖山路"],
+    "exits": {
+      "south": "songvale_visitor_area"
+    }
+  },
+  {
+    "id": "route_yr08",
+    "type": "route",
+    "name": {
+      "zh": "帝王大道",
+      "en": "Imperial Avenue"
+    },
+    "description": "连接郑都与帝都的宏伟大道，全长约35km。道路宽阔笔直，两旁栽种着高大的行道树，并设有皇家卫队巡逻点。通行方式为豪华马车或专线列车。危险等级低。",
+    "features": [
+      "宽阔大道",
+      "高大行道树",
+      "皇家卫队巡逻点",
+      "豪华马车",
+      "专线列车站"
+    ],
+    "environment": "平原，大道",
+    "exits": {
+      "start": "route_yr08_start",
+      "mid": "route_yr08_mid",
+      "end": "route_yr08_end"
+    }
+  },
+  {
+    "id": "route_yr08_start",
+    "type": "location",
+    "name": {
+      "zh": "帝王大道起点 (郑都北)",
+      "en": "Imperial Avenue Start (Zhengtown North)"
+    },
+    "description": "位于郑都北门外东北方向的大道起点。道路极其宽阔，气势非凡。设有豪华马车站和专线列车站。",
+    "environment": "大道起点",
+    "features": ["豪华马车站", "专线列车站", "卫兵NPC"],
+    "exits": {
+      "southwest": "zhengtown_north_gate",
+      "northeast": "route_yr08_mid"
+    }
+  },
+  {
+    "id": "route_yr08_mid",
+    "type": "location",
+    "name": {
+      "zh": "帝王大道中段 (皇家驿站)",
+      "en": "Imperial Avenue Midpoint (Royal Post)"
+    },
+    "description": "大道中段设有一个华丽的皇家驿站，供过往官员和贵族休息。驿站旁有皇家卫队的岗哨。",
+    "environment": "大道",
+    "features": ["皇家驿站", "卫队岗哨", "贵族NPC (可能)"],
+    "exits": {
+      "southwest": "route_yr08_start",
+      "northeast": "route_yr08_end"
+    }
+  },
+  {
+    "id": "route_yr08_end",
+    "type": "location",
+    "name": {
+      "zh": "帝王大道终点 (帝都南门)",
+      "en": "Imperial Avenue End (Imperia South Gate)"
+    },
+    "description": "帝王大道的终点，前方就是宏伟的帝都南门。可以看到高大的城墙和华丽的城楼。",
+    "environment": "靠近首都",
+    "features": ["帝都城墙远景", "城楼远景"],
+    "exits": {
+      "southwest": "route_yr08_mid",
+      "north": "imperia_south_gate"
+    }
+  },
+  {
+    "id": "imperia",
+    "type": "area",
+    "name": {
+      "zh": "帝都",
+      "en": "Imperia"
+    },
+    "description": "位于豫都地区的中心位置，是地区联盟所在地。城市宏伟壮观，充满皇家气派。是政治、经济和文化的中心。",
+    "inspired_by": "综合首都概念",
+    "environment": "区域中心，山河环绕，气候温和",
+    "architecture": "宏伟皇家风格，宫殿，城堡，政府大楼",
+    "features": [
+      "帝都中心广场 (Imperia Plaza)",
+      "联盟总部 (League HQ)",
+      "议会大厦 (Parliament Building)",
+      "冠军之路入口 (Champion Road Entry)",
+      "四天王城堡 (Elite Four Castle)",
+      "皇家商业街",
+      "贵族住宅区"
+    ],
+    "exits": {
+      "center": "imperia_center",
+      "south_gate": "imperia_south_gate"
+    }
+  },
+  {
+    "id": "imperia_south_gate",
+    "type": "location",
+    "name": {
+      "zh": "帝都南门",
+      "en": "Imperia South Gate"
+    },
+    "description": "帝都的南大门，连接着帝王大道(YR08)。城门极其宏伟，由皇家卫队守卫。",
+    "environment": "首都城门",
+    "features": ["宏伟城门", "皇家卫队NPC", "入城检查点"],
+    "exits": {
+      "south": "route_yr08_end",
+      "north": "imperia_south_avenue"
+    }
+  },
+  {
+    "id": "imperia_south_avenue",
+    "type": "location",
+    "name": {
+      "zh": "帝都南大道",
+      "en": "Imperia South Avenue"
+    },
+    "description": "从南门通往中心广场的宽阔大道，两旁是华丽的建筑和雕塑。",
+    "features": ["华丽建筑", "雕塑", "喷泉"],
+    "exits": {
+      "south": "imperia_south_gate",
+      "north": "imperia_center"
+    }
+  },
+  {
+    "id": "imperia_center",
+    "type": "location",
+    "name": {
+      "zh": "帝都中心广场",
+      "en": "Imperia Plaza"
+    },
+    "description": "帝都的中心广场，是城市的核心。广场中央矗立着象征联盟的纪念碑。北边是联盟总部，西边是议会大厦，东边是皇家商业街。",
+    "environment": "首都中心广场",
+    "features": ["联盟纪念碑", "大型喷泉", "广场卫兵"],
+    "exits": {
+      "south": "imperia_south_avenue",
+      "north": "imperia_hq_entrance",
+      "west": "imperia_parliament_entrance",
+      "east": "imperia_royal_street"
+    }
+  },
+  {
+    "id": "imperia_hq_entrance",
+    "type": "location",
+    "name": {
+      "zh": "联盟总部入口",
+      "en": "League HQ Entrance"
+    },
+    "description": "宝可梦联盟总部的入口，建筑宏伟庄严，门口有两尊传说宝可梦的雕像。",
+    "features": ["宏伟建筑", "传说宝可梦雕像", "联盟旗帜", "卫兵NPC"],
+    "exits": {
+      "south": "imperia_center",
+      "enter": "imperia_hq_lobby"
+    }
+  },
+  {
+    "id": "imperia_hq_lobby",
+    "type": "location",
+    "name": {
+      "zh": "联盟总部大厅",
+      "en": "League HQ Lobby"
+    },
+    "description": "联盟总部的大厅，装饰华丽，墙上挂着历代冠军的画像。这里是处理联盟事务的地方。",
+    "features": ["华丽大厅", "冠军画像", "接待员NPC", "信息中心"],
+    "exits": {
+      "out": "imperia_hq_entrance"
+    }
+  },
+  {
+    "id": "imperia_parliament_entrance",
+    "type": "location",
+    "name": {
+      "zh": "议会大厦入口",
+      "en": "Parliament Building Entrance"
+    },
+    "description": "豫都地区议会大厦的入口，建筑风格古典庄重。",
+    "features": ["古典建筑", "卫兵NPC"],
+    "exits": {
+      "east": "imperia_center"
+    }
+  },
+  {
+    "id": "imperia_royal_street",
+    "type": "location",
+    "name": {
+      "zh": "皇家商业街",
+      "en": "Royal Street"
+    },
+    "description": "帝都的高档商业街，遍布奢侈品店、高级餐厅和艺术画廊。",
+    "features": ["奢侈品店", "高级餐厅", "艺术画廊", "贵族NPC"],
+    "exits": {
+      "west": "imperia_center"
+    }
+  }
+]

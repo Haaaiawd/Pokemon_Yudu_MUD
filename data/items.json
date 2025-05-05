@@ -1,0 +1,46 @@
+[
+  {
+    "id": "potion",
+    "name": {
+      "zh": "伤药",
+      "en": "Potion"
+    },
+    "description": "回复宝可梦少量HP的喷雾药剂。",
+    "type": "medicine",
+    "effect": {
+      "target": "pokemon",
+      "action": "heal_hp",
+      "value": 20
+    },
+    "buyPrice": 300,
+    "sellPrice": 150
+  },
+  {
+    "id": "pokeball",
+    "name": {
+      "zh": "精灵球",
+      "en": "Poke Ball"
+    },
+    "description": "用于捕捉野生宝可梦的基础精灵球。",
+    "type": "ball",
+    "effect": {
+      "target": "wild_pokemon",
+      "action": "catch",
+      "catchRateModifier": 1.0
+    },
+    "buyPrice": 200,
+    "sellPrice": 100
+  },
+  {
+    "id": "townmap",
+    "name": {
+      "zh": "城镇地图",
+      "en": "Town Map"
+    },
+    "description": "一张显示豫都地区城镇和路线的地图。",
+    "type": "key_item",
+    "effect": null,
+    "buyPrice": null,
+    "sellPrice": 0
+  }
+] 

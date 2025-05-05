@@ -1,0 +1,1199 @@
+[
+    {
+        "yudex_id": "Y0001",
+        "name": "妙蛙种子",
+        "name_en": "Bulbasaur",
+        "name_jp": "フシギダネ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0002",
+        "name": "妙蛙草",
+        "name_en": "Ivysaur",
+        "name_jp": "フシギソウ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0003",
+        "name": "妙蛙花",
+        "name_en": "Venusaur",
+        "name_jp": "フシギバナ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0004",
+        "name": "小火龙",
+        "name_en": "Charmander",
+        "name_jp": "ヒトカゲ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0005",
+        "name": "火恐龙",
+        "name_en": "Charmeleon",
+        "name_jp": "リザード",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0006",
+        "name": "喷火龙",
+        "name_en": "Charizard",
+        "name_jp": "リザードン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0007",
+        "name": "杰尼龟",
+        "name_en": "Squirtle",
+        "name_jp": "ゼニガメ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0008",
+        "name": "卡咪龟",
+        "name_en": "Wartortle",
+        "name_jp": "カメール",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0009",
+        "name": "水箭龟",
+        "name_en": "Blastoise",
+        "name_jp": "カメックス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0010",
+        "name": "皮卡丘",
+        "name_en": "Pikachu",
+        "name_jp": "ピカチュウ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0011",
+        "name": "雷丘",
+        "name_en": "Raichu",
+        "name_jp": "ライチュウ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0012",
+        "name": "凯西",
+        "name_en": "Abra",
+        "name_jp": "ケーシィ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0013",
+        "name": "勇基拉",
+        "name_en": "Kadabra",
+        "name_jp": "ユンゲラー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0014",
+        "name": "胡地",
+        "name_en": "Alakazam",
+        "name_jp": "フーディン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0015",
+        "name": "腕力",
+        "name_en": "Machop",
+        "name_jp": "ワンリキー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0016",
+        "name": "豪力",
+        "name_en": "Machoke",
+        "name_jp": "ゴーリキー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0017",
+        "name": "怪力",
+        "name_en": "Machamp",
+        "name_jp": "カイリキー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0018",
+        "name": "鲤鱼王",
+        "name_en": "Magikarp",
+        "name_jp": "コイキング",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0019",
+        "name": "暴鲤龙",
+        "name_en": "Gyarados",
+        "name_jp": "ギャラドス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0020",
+        "name": "伊布",
+        "name_en": "Eevee",
+        "name_jp": "イーブイ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0021",
+        "name": "水伊布",
+        "name_en": "Vaporeon",
+        "name_jp": "シャワーズ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0022",
+        "name": "雷伊布",
+        "name_en": "Jolteon",
+        "name_jp": "サンダース",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0023",
+        "name": "火伊布",
+        "name_en": "Flareon",
+        "name_jp": "ブースター",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0024",
+        "name": "卡比兽",
+        "name_en": "Snorlax",
+        "name_jp": "カビゴン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0025",
+        "name": "迷你龙",
+        "name_en": "Dratini",
+        "name_jp": "ミニリュウ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0026",
+        "name": "哈克龙",
+        "name_en": "Dragonair",
+        "name_jp": "ハクリュー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0027",
+        "name": "快龙",
+        "name_en": "Dragonite",
+        "name_jp": "カイリュー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0028",
+        "name": "超梦",
+        "name_en": "Mewtwo",
+        "name_jp": "ミュウツー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0029",
+        "name": "梦幻",
+        "name_en": "Mew",
+        "name_jp": "ミュウ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0030",
+        "name": "太阳伊布",
+        "name_en": "Espeon",
+        "name_jp": "エーフィ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0031",
+        "name": "月亮伊布",
+        "name_en": "Umbreon",
+        "name_jp": "ブラッキー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0032",
+        "name": "幼基拉斯",
+        "name_en": "Larvitar",
+        "name_jp": "ヨーギラス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0033",
+        "name": "沙基拉斯",
+        "name_en": "Pupitar",
+        "name_jp": "サナギラス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0034",
+        "name": "班基拉斯",
+        "name_en": "Tyranitar",
+        "name_jp": "バンギラス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0035",
+        "name": "洛奇亚",
+        "name_en": "Lugia",
+        "name_jp": "ルギア",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0036",
+        "name": "凤王",
+        "name_en": "Ho-Oh",
+        "name_jp": "ホウオウ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0037",
+        "name": "木守宫",
+        "name_en": "Treecko",
+        "name_jp": "キモリ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0038",
+        "name": "森林蜥蜴",
+        "name_en": "Grovyle",
+        "name_jp": "ジュプトル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0039",
+        "name": "蜥蜴王",
+        "name_en": "Sceptile",
+        "name_jp": "ジュカイン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0040",
+        "name": "火稚鸡",
+        "name_en": "Torchic",
+        "name_jp": "アチャモ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0041",
+        "name": "力壮鸡",
+        "name_en": "Combusken",
+        "name_jp": "ワカシャモ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0042",
+        "name": "火焰鸡",
+        "name_en": "Blaziken",
+        "name_jp": "バシャーモ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0043",
+        "name": "水跃鱼",
+        "name_en": "Mudkip",
+        "name_jp": "ミズゴロウ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0044",
+        "name": "沼跃鱼",
+        "name_en": "Marshtomp",
+        "name_jp": "ヌマクロー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0045",
+        "name": "巨沼怪",
+        "name_en": "Swampert",
+        "name_jp": "ラグラージ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0046",
+        "name": "拉鲁拉丝",
+        "name_en": "Ralts",
+        "name_jp": "ラルトス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0047",
+        "name": "奇鲁莉安",
+        "name_en": "Kirlia",
+        "name_jp": "キルリア",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0048",
+        "name": "沙奈朵",
+        "name_en": "Gardevoir",
+        "name_jp": "サーナイト",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0049",
+        "name": "溜溜糖球",
+        "name_en": "Surskit",
+        "name_jp": "アメタマ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0050",
+        "name": "雨翅蛾",
+        "name_en": "Masquerain",
+        "name_jp": "アメモース",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0051",
+        "name": "可可多拉",
+        "name_en": "Aron",
+        "name_jp": "ココドラ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0052",
+        "name": "可多拉",
+        "name_en": "Lairon",
+        "name_jp": "コドラ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0053",
+        "name": "波士可多拉",
+        "name_en": "Aggron",
+        "name_jp": "ボスゴドラ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0054",
+        "name": "超音波幼虫",
+        "name_en": "Vibrava",
+        "name_jp": "ビブラーバ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0055",
+        "name": "沙漠蜻蜓",
+        "name_en": "Flygon",
+        "name_jp": "フライゴン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0056",
+        "name": "青绵鸟",
+        "name_en": "Swablu",
+        "name_jp": "チルット",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0057",
+        "name": "七夕青鸟",
+        "name_en": "Altaria",
+        "name_jp": "チルタリス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0058",
+        "name": "丑丑鱼",
+        "name_en": "Feebas",
+        "name_jp": "ヒンバス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0059",
+        "name": "美纳斯",
+        "name_en": "Milotic",
+        "name_jp": "ミロカロス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0060",
+        "name": "宝贝龙",
+        "name_en": "Bagon",
+        "name_jp": "タツベイ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0061",
+        "name": "甲壳龙",
+        "name_en": "Shelgon",
+        "name_jp": "コモルー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0062",
+        "name": "暴飞龙",
+        "name_en": "Salamence",
+        "name_jp": "ボーマンダ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0063",
+        "name": "铁哑铃",
+        "name_en": "Beldum",
+        "name_jp": "ダンバル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0064",
+        "name": "金属怪",
+        "name_en": "Metang",
+        "name_jp": "メタング",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0065",
+        "name": "巨金怪",
+        "name_en": "Metagross",
+        "name_jp": "メタグロス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0066",
+        "name": "盖欧卡",
+        "name_en": "Kyogre",
+        "name_jp": "カイオーガ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0067",
+        "name": "固拉多",
+        "name_en": "Groudon",
+        "name_jp": "グラードン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0068",
+        "name": "烈空坐",
+        "name_en": "Rayquaza",
+        "name_jp": "レックウザ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0069",
+        "name": "基拉祈",
+        "name_en": "Jirachi",
+        "name_jp": "ジラーチ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0070",
+        "name": "草苗龟",
+        "name_en": "Turtwig",
+        "name_jp": "ナエトル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0071",
+        "name": "树林龟",
+        "name_en": "Grotle",
+        "name_jp": "ハヤシガメ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0072",
+        "name": "土台龟",
+        "name_en": "Torterra",
+        "name_jp": "ドダイトス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0073",
+        "name": "小火焰猴",
+        "name_en": "Chimchar",
+        "name_jp": "ヒコザル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0074",
+        "name": "猛火猴",
+        "name_en": "Monferno",
+        "name_jp": "モウカザル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0075",
+        "name": "烈焰猴",
+        "name_en": "Infernape",
+        "name_jp": "ゴウカザル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0076",
+        "name": "波加曼",
+        "name_en": "Piplup",
+        "name_jp": "ポッチャマ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0077",
+        "name": "波皇子",
+        "name_en": "Prinplup",
+        "name_jp": "ポッタイシ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0078",
+        "name": "帝王拿波",
+        "name_en": "Empoleon",
+        "name_jp": "エンペルト",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0079",
+        "name": "含羞苞",
+        "name_en": "Budew",
+        "name_jp": "スボミー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0080",
+        "name": "罗丝雷朵",
+        "name_en": "Roserade",
+        "name_jp": "ロズレイド",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0081",
+        "name": "结草儿",
+        "name_en": "Burmy",
+        "name_jp": "ミノムッチ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0082",
+        "name": "结草贵妇",
+        "name_en": "Wormadam",
+        "name_jp": "ミノマダム",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0083",
+        "name": "无壳海兔",
+        "name_en": "Shellos",
+        "name_jp": "カラナクシ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0084",
+        "name": "海兔兽",
+        "name_en": "Gastrodon",
+        "name_jp": "トリトドン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0085",
+        "name": "圆陆鲨",
+        "name_en": "Gible",
+        "name_jp": "フカマル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0086",
+        "name": "尖牙陆鲨",
+        "name_en": "Gabite",
+        "name_jp": "ガバイト",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0087",
+        "name": "烈咬陆鲨",
+        "name_en": "Garchomp",
+        "name_jp": "ガブリアス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0088",
+        "name": "自爆磁怪",
+        "name_en": "Magnezone",
+        "name_jp": "ジバコイル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0089",
+        "name": "巨蔓藤",
+        "name_en": "Tangrowth",
+        "name_jp": "モジャンボ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0090",
+        "name": "叶伊布",
+        "name_en": "Leafeon",
+        "name_jp": "リーフィア",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0091",
+        "name": "冰伊布",
+        "name_en": "Glaceon",
+        "name_jp": "グレイシア",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0092",
+        "name": "大朝北鼻",
+        "name_en": "Probopass",
+        "name_jp": "ダイノーズ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0093",
+        "name": "洛托姆",
+        "name_en": "Rotom",
+        "name_jp": "ロトム",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0094",
+        "name": "阿尔宙斯",
+        "name_en": "Arceus",
+        "name_jp": "アルセウス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0095",
+        "name": "藤藤蛇",
+        "name_en": "Snivy",
+        "name_jp": "ツタージャ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0096",
+        "name": "青藤蛇",
+        "name_en": "Servine",
+        "name_jp": "ジャノビー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0097",
+        "name": "君主蛇",
+        "name_en": "Serperior",
+        "name_jp": "ジャローダ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0098",
+        "name": "暖暖猪",
+        "name_en": "Tepig",
+        "name_jp": "ポカブ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0099",
+        "name": "炒炒猪",
+        "name_en": "Pignite",
+        "name_jp": "チャオブー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0100",
+        "name": "炎武王",
+        "name_en": "Emboar",
+        "name_jp": "エンブオー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0101",
+        "name": "水水獭",
+        "name_en": "Oshawott",
+        "name_jp": "ミジュマル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0102",
+        "name": "双刃丸",
+        "name_en": "Dewott",
+        "name_jp": "フタチマル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0103",
+        "name": "大剑鬼",
+        "name_en": "Samurott",
+        "name_jp": "ダイケンキ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0104",
+        "name": "黑眼鳄",
+        "name_en": "Sandile",
+        "name_jp": "メグロコ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0105",
+        "name": "混混鳄",
+        "name_en": "Krokorok",
+        "name_jp": "ワルビル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0106",
+        "name": "流氓鳄",
+        "name_en": "Krookodile",
+        "name_jp": "ワルビアル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0107",
+        "name": "火红不倒翁",
+        "name_en": "Darumaka",
+        "name_jp": "ダルマッカ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0108",
+        "name": "达摩狒狒",
+        "name_en": "Darmanitan",
+        "name_jp": "ヒヒダルマ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0109",
+        "name": "始祖小鸟",
+        "name_en": "Archen",
+        "name_jp": "アーケン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0110",
+        "name": "始祖大鸟",
+        "name_en": "Archeops",
+        "name_jp": "アーケオス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0111",
+        "name": "索罗亚克",
+        "name_en": "Zoroark",
+        "name_jp": "ゾロアーク",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0112",
+        "name": "迷你冰",
+        "name_en": "Vanillite",
+        "name_jp": "バニプッチ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0113",
+        "name": "多多冰",
+        "name_en": "Vanillish",
+        "name_jp": "バニリッチ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0114",
+        "name": "双倍多多冰",
+        "name_en": "Vanilluxe",
+        "name_jp": "バイバニラ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0115",
+        "name": "哎呀球菇",
+        "name_en": "Foongus",
+        "name_jp": "タマゲタケ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0116",
+        "name": "败露球菇",
+        "name_en": "Amoonguss",
+        "name_jp": "モロバレル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0117",
+        "name": "烛光灵",
+        "name_en": "Litwick",
+        "name_jp": "ヒトモシ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0118",
+        "name": "灯火幽灵",
+        "name_en": "Lampent",
+        "name_jp": "ランプラー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0119",
+        "name": "水晶灯火灵",
+        "name_en": "Chandelure",
+        "name_jp": "シャンデラ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0120",
+        "name": "牙牙",
+        "name_en": "Axew",
+        "name_jp": "キバゴ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0121",
+        "name": "斧牙龙",
+        "name_en": "Fraxure",
+        "name_jp": "オノンド",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0122",
+        "name": "双斧战龙",
+        "name_en": "Haxorus",
+        "name_jp": "オノノクス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0123",
+        "name": "功夫鼬",
+        "name_en": "Mienfoo",
+        "name_jp": "コジョフー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0124",
+        "name": "师父鼬",
+        "name_en": "Mienshao",
+        "name_jp": "コジョンド",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0125",
+        "name": "燃烧虫",
+        "name_en": "Larvesta",
+        "name_jp": "メラルバ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0126",
+        "name": "火神蛾",
+        "name_en": "Volcarona",
+        "name_jp": "ウルガモス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0127",
+        "name": "呱呱泡蛙",
+        "name_en": "Froakie",
+        "name_jp": "ケロマツ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0128",
+        "name": "呱头蛙",
+        "name_en": "Frogadier",
+        "name_jp": "ゲコガシラ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0129",
+        "name": "甲贺忍蛙",
+        "name_en": "Greninja",
+        "name_jp": "ゲッコウガ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0130",
+        "name": "小箭雀",
+        "name_en": "Fletchling",
+        "name_jp": "ヤヤコマ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0131",
+        "name": "火箭雀",
+        "name_en": "Fletchinder",
+        "name_jp": "ヒノヤコマ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0132",
+        "name": "烈箭鹰",
+        "name_en": "Talonflame",
+        "name_jp": "ファイアロー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0133",
+        "name": "仙子伊布",
+        "name_en": "Sylveon",
+        "name_jp": "ニンフィア",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0134",
+        "name": "嗡蝠",
+        "name_en": "Noibat",
+        "name_jp": "オンバット",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0135",
+        "name": "音波龙",
+        "name_en": "Noivern",
+        "name_jp": "オンバーン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0136",
+        "name": "木木枭",
+        "name_en": "Rowlet",
+        "name_jp": "モクロー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0137",
+        "name": "投羽枭",
+        "name_en": "Dartrix",
+        "name_jp": "フクスロー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0138",
+        "name": "狙射树枭",
+        "name_en": "Decidueye",
+        "name_jp": "ジュナイパー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0139",
+        "name": "火斑喵",
+        "name_en": "Litten",
+        "name_jp": "ニャビー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0140",
+        "name": "炎热喵",
+        "name_en": "Torracat",
+        "name_jp": "ニャヒート",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0141",
+        "name": "炽焰咆哮虎",
+        "name_en": "Incineroar",
+        "name_jp": "ガオガエン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0142",
+        "name": "球球海狮",
+        "name_en": "Popplio",
+        "name_jp": "アシマリ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0143",
+        "name": "花漾海狮",
+        "name_en": "Brionne",
+        "name_jp": "オシャマリ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0144",
+        "name": "西狮海壬",
+        "name_en": "Primarina",
+        "name_jp": "アシレーヌ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0145",
+        "name": "甜竹竹",
+        "name_en": "Bounsweet",
+        "name_jp": "アマカジ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0146",
+        "name": "甜舞妮",
+        "name_en": "Steenee",
+        "name_jp": "アママイコ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0147",
+        "name": "甜冷美后",
+        "name_en": "Tsareena",
+        "name_jp": "アマージョ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0148",
+        "name": "谜拟Ｑ",
+        "name_en": "Mimikyu",
+        "name_jp": "ミミッキュ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0149",
+        "name": "敲音猴",
+        "name_en": "Grookey",
+        "name_jp": "サルノリ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0150",
+        "name": "啪咚猴",
+        "name_en": "Thwackey",
+        "name_jp": "バチンキー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0151",
+        "name": "轰擂金刚猩",
+        "name_en": "Rillaboom",
+        "name_jp": "ゴリランダー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0152",
+        "name": "炎兔儿",
+        "name_en": "Scorbunny",
+        "name_jp": "ヒバニー",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0153",
+        "name": "腾蹴小将",
+        "name_en": "Raboot",
+        "name_jp": "ラビフット",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0154",
+        "name": "闪焰王牌",
+        "name_en": "Cinderace",
+        "name_jp": "エースバーン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0155",
+        "name": "泪眼蜥",
+        "name_en": "Sobble",
+        "name_jp": "メッソン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0156",
+        "name": "变涩蜥",
+        "name_en": "Drizzile",
+        "name_jp": "ジメレオン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0157",
+        "name": "千面避役",
+        "name_en": "Inteleon",
+        "name_jp": "インテレオン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0158",
+        "name": "稚山雀",
+        "name_en": "Rookidee",
+        "name_jp": "ココガラ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0159",
+        "name": "蓝鸦",
+        "name_en": "Corvisquire",
+        "name_jp": "アオガラス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0160",
+        "name": "钢铠鸦",
+        "name_en": "Corviknight",
+        "name_jp": "アーマーガア",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0161",
+        "name": "新叶喵",
+        "name_en": "Sprigatito",
+        "name_jp": "ニャオハ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0162",
+        "name": "蒂蕾喵",
+        "name_en": "Floragato",
+        "name_jp": "ニャローテ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0163",
+        "name": "魔幻假面喵",
+        "name_en": "Meowscarada",
+        "name_jp": "マスカーニャ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0164",
+        "name": "呆火鳄",
+        "name_en": "Fuecoco",
+        "name_jp": "ホゲータ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0165",
+        "name": "炙烫鳄",
+        "name_en": "Crocalor",
+        "name_jp": "アチゲータ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0166",
+        "name": "骨纹巨声鳄",
+        "name_en": "Skeledirge",
+        "name_jp": "ラウドボーン",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0167",
+        "name": "润水鸭",
+        "name_en": "Quaxly",
+        "name_jp": "クワッス",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0168",
+        "name": "涌跃鸭",
+        "name_en": "Quaxwell",
+        "name_jp": "ウェルカモ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0169",
+        "name": "狂欢浪舞鸭",
+        "name_en": "Quaquaval",
+        "name_jp": "ウェーニバル",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0170",
+        "name": "狗仔包",
+        "name_en": "Fidough",
+        "name_jp": "パピモッチ",
+        "world_gen": "Y"
+    },
+    {
+        "yudex_id": "Y0171",
+        "name": "麻花犬",
+        "name_en": "Dachsbun",
+        "name_jp": "バウッツェル",
+        "world_gen": "Y"
+    }
+]

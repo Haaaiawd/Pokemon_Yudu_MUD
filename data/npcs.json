@@ -1,0 +1,9 @@
+[
+  {
+    "id": "npc_beginville_guide",
+    "name": "向导小明",
+    "description": "一位穿着探险服饰，看起来很友善的年轻人。",
+    "initialLocationId": "beginville_square", 
+    "promptFile": "npc_prompts/guide_npc.json"
+  }
+] 
