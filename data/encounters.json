@@ -1,0 +1,195 @@
+{
+  "encounter_locations": [
+    {
+      "locationId": "route_yr02_start",
+      "encounterRate": 0.2,
+      "wildPokemon": [
+        { "pokedexId": "Y0001", "levelRange": [5, 7], "weight": 30 },
+        { "pokedexId": "Y0007", "levelRange": [4, 6], "weight": 30 },
+        { "pokedexId": "Y0010", "levelRange": [5, 8], "weight": 20 },
+        { "pokedexId": "Y0017", "levelRange": [5, 7], "weight": 15 },
+        { "pokedexId": "Y0056", "levelRange": [6, 8], "weight": 5 }
+      ]
+    },
+    {
+      "locationId": "route_yr02_mid",
+      "encounterRate": 0.25,
+      "wildPokemon": [
+        { "pokedexId": "Y0001", "levelRange": [6, 8], "weight": 25 },
+        { "pokedexId": "Y0007", "levelRange": [5, 7], "weight": 25 },
+        { "pokedexId": "Y0010", "levelRange": [6, 9], "weight": 20 },
+        { "pokedexId": "Y0017", "levelRange": [6, 8], "weight": 15 },
+        { "pokedexId": "Y0056", "levelRange": [7, 9], "weight": 10 },
+        { "pokedexId": "Y0130", "levelRange": [8, 10], "weight": 5 }
+      ]
+    },
+    {
+      "locationId": "route_yr02_end",
+      "encounterRate": 0.15,
+      "wildPokemon": [
+        { "pokedexId": "Y0001", "levelRange": [7, 9], "weight": 20 },
+        { "pokedexId": "Y0007", "levelRange": [6, 8], "weight": 20 },
+        { "pokedexId": "Y0010", "levelRange": [7, 10], "weight": 20 },
+        { "pokedexId": "Y0017", "levelRange": [7, 9], "weight": 15 },
+        { "pokedexId": "Y0056", "levelRange": [8, 10], "weight": 15 },
+        { "pokedexId": "Y0130", "levelRange": [9, 11], "weight": 10 }
+      ]
+    },
+    {
+      "locationId": "zhengtown_tv_tower_plaza",
+      "encounterRate": 0.15,
+      "wildPokemon": [
+        { "pokedexId": "Y0130", "levelRange": [12, 14], "weight": 40 },
+        { "pokedexId": "Y0056", "levelRange": [11, 13], "weight": 30 },
+        { "pokedexId": "Y0040", "levelRange": [13, 15], "weight": 20 },
+        { "pokedexId": "Y0037", "levelRange": [12, 14], "weight": 10 }
+      ]
+    },
+    {
+      "locationId": "longmen_grottoes_area",
+      "encounterRate": 0.25,
+      "wildPokemon": [
+        { "pokedexId": "Y0054", "levelRange": [15, 18], "weight": 40 },
+        { "pokedexId": "Y0055", "levelRange": [16, 19], "weight": 30 },
+        { "pokedexId": "Y0036", "levelRange": [17, 20], "weight": 20 },
+        { "pokedexId": "Y0025", "levelRange": [16, 18], "weight": 10 }
+      ]
+    },
+    {
+      "locationId": "route_yr01_start",
+      "encounterRate": 0.2,
+      "wildPokemon": [
+        { "pokedexId": "Y0001", "levelRange": [3, 5], "weight": 35 },
+        { "pokedexId": "Y0007", "levelRange": [2, 4], "weight": 30 },
+        { "pokedexId": "Y0010", "levelRange": [3, 6], "weight": 20 },
+        { "pokedexId": "Y0017", "levelRange": [3, 5], "weight": 15 }
+      ]
+    },
+    {
+      "locationId": "route_yr01_mid",
+      "encounterRate": 0.25,
+      "wildPokemon": [
+        { "pokedexId": "Y0001", "levelRange": [4, 6], "weight": 25 },
+        { "pokedexId": "Y0007", "levelRange": [3, 5], "weight": 25 },
+        { "pokedexId": "Y0010", "levelRange": [4, 7], "weight": 25 },
+        { "pokedexId": "Y0017", "levelRange": [4, 6], "weight": 15 },
+        { "pokedexId": "Y0004", "levelRange": [5, 7], "weight": 10 }
+      ]
+    },
+    {
+      "locationId": "route_yr01_end",
+      "encounterRate": 0.15,
+      "wildPokemon": [
+        { "pokedexId": "Y0001", "levelRange": [5, 7], "weight": 20 },
+        { "pokedexId": "Y0007", "levelRange": [4, 6], "weight": 25 },
+        { "pokedexId": "Y0010", "levelRange": [5, 8], "weight": 30 },
+        { "pokedexId": "Y0017", "levelRange": [5, 7], "weight": 15 },
+        { "pokedexId": "Y0004", "levelRange": [6, 8], "weight": 10 }
+      ]
+    },
+    {
+      "locationId": "route_yr04_start",
+      "encounterRate": 0.2,
+      "wildPokemon": [
+        { "pokedexId": "Y0017", "levelRange": [8, 12], "weight": 40 },
+        { "pokedexId": "Y0023", "levelRange": [9, 13], "weight": 35 },
+        { "pokedexId": "Y0029", "levelRange": [10, 14], "weight": 25 }
+      ]
+    },
+    {
+      "locationId": "route_yr04_mid",
+      "encounterRate": 0.25,
+      "wildPokemon": [
+        { "pokedexId": "Y0017", "levelRange": [10, 14], "weight": 30 },
+        { "pokedexId": "Y0023", "levelRange": [11, 15], "weight": 30 },
+        { "pokedexId": "Y0029", "levelRange": [12, 16], "weight": 30 },
+        { "pokedexId": "Y0033", "levelRange": [13, 17], "weight": 10 }
+      ]
+    },
+    {
+      "locationId": "beginville_fields_center",
+      "encounterRate": 0.3,
+      "wildPokemon": [
+        { "pokedexId": "Y0001", "levelRange": [2, 4], "weight": 40 },
+        { "pokedexId": "Y0049", "levelRange": [2, 4], "weight": 35 },
+        { "pokedexId": "Y0010", "levelRange": [3, 5], "weight": 25 }
+      ]
+    },
+    {
+      "locationId": "mystic_orchard",
+      "encounterRate": 0.2,
+      "wildPokemon": [
+        { "pokedexId": "Y0037", "levelRange": [4, 6], "weight": 40 },
+        { "pokedexId": "Y0050", "levelRange": [4, 6], "weight": 35 },
+        { "pokedexId": "Y0020", "levelRange": [5, 7], "weight": 25 },
+        { "pokedexId": "Y0130", "levelRange": [4, 6], "weight": 20 }
+      ]
+    },
+    {
+      "locationId": "beginville_fields_path_entry",
+      "encounterRate": 0.3,
+      "wildPokemon": [
+        { "pokedexId": "Y0001", "levelRange": [2, 4], "weight": 30 },
+        { "pokedexId": "Y0010", "levelRange": [3, 5], "weight": 30 },
+        { "pokedexId": "Y0020", "levelRange": [3, 5], "weight": 25 },
+        { "pokedexId": "Y0037", "levelRange": [4, 6], "weight": 15 }
+      ]
+    },
+    {
+      "locationId": "beginville_clocktower_entrance",
+      "encounterRate": 0.1,
+      "wildPokemon": [
+        { "pokedexId": "Y0012", "levelRange": [5, 7], "weight": 40 },
+        { "pokedexId": "Y0020", "levelRange": [4, 6], "weight": 30 },
+        { "pokedexId": "Y0037", "levelRange": [5, 7], "weight": 30 }
+      ]
+    },
+    {
+      "locationId": "zhengtown_east_gate",
+      "encounterRate": 0.05,
+      "wildPokemon": [
+        { "pokedexId": "Y0010", "levelRange": [8, 10], "weight": 35 },
+        { "pokedexId": "Y0020", "levelRange": [9, 11], "weight": 30 },
+        { "pokedexId": "Y0012", "levelRange": [10, 12], "weight": 25 },
+        { "pokedexId": "Y0037", "levelRange": [9, 11], "weight": 10 },
+        { "pokedexId": "Y0056", "levelRange": [10, 12], "weight": 5 },
+        { "pokedexId": "Y0130", "levelRange": [11, 13], "weight": 5 }
+      ]
+    },
+    {
+      "locationId": "zhengtown_main_street_east",
+      "encounterRate": 0.05,
+      "wildPokemon": [
+        { "pokedexId": "Y0010", "levelRange": [10, 12], "weight": 30 },
+        { "pokedexId": "Y0020", "levelRange": [11, 13], "weight": 30 },
+        { "pokedexId": "Y0012", "levelRange": [12, 14], "weight": 25 },
+        { "pokedexId": "Y0037", "levelRange": [11, 13], "weight": 15 },
+        { "pokedexId": "Y0056", "levelRange": [12, 14], "weight": 10 }
+      ]
+    },
+    {
+      "locationId": "zhengtown_west_gate",
+      "encounterRate": 0.05,
+      "wildPokemon": [
+        { "pokedexId": "Y0010", "levelRange": [12, 14], "weight": 30 },
+        { "pokedexId": "Y0020", "levelRange": [13, 15], "weight": 25 },
+        { "pokedexId": "Y0012", "levelRange": [14, 16], "weight": 25 },
+        { "pokedexId": "Y0037", "levelRange": [13, 15], "weight": 15 },
+        { "pokedexId": "Y0130", "levelRange": [14, 16], "weight": 5 }
+      ]
+    },
+    {
+      "locationId": "zhengtown_clocktower_entrance",
+      "encounterRate": 0.05,
+      "wildPokemon": [
+        { "pokedexId": "Y0012", "levelRange": [12, 14], "weight": 40 },
+        { "pokedexId": "Y0025", "levelRange": [13, 15], "weight": 30 },
+        { "pokedexId": "Y0036", "levelRange": [14, 16], "weight": 20 },
+        { "pokedexId": "Y0130", "levelRange": [15, 17], "weight": 10 },
+        { "pokedexId": "Y0020", "levelRange": [13, 15], "weight": 30 },
+        { "pokedexId": "Y0037", "levelRange": [14, 16], "weight": 20 },
+        { "pokedexId": "Y0130", "levelRange": [15, 17], "weight": 10 }
+      ]
+    }
+  ]
+}

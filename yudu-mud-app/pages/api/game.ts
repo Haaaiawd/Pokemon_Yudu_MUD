@@ -5,6 +5,10 @@ import { Location, getPokedexSummary, getItems, Item, PokedexEntry } from '@/lib
 import { PokemonInstance } from '@/interfaces/pokemon'; // Import PokemonInstance
 import OpenAI from 'openai'; // Import OpenAI library
 import { initiateTrainingSession } from '@/game/trainingManager'; // Import the new function
+import { getPotentialWildPokemon, loadEncounterData, shouldEncounterWildPokemon, generateWildPokemon } from '@/game/encounterManager'; // 导入遭遇系统功能
+import { startBattle, processTurn } from '@/game/battleManager'; // 导入战斗系统功能
+import { BattleAction, BattleState } from '@/interfaces/battle'; // 导入战斗接口
+import { addExperience } from '@/game/pokemonManager'; // 导入经验值处理函数
 
 interface GameRequest {
   command: string;
@@ -98,11 +102,10 @@ export default async function handler(
 
   try {
     // 1. 确保 WorldManager 已初始化
-    // 在 Serverless 环境中，每次调用都可能需要检查或重新初始化
-    // (更优化的策略是在 gameData.ts 加载时就初始化 worldManager)
-    if (!(worldManager as any).isInitialized) { // 访问私有属性仅为示例，应有更好的方式
+    if (!(worldManager as any).isInitialized) {
         console.log('Initializing WorldManager for API request...');
         await worldManager.initialize();
+        await loadEncounterData(); // 加载遭遇数据
     }
     worldManager.ensureInitialized(); // 确保初始化成功
 
@@ -162,13 +165,45 @@ export default async function handler(
             const nextLocation = worldManager.getLocationById(targetLocationId);
             if (nextLocation) {
                 updatedPlayerState.locationId = targetLocationId; // Update player location
-                // Generate movement output message
+                
+                // 基本移动信息
                 output = `You move ${targetDirection}.\n\n`;
                 output += `**${nextLocation.name.zh} (${nextLocation.name.en || ''})**\n`;
                 output += `${nextLocation.description}\n`;
-                // Simple exit listing
+                
+                // 检查是否触发宝可梦遭遇
+                if (shouldEncounterWildPokemon(targetLocationId) && updatedPlayerState.team && updatedPlayerState.team.length > 0) {
+                    // 有队伍且触发遭遇，生成野生宝可梦
+                    const wildPokemon = await generateWildPokemon(targetLocationId);
+                    
+                    if (wildPokemon) {
+                        // 找到玩家队伍中第一个可战斗的宝可梦（HP大于0）
+                        const playerActivePokemon = updatedPlayerState.team.find(p => p.currentHp > 0);
+                        
+                        if (playerActivePokemon) {
+                            // 创建战斗状态
+                            const battleState = await startBattle(
+                                updatedPlayerState.id,
+                                updatedPlayerState.name,
+                                updatedPlayerState.team,
+                                wildPokemon
+                            );
+                            
+                            // 添加遭遇信息
+                            output += `\n**遭遇野生宝可梦！**\n`;
+                            output += `一只野生的${wildPokemon.speciesName} (Lv.${wildPokemon.level})出现了！\n`;
+                            output += `你派出了${playerActivePokemon.nickname || playerActivePokemon.speciesName}！\n`;
+                            output += "请选择: fight (战斗), run (逃跑), item (使用物品), switch (更换宝可梦)\n";
+                            
+                            // 保存战斗状态
+                            updatedPlayerState.currentBattle = battleState;
+                        }
+                    }
+                }
+                
+                // 显示出口
                 const availableExits = Object.keys(nextLocation.exits).join(', ');
-                output += `Exits: ${availableExits || 'None'}`; 
+                output += `\nExits: ${availableExits || 'None'}`;
             } else {
                 output = `Error: Destination location with ID ${targetLocationId} not found! Data inconsistency?`;
                 // Stay in the current location
@@ -186,7 +221,7 @@ export default async function handler(
             if (!currentLocation) {
                 output = `Error: Cannot find current location with ID: ${updatedPlayerState.locationId}`;
             } else {
-                const target = argument; 
+                const target = argument;
                 
                 if (!target || target === currentLocation.id || target === currentLocation.name.zh.toLowerCase() || target === (currentLocation.name.en || '').toLowerCase()) {
                     // 没有目标或目标是当前地点本身
@@ -202,10 +237,40 @@ export default async function handler(
                         });
                         output += itemNames.join(', ') + '\n';
                     }
-                    // --- 结束：显示地点物品 ---
+                    
+                    // --- 新增：查看附近的宝可梦 ---
+                    const potentialPokemon = getPotentialWildPokemon(currentLocation.id);
+                    if (potentialPokemon.length > 0) {
+                        // 获取宝可梦名称信息
+                        const pokedexSummary = await getPokedexSummary();
+                        
+                        output += "\n你注意到这个区域可能会遇到：\n";
+                        const pokemonNames = potentialPokemon.map(pokemon => {
+                            const details = pokedexSummary.find(entry => entry.yudex_id === pokemon.pokedexId);
+                            return details ? `${details.name}(Lv.${pokemon.levelRange[0]}-${pokemon.levelRange[1]})` : `未知宝可梦#${pokemon.pokedexId}`;
+                        });
+                        output += pokemonNames.join('、') + '\n';
+                    }
 
                     const availableExits = Object.keys(currentLocation.exits).join(', ');
-                    output += `Exits: ${availableExits || 'None'}`;
+                    output += `\nExits: ${availableExits || 'None'}`;
+                } else if (target === 'pokemon' || target === 'wild' || target === '宝可梦') {
+                    // 专门查看野生宝可梦
+                    const potentialPokemon = getPotentialWildPokemon(currentLocation.id);
+                    if (potentialPokemon.length > 0) {
+                        const pokedexSummary = await getPokedexSummary();
+                        
+                        output = `**${currentLocation.name.zh}的野生宝可梦**\n`;
+                        output += "这个区域可能会遇到：\n";
+                        
+                        const pokemonNames = potentialPokemon.map(pokemon => {
+                            const details = pokedexSummary.find(entry => entry.yudex_id === pokemon.pokedexId);
+                            return details ? `${details.name}(Lv.${pokemon.levelRange[0]}-${pokemon.levelRange[1]})` : `未知宝可梦#${pokemon.pokedexId}`;
+                        });
+                        output += pokemonNames.join('、');
+                    } else {
+                        output = "这个区域似乎没有野生宝可梦出没。";
+                    }
                 } else if (directionMap[target]) {
                     // 目标是方向
                     const direction = directionMap[target];
@@ -243,7 +308,7 @@ export default async function handler(
                     
                     // Use species name (or nickname) if found, otherwise fallback
                     const name = pokemon.nickname || (speciesSummary ? speciesSummary.name : `宝可梦 #${pokemon.pokedexId}`); 
-                    const status = pokemon.statusCondition === 'healthy' || !pokemon.statusCondition ? '' : ` [${pokemon.statusCondition.toUpperCase()}]`;
+                    const status = pokemon.statusCondition === null || !pokemon.statusCondition ? '' : ` [${pokemon.statusCondition.toUpperCase()}]`;
                     
                     output += `${index + 1}. ${name} (Lv. ${pokemon.level}) HP: ${pokemon.currentHp}/${pokemon.maxHp}${status}\n`;
                     // TODO: Maybe add moves later?
@@ -426,15 +491,230 @@ export default async function handler(
                  output += "--------------------";
             }
         }
-
-         // --- Default for other unknown commands ---
-         else { 
-             // Keep the default "Unknown command" message initialized earlier
-             // 如果verb不是已知命令且不是移动方向，则重置为 Unknown command
-             if (!targetDirection && ['look', 'l', 'examine', 'ex', 'pokemon', 'team', 'train', 'get', 'take', 'drop', 'inventory', 'inv', 'i'].indexOf(verb) === -1) {
-                 output = `Unknown command: ${commandClean}`;
-             }
-         } 
+        // --- Battle Command ---
+        else if (verb === 'battle' || verb === 'fight' || verb === 'run' || verb === 'item' || verb === 'switch') {
+            // 检查玩家是否在战斗中
+            if (!updatedPlayerState.currentBattle) {
+                output = "你当前不在战斗中。";
+            } else {
+                // 获取当前战斗状态
+                const battleState = updatedPlayerState.currentBattle;
+                
+                // 只有当战斗状态为等待输入时才处理命令
+                if (battleState.status === 'WAITING_FOR_INPUT') {
+                    // 获取战斗参与者信息
+                    const playerParticipant = battleState.participants[0];
+                    const opponentParticipant = battleState.participants[1];
+                    
+                    // 准备玩家行动
+                    let playerAction: BattleAction | null = null;
+                    
+                    // 处理不同的命令
+                    if (verb === 'fight') {
+                        // 获取当前可用的招式
+                        const availableMoves = playerParticipant.activePokemon.moves;
+                        
+                        // 检查是否提供了招式参数
+                        if (!argument) {
+                            // 如果没有提供招式，显示可用招式列表
+                            output = "请选择要使用的招式:\n";
+                            availableMoves.forEach((move, index) => {
+                                output += `${index + 1}. ${move.name} (PP: ${move.pp}/${move.pp})\n`;
+                            });
+                            return res.status(200).json({ output, updatedPlayerState });
+                        } else {
+                            // 尝试找到对应的招式
+                            let moveIndex = -1;
+                            
+                            // 首先尝试将参数解析为数字索引
+                            const moveNumber = parseInt(argument);
+                            if (!isNaN(moveNumber) && moveNumber > 0 && moveNumber <= availableMoves.length) {
+                                moveIndex = moveNumber - 1;
+                            } else {
+                                // 然后尝试通过名称匹配
+                                moveIndex = availableMoves.findIndex(move => 
+                                    move.name.toLowerCase() === argument.toLowerCase()
+                                );
+                            }
+                            
+                            // 检查是否找到了招式
+                            if (moveIndex === -1) {
+                                output = `找不到招式 "${argument}"。请使用有效的招式名称或序号。`;
+                                return res.status(200).json({ output, updatedPlayerState });
+                            }
+                            
+                            // 检查PP是否足够
+                            if (availableMoves[moveIndex].pp <= 0) {
+                                output = `${availableMoves[moveIndex].name}的PP不足！请选择其他招式。`;
+                                return res.status(200).json({ output, updatedPlayerState });
+                            }
+                            
+                            // 创建战斗行动
+                            playerAction = {
+                                type: 'FIGHT',
+                                moveId: availableMoves[moveIndex].name
+                            };
+                        }
+                    } else if (verb === 'run') {
+                        // 创建逃跑行动
+                        playerAction = {
+                            type: 'RUN'
+                        };
+                    } else if (verb === 'switch') {
+                        // 获取队伍中的宝可梦
+                        const teamPokemon = playerParticipant.party;
+                        
+                        // 检查是否提供了宝可梦参数
+                        if (!argument) {
+                            // 如果没有提供宝可梦，显示队伍列表
+                            output = "请选择要切换的宝可梦:\n";
+                            teamPokemon.forEach((pokemon, index) => {
+                                if (pokemon.instanceId !== playerParticipant.activePokemon.instanceId) {
+                                    const status = pokemon.currentHp <= 0 ? "（已失去战斗能力）" : 
+                                        `HP: ${pokemon.currentHp}/${pokemon.maxHp}`;
+                                    output += `${index + 1}. ${pokemon.nickname || pokemon.speciesName} Lv.${pokemon.level} ${status}\n`;
+                                }
+                            });
+                            return res.status(200).json({ output, updatedPlayerState });
+                        } else {
+                            // 尝试找到对应的宝可梦
+                            let pokemonIndex = -1;
+                            
+                            // 首先尝试将参数解析为数字索引
+                            const pokemonNumber = parseInt(argument);
+                            if (!isNaN(pokemonNumber) && pokemonNumber > 0 && pokemonNumber <= teamPokemon.length) {
+                                pokemonIndex = pokemonNumber - 1;
+                            } else {
+                                // 然后尝试通过名称匹配
+                                pokemonIndex = teamPokemon.findIndex(pokemon => 
+                                    (pokemon.nickname && pokemon.nickname.toLowerCase() === argument.toLowerCase()) ||
+                                    pokemon.speciesName.toLowerCase() === argument.toLowerCase()
+                                );
+                            }
+                            
+                            // 检查是否找到了宝可梦
+                            if (pokemonIndex === -1) {
+                                output = `找不到宝可梦 "${argument}"。请使用有效的宝可梦名称或序号。`;
+                                return res.status(200).json({ output, updatedPlayerState });
+                            }
+                            
+                            // 检查是否是当前出战的宝可梦
+                            if (teamPokemon[pokemonIndex].instanceId === playerParticipant.activePokemon.instanceId) {
+                                output = `${teamPokemon[pokemonIndex].nickname || teamPokemon[pokemonIndex].speciesName} 已经在战斗中！`;
+                                return res.status(200).json({ output, updatedPlayerState });
+                            }
+                            
+                            // 检查宝可梦是否已经失去战斗能力
+                            if (teamPokemon[pokemonIndex].currentHp <= 0) {
+                                output = `${teamPokemon[pokemonIndex].nickname || teamPokemon[pokemonIndex].speciesName} 已经失去战斗能力，无法参战！`;
+                                return res.status(200).json({ output, updatedPlayerState });
+                            }
+                            
+                            // 创建切换行动
+                            playerAction = {
+                                type: 'SWITCH',
+                                switchToPokemonIndex: pokemonIndex
+                            };
+                        }
+                    } else if (verb === 'item') {
+                        // TODO: 实现物品使用逻辑
+                        output = "使用物品功能正在开发中。请尝试其他命令。";
+                        return res.status(200).json({ output, updatedPlayerState });
+                    }
+                    
+                    // 如果成功创建了玩家行动
+                    if (playerAction) {
+                        try {
+                            // 简化的对手行动（总是选择第一个技能攻击）
+                            const opponentAction: BattleAction = {
+                                type: 'FIGHT',
+                                moveId: opponentParticipant.activePokemon.moves[0]?.name || ''
+                            };
+                            
+                            // 处理回合
+                            const updatedBattleState = await processTurn(battleState, playerAction, opponentAction);
+                            
+                            // 更新玩家状态中的战斗状态
+                            updatedPlayerState.currentBattle = updatedBattleState;
+                            
+                            // 处理战斗结束逻辑
+                            if (updatedBattleState.status === 'PLAYER_WIN') {
+                                output = "战斗胜利！\n\n";
+                                output += updatedBattleState.log.slice(-5).join("\n");
+                                
+                                // 计算并添加经验值
+                                const defeatedPokemon = opponentParticipant.activePokemon;
+                                const expMessages: string[] = [];
+                                
+                                // 简化的经验值计算方式：对手等级 * 5
+                                const expGained = defeatedPokemon.level * 5;
+                                
+                                // 给参与战斗的宝可梦添加经验
+                                const activePokemon = playerParticipant.activePokemon;
+                                
+                                // 添加经验并获取消息（如升级）
+                                const result = addExperience(activePokemon, activePokemon.speciesDetails, expGained);
+                                expMessages.push(...result.messages);
+                                
+                                // 添加经验值消息到输出
+                                output += "\n\n" + expMessages.join("\n");
+                                
+                                // 更新玩家队伍中的宝可梦
+                                const pokemonIndex = updatedPlayerState.team.findIndex(p => p.instanceId === activePokemon.instanceId);
+                                if (pokemonIndex !== -1) {
+                                    updatedPlayerState.team[pokemonIndex] = activePokemon;
+                                }
+                                
+                                // 清除战斗状态
+                                updatedPlayerState.currentBattle = undefined;
+                            } else if (updatedBattleState.status === 'OPPONENT_WIN') {
+                                output = "战斗失败！\n\n";
+                                output += updatedBattleState.log.slice(-5).join("\n");
+                                
+                                // 清除战斗状态
+                                updatedPlayerState.currentBattle = undefined;
+                            } else if (updatedBattleState.status === 'FLED') {
+                                output = "成功逃跑！\n\n";
+                                output += updatedBattleState.log.slice(-3).join("\n");
+                                
+                                // 清除战斗状态
+                                updatedPlayerState.currentBattle = undefined;
+                            } else {
+                                // 战斗继续，显示最近的几条战斗日志
+                                output = updatedBattleState.log.slice(-5).join("\n");
+                                
+                                // 添加当前回合状态和可用选项
+                                output += "\n\n你可以：";
+                                output += "\n- fight [招式名/序号] - 使用招式攻击";
+                                output += "\n- run - 尝试逃跑";
+                                output += "\n- switch [宝可梦名/序号] - 切换宝可梦";
+                                output += "\n- item [物品名] - 使用物品（开发中）";
+                            }
+                        } catch (error: any) {
+                            console.error("Battle processing error:", error);
+                            output = `战斗处理出错: ${error.message}`;
+                        }
+                    } else {
+                        output = "无效的战斗命令。请使用 fight、run、switch 或 item。";
+                    }
+                } else {
+                    // 处理非WAITING_FOR_INPUT状态
+                    if (battleState.status === 'PROCESSING') {
+                        output = "战斗回合正在处理中，请稍候...";
+                    } else {
+                        output = `战斗状态错误: ${battleState.status}`;
+                    }
+                }
+            }
+        }
+        // --- Default for other unknown commands ---
+        else { 
+            // Keep the default "Unknown command" message initialized earlier
+            // 如果verb不是已知命令且不是移动方向，则重置为 Unknown command
+            if (!targetDirection && ['look', 'l', 'examine', 'ex', 'pokemon', 'team', 'train', 'get', 'take', 'drop', 'inventory', 'inv', 'i', 'battle', 'fight', 'run', 'item', 'switch'].indexOf(verb) === -1) {
+                output = `Unknown command: ${commandClean}`;
+            }
+        } 
     }
 
     // 4. 返回响应

@@ -15,10 +15,38 @@
       "古老的钟楼 (Clocktower)",
       "银杏研究所 (Professor Ginkgo's Lab)",
       "镇外农田 (Fields)",
-      "秘境果园 (Mystic Orchard - nearby)"
+      "秘境果园 (Mystic Orchard - nearby)",
+      "宝可梦中心 (Pokémon Center)",
+      "友好商店 (PokéMart)"
     ],
     "exits": {
       "square": "beginville_square"
+    }
+  },
+  {
+    "id": "beginville_pokemon_center",
+    "type": "location",
+    "name": {
+      "zh": "宝可梦中心",
+      "en": "Pokémon Center"
+    },
+    "description": "启程镇的宝可梦中心，为训练家们提供宝可梦治疗和休息的场所。内部明亮整洁，乔伊小姐在柜台后微笑迎客。",
+    "features": ["治疗设备", "休息区", "乔伊小姐NPC"],
+    "exits": {
+      "out": "beginville_square"
+    }
+  },
+  {
+    "id": "beginville_pokemart",
+    "type": "location",
+    "name": {
+      "zh": "友好商店",
+      "en": "PokéMart"
+    },
+    "description": "启程镇的友好商店，蓝色屋顶的小店内摆满了各种训练家用品。店员热情地招待着顾客。",
+    "features": ["商品货架", "收银台", "店员NPC"],
+    "exits": {
+      "out": "beginville_square"
     }
   },
   {
@@ -36,7 +64,9 @@
       "north": "beginville_clocktower_entrance",
       "east": "beginville_lab_entrance",
       "south": "beginville_fields_path_entry",
-      "west": "beginville_path_yr01"
+      "west": "beginville_path_yr01",
+      "pc": "beginville_pokemon_center",
+      "mart": "beginville_pokemart"
     }
   },
   {
@@ -272,13 +302,41 @@
       "大型购物中心 (Mall)",
       "郑都道馆 (Zhengtown Gym)",
       "地铁站 (未开放)",
-      "北门 (North Gate)"
-    ],
+      "北门 (North Gate)",
+      "宝可梦中心 (Pokémon Center)",
+      "友好商店 (PokéMart)"
+     ],
     "exits": {
       "center": "zhengtown_center",
       "east_gate": "zhengtown_east_gate",
       "west_gate": "zhengtown_west_gate",
       "north_gate": "zhengtown_north_gate"
+    }
+  },
+  {
+    "id": "zhengtown_pokemon_center",
+    "type": "location",
+    "name": {
+      "zh": "宝可梦中心",
+      "en": "Pokémon Center"
+    },
+    "description": "郑都的宝可梦中心，现代化的大型医疗设施。宽敞明亮的大厅中总是人来人往，多位乔伊小姐轮班工作。",
+    "features": ["现代化治疗设备", "等候区", "乔伊小姐NPC团队", "自助服务终端"],
+    "exits": {
+      "out": "zhengtown_center"
+    }
+  },
+  {
+    "id": "zhengtown_pokemart",
+    "type": "location",
+    "name": {
+      "zh": "友好商店",
+      "en": "PokéMart"
+    },
+    "description": "郑都的友好商店，占地面积大，商品种类齐全。除了基础物品外，还有一些稀有道具和限定商品。",
+    "features": ["大型商品区", "稀有道具专柜", "店员团队NPC", "自助结算区"],
+    "exits": {
+      "out": "zhengtown_center"
     }
   },
   {
@@ -294,6 +352,8 @@
     "exits": {
       "east": "zhengtown_main_street_east",
       "west": "zhengtown_main_street_west",
+      "pc": "zhengtown_pokemon_center",
+      "mart": "zhengtown_pokemart",
       "north": "zhengtown_north_avenue",
       "south": "zhengtown_south_avenue"
     }
@@ -599,7 +659,9 @@
       "洛苑道馆 (Luoyard Gym - Rock Type)",
       "龙门水路入口 (Dragon Gate Waterway Entry - YW01)",
       "历史博物馆",
-      "仿古商业街"
+      "仿古商业街",
+      "宝可梦中心 (Pokémon Center)",
+      "友好商店 (PokéMart)"
     ],
     "exits": {
       "center": "luoyard_center",
@@ -608,6 +670,32 @@
       "north_gate": "luoyard_north_gate",
       "west_district": "luoyard_west_district_entry",
       "waterway_entry": "route_yw01_entry"
+    }
+  },
+  {
+    "id": "luoyard_pokemon_center",
+    "type": "location",
+    "name": {
+      "zh": "宝可梦中心",
+      "en": "Pokémon Center"
+    },
+    "description": "洛苑的宝可梦中心，建筑外观融入了古城元素。内部设施现代化，墙上挂着一些历史名人与宝可梦的画作。",
+    "features": ["仿古式建筑外观", "现代化医疗设备", "历史画作", "乔伊小姐NPC"],
+    "exits": {
+      "out": "luoyard_center"
+    }
+  },
+  {
+    "id": "luoyard_pokemart",
+    "type": "location",
+    "name": {
+      "zh": "友好商店",
+      "en": "PokéMart"
+    },
+    "description": "洛苑的友好商店，店面装修带有古典韵味。除了常规商品外，还出售一些具有洛苑特色的纪念品。",
+    "features": ["古典装修", "商品货架", "特色纪念品区", "店员NPC"],
+    "exits": {
+      "out": "luoyard_center"
     }
   },
   {
@@ -624,7 +712,9 @@
       "east": "luoyard_east_street",
       "west": "luoyard_west_street",
       "north": "luoyard_north_street",
-      "south": "luoyard_south_street"
+      "south": "luoyard_south_street",
+      "pc": "luoyard_pokemon_center",
+      "mart": "luoyard_pokemart"
     }
   },
   {
@@ -1292,11 +1382,39 @@
       "考古研究所 (Archaeological Institute)",
       "甲骨文广场 (Oracle Square)",
       "古城墙遗址 (Ancient Wall Ruins)",
-      "地面系道馆 (Ground-type Gym)"
+      "地面系道馆 (Ground-type Gym)",
+      "宝可梦中心 (Pokémon Center)",
+      "友好商店 (PokéMart)"
     ],
     "exits": {
       "center": "anyridge_center",
       "east_gate": "anyridge_east_gate"
+    }
+  },
+  {
+    "id": "anyridge_pokemon_center",
+    "type": "location",
+    "name": {
+      "zh": "宝可梦中心",
+      "en": "Pokémon Center"
+    },
+    "description": "安岭的宝可梦中心，建筑风格结合了现代与仿古元素，门口有甲骨文装饰。内部提供标准的治疗服务。",
+    "features": ["甲骨文装饰", "治疗设备", "考古主题海报", "乔伊小姐NPC"],
+    "exits": {
+      "out": "anyridge_center"
+    }
+  },
+  {
+    "id": "anyridge_pokemart",
+    "type": "location",
+    "name": {
+      "zh": "友好商店",
+      "en": "PokéMart"
+    },
+    "description": "安岭的友好商店，店面不大但商品齐全。除了基础道具，还出售一些考古工具和化石复制品。",
+    "features": ["商品货架", "考古工具区", "化石复制品", "店员NPC"],
+    "exits": {
+      "out": "anyridge_center"
     }
   },
   {
@@ -1328,7 +1446,9 @@
       "east": "anyridge_east_gate",
       "south": "archaeological_institute_entrance",
       "west": "yin_ruins_entrance",
-      "southeast": "anyridge_gym_entrance"
+      "southeast": "anyridge_gym_entrance",
+      "pc": "anyridge_pokemon_center",
+      "mart": "anyridge_pokemart"
     }
   },
   {
@@ -1563,7 +1683,9 @@
       "大相国寺 (Daxiangguo Temple)",
       "开封府道馆 (Kaifengfu Gym - Water Type)",
       "水上集市 (Water Market)",
-      "画舫码头 (Painted Boat Dock)"
+      "画舫码头 (Painted Boat Dock)",
+      "宝可梦中心 (Pokémon Center)",
+      "友好商店 (PokéMart)"
     ],
     "exits": {
       "center": "kaifengfu_center",
@@ -1571,6 +1693,32 @@
       "north_gate": "kaifengfu_north_gate",
       "west_gate": "kaifengfu_west_gate",
       "east_gate": "kaifengfu_east_gate"
+    }
+  },
+  {
+    "id": "kaifengfu_pokemon_center",
+    "type": "location",
+    "name": {
+      "zh": "宝可梦中心",
+      "en": "Pokémon Center"
+    },
+    "description": "开封府的宝可梦中心，坐落在一座仿宋风格的建筑内，临水而建。内部装饰典雅，提供治疗服务。",
+    "features": ["仿宋建筑", "临水", "治疗设备", "茶座区", "乔伊小姐NPC"],
+    "exits": {
+      "out": "kaifengfu_center"
+    }
+  },
+  {
+    "id": "kaifengfu_pokemart",
+    "type": "location",
+    "name": {
+      "zh": "友好商店",
+      "en": "PokéMart"
+    },
+    "description": "开封府的友好商店，店面古色古香。除了常规商品，还出售一些与水系宝可梦相关的道具和开封特产。",
+    "features": ["古色古香店面", "商品货架", "水系道具专区", "开封特产", "店员NPC"],
+    "exits": {
+      "out": "kaifengfu_center"
     }
   },
   {
@@ -1589,7 +1737,9 @@
       "west": "kaifengfu_west_street",
       "east": "kaifengfu_east_street",
       "boat_market": "kaifengfu_water_market",
-      "boat_dock": "kaifengfu_boat_dock"
+      "boat_dock": "kaifengfu_boat_dock",
+      "pc": "kaifengfu_pokemon_center",
+      "mart": "kaifengfu_pokemart"
     }
   },
   {
@@ -2037,11 +2187,39 @@
       "黄河博物馆 (Yellow River Museum)",
       "黄河水利枢纽 (观景点)",
       "商业区",
-      "黄河滩涂湿地 (生态区)"
+      "黄河滩涂湿地 (生态区)",
+      "宝可梦中心 (Pokémon Center)",
+      "友好商店 (PokéMart)"
     ],
     "exits": {
       "port": "huangriver_port",
       "west_gate": "huangriver_west_gate"
+    }
+  },
+  {
+    "id": "huangriver_pokemon_center",
+    "type": "location",
+    "name": {
+      "zh": "宝可梦中心",
+      "en": "Pokémon Center"
+    },
+    "description": "黄川的宝可梦中心，建筑风格朴实，内部设施齐全。墙上挂着黄河航运图。",
+    "features": ["朴实建筑", "治疗设备", "黄河航运图", "乔伊小姐NPC"],
+    "exits": {
+      "out": "huangriver_market_street"
+    }
+  },
+  {
+    "id": "huangriver_pokemart",
+    "type": "location",
+    "name": {
+      "zh": "友好商店",
+      "en": "PokéMart"
+    },
+    "description": "黄川的友好商店，出售各种训练家用品以及一些渔具和水产干货。",
+    "features": ["商品货架", "渔具区", "水产干货", "店员NPC"],
+    "exits": {
+      "out": "huangriver_market_street"
     }
   },
   {
@@ -2070,7 +2248,9 @@
     "exits": {
       "west": "huangriver_west_gate",
       "east": "huangriver_port",
-      "north": "huangriver_museum_entrance"
+      "north": "huangriver_museum_entrance",
+      "pc": "huangriver_pokemon_center",
+      "mart": "huangriver_pokemart"
     }
   },
   {
@@ -2197,10 +2377,38 @@
       "瀑布景区",
       "温泉旅馆",
       "观景台",
-      "探险小径"
+      "探险小径",
+      "宝可梦中心 (Pokémon Center)",
+      "友好商店 (PokéMart)"
     ],
     "exits": {
       "entrance": "songvale_entrance"
+    }
+  },
+  {
+    "id": "songvale_pokemon_center",
+    "type": "location",
+    "name": {
+      "zh": "宝可梦中心",
+      "en": "Pokémon Center"
+    },
+    "description": "嵩谷的宝可梦中心，建在游客区的一角，是一座木质结构的小屋。提供基本的治疗服务。",
+    "features": ["木屋", "治疗设备", "登山地图", "乔伊小姐NPC"],
+    "exits": {
+      "out": "songvale_visitor_area"
+    }
+  },
+  {
+    "id": "songvale_pokemart",
+    "type": "location",
+    "name": {
+      "zh": "友好商店",
+      "en": "PokéMart"
+    },
+    "description": "嵩谷的友好商店，位于游客区，主要出售登山用品、纪念品和一些基础训练家道具。",
+    "features": ["商品货架", "登山用品", "纪念品", "店员NPC"],
+    "exits": {
+      "out": "songvale_visitor_area"
     }
   },
   {
@@ -2232,7 +2440,9 @@
       "south": "songvale_entrance",
       "west": "songvale_waterfall_path",
       "east": "songvale_hotspring_path",
-      "north": "songvale_peak_trail_start"
+      "north": "songvale_peak_trail_start",
+      "pc": "songvale_pokemon_center",
+      "mart": "songvale_pokemart"
     }
   },
   {
@@ -2387,11 +2597,39 @@
       "冠军之路入口 (Champion Road Entry)",
       "四天王城堡 (Elite Four Castle)",
       "皇家商业街",
-      "贵族住宅区"
+      "贵族住宅区",
+      "宝可梦中心 (Pokémon Center)",
+      "友好商店 (PokéMart)"
     ],
     "exits": {
       "center": "imperia_center",
       "south_gate": "imperia_south_gate"
+    }
+  },
+  {
+    "id": "imperia_pokemon_center",
+    "type": "location",
+    "name": {
+      "zh": "宝可梦中心",
+      "en": "Pokémon Center"
+    },
+    "description": "帝都的宝可梦中心，规模宏大，设施顶级。不仅提供治疗，还有专门的研究区域和训练家休息室。",
+    "features": ["宏伟建筑", "顶级治疗设备", "研究区", "训练家休息室", "多位乔伊小姐NPC"],
+    "exits": {
+      "out": "imperia_center"
+    }
+  },
+  {
+    "id": "imperia_pokemart",
+    "type": "location",
+    "name": {
+      "zh": "友好商店",
+      "en": "PokéMart"
+    },
+    "description": "帝都的友好商店，位于皇家商业街附近，商品种类繁多，包括许多高级和稀有的训练家道具。",
+    "features": ["大型商店", "商品货架", "高级道具专区", "稀有道具", "店员NPC"],
+    "exits": {
+      "out": "imperia_center"
     }
   },
   {
@@ -2437,7 +2675,9 @@
       "south": "imperia_south_avenue",
       "north": "imperia_hq_entrance",
       "west": "imperia_parliament_entrance",
-      "east": "imperia_royal_street"
+      "east": "imperia_royal_street",
+      "pc": "imperia_pokemon_center",
+      "mart": "imperia_pokemart"
     }
   },
   {

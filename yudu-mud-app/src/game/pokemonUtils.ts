@@ -1,5 +1,5 @@
 import { PokemonInstance, Nature, StatusCondition } from "@/interfaces/pokemon";
-import { PokedexEntry, getPokedex } from "@/lib/gameData";
+import { PokedexEntry, getPokemonSpeciesDetails, getPokedexSummary } from "@/lib/gameData";
 import { v4 as uuidv4 } from 'uuid';
 
 // --- Type Definitions for Clarity ---
@@ -16,6 +16,7 @@ interface BaseStats {
 
 // Interface for the calculated stats object
 interface CalculatedStats {
+    hp: number;
     attack: number;
     defense: number;
     spAttack: number;
@@ -88,27 +89,40 @@ export function calculateStats(
     const natureInfo = NATURES[instance.natureId] || NATURES.hardy; // Default to neutral if nature not found
 
     const calculateSingleStat = (statName: keyof CalculatedStats): number => {
-        const base = bs[statName];
-        const iv = ivs[statName];
-        const ev = evs[statName];
+        // Special handling for HP as it uses a different formula and no nature modifier
+        if (statName === "hp") {
+            const calculatedHp = Math.floor(((2 * bs.hp + ivs.hp + Math.floor(evs.hp / 4)) * level) / 100) + level + 10;
+            return Math.max(1, calculatedHp);
+        }
+
+        // Type assertion to ensure statName is a valid key for BaseStats, IVs, EVs
+        const validStatName = statName as keyof Omit<CalculatedStats, 'hp'>; 
+        const base = bs[validStatName];
+        const iv = ivs[validStatName];
+        const ev = evs[validStatName];
 
         let natureMultiplier = 1.0;
-        if (natureInfo.increasedStat === statName) {
+        // Type assertion for natureInfo properties
+        if ((natureInfo.increasedStat as keyof CalculatedStats | null) === statName) {
             natureMultiplier = 1.1;
-        } else if (natureInfo.decreasedStat === statName) {
+        } else if ((natureInfo.decreasedStat as keyof CalculatedStats | null) === statName) {
             natureMultiplier = 0.9;
         }
 
-        const calculatedStat = Math.floor((Math.floor(((2 * base + iv + Math.floor(ev / 4)) * level) / 100) + 5) * natureMultiplier);
+        const calculatedStat = Math.floor(
+            (Math.floor(((2 * base + iv + Math.floor(ev / 4)) * level) / 100) + 5) *
+            natureMultiplier
+        );
         return Math.max(1, calculatedStat); // Ensure stats are at least 1
     };
 
     return {
-        attack: calculateSingleStat('attack'),
-        defense: calculateSingleStat('defense'),
-        spAttack: calculateSingleStat('spAttack'),
-        spDefense: calculateSingleStat('spDefense'),
-        speed: calculateSingleStat('speed'),
+        hp: calculateSingleStat("hp"),
+        attack: calculateSingleStat("attack"),
+        defense: calculateSingleStat("defense"),
+        spAttack: calculateSingleStat("spAttack"),
+        spDefense: calculateSingleStat("spDefense"),
+        speed: calculateSingleStat("speed"),
     };
 }
 
@@ -162,16 +176,36 @@ function generateRandomIVs(): PokemonInstance['ivs'] {
  * NOTE: This function is async because it needs to fetch Pokedex data.
  * @param pokedexId The Yudex ID of the Pokemon species.
  * @param level The desired level for the new instance.
- * @returns A Promise resolving to the newly created PokemonInstance.
+ * @returns A Promise resolving to the newly created PokemonInstance or null if species data not found.
  */
 export async function createPokemonInstance(
     pokedexId: string,
     level: number
-): Promise<PokemonInstance> {
+): Promise<PokemonInstance | null> {
     // 1. Fetch Pokedex data to get base stats (and potentially ability, gender ratio later)
-    const pokedex = await getPokedex();
-    const speciesData = pokedex.find(p => p.yudex_id === pokedexId);
-    const baseStats = speciesData?.baseStats || DEFAULT_BASE_STATS; // Use default if species or baseStats not found
+    const speciesData = await getPokemonSpeciesDetails(pokedexId);
+    if (!speciesData) {
+        console.error(`Pokedex data not found for ID: ${pokedexId}`);
+        return null;
+    }
+    // Use the first form's stats as default if '一般' is missing or structure is different
+    const statsEntry = speciesData.stats?.find((s) => s.form === "一般") ?? speciesData.stats?.[0];
+    const baseStatsRaw = statsEntry?.data;
+
+    if (!baseStatsRaw) {
+        console.error(`Base stats data missing for Pokedex ID: ${speciesData.yudex_id}`);
+        return null; // Cannot proceed without base stats
+    }
+
+    // Convert base stats from string to number
+    const baseStats: BaseStats = {
+        hp: parseInt(baseStatsRaw.hp, 10) || DEFAULT_BASE_STATS.hp,
+        attack: parseInt(baseStatsRaw.attack, 10) || DEFAULT_BASE_STATS.attack,
+        defense: parseInt(baseStatsRaw.defense, 10) || DEFAULT_BASE_STATS.defense,
+        spAttack: parseInt(baseStatsRaw.sp_attack, 10) || DEFAULT_BASE_STATS.spAttack, // Use sp_attack
+        spDefense: parseInt(baseStatsRaw.sp_defense, 10) || DEFAULT_BASE_STATS.spDefense, // Use sp_defense
+        speed: parseInt(baseStatsRaw.speed, 10) || DEFAULT_BASE_STATS.speed,
+    };
 
     // TODO: Get ability from speciesData when available
     const abilityId = "placeholder_ability"; // Placeholder
@@ -184,30 +218,33 @@ export async function createPokemonInstance(
     const shiny = Math.random() < 1 / 4096; // Standard shiny rate
 
     // 3. Initialize instance skeleton
-    let instance: Partial<PokemonInstance> = {
+    let instance: Partial<PokemonInstance> & Pick<PokemonInstance, 'pokedexId' | 'level' | 'natureId' | 'ivs' | 'evs' | 'speciesName' | 'speciesDetails'> = {
         instanceId: uuidv4(), // Generate a unique ID
         pokedexId,
+        speciesName: speciesData.name, // Add species name for convenience
+        speciesDetails: speciesData, // Store full details
         nickname: null,
         level,
         ivs,
         evs: { ...DEFAULT_EVS }, // Start with 0 EVs
         natureId,
-        moves: [], // No initial moves as requested
-        abilityId, 
+        moves: [], // No initial moves as requested, will be added later if needed
+        abilityId,
         xp: 0, // TODO: Calculate minimum XP for the given level based on growth curve
-        statusCondition: 'healthy',
+        statusCondition: null, // Changed default to null
         gender,
         shiny,
         heldItemId: null,
     };
 
     // 4. Calculate stats based on the skeleton
-    instance.calculatedStats = calculateStats(instance as PokemonInstance, baseStats);
-    instance.maxHp = calculateMaxHp(instance as PokemonInstance, baseStats);
+    const calculatedStats = calculateStats(instance, baseStats);
+    instance.calculatedStats = calculatedStats;
+    instance.maxHp = calculatedStats.hp; // HP is now part of calculatedStats
     instance.currentHp = instance.maxHp; // Start with full HP
     instance.xpToNextLevel = calculateXpToNextLevel(instance.level as number);
 
-    // 5. Return the complete instance
+    // 5. Return the complete instance (cast carefully)
     return instance as PokemonInstance;
 }
 
@@ -216,16 +253,32 @@ export async function createPokemonInstance(
 /**
  * Handles the logic when a Pokemon gains enough experience to level up.
  * @param instance The Pokemon instance that might level up.
- * @param baseStats The base stats for the Pokemon species.
  * @returns The updated Pokemon instance (or the original if no level up).
  *          The caller is responsible for updating the instance state.
  */
-export function handleLevelUp( 
-    instance: PokemonInstance,
-    baseStats: BaseStats | undefined
+export function handleLevelUp(
+    instance: PokemonInstance
 ): PokemonInstance {
     let didLevelUp = false;
     let newInstance = { ...instance }; // Create a mutable copy
+
+    // Use speciesDetails stored in the instance
+    const statsEntry = newInstance.speciesDetails.stats?.find((s: any) => s.form === "一般") ?? newInstance.speciesDetails.stats?.[0];
+    const baseStatsRaw = statsEntry?.data;
+
+    if (!baseStatsRaw) {
+        console.error(`Base stats data missing for Pokedex ID: ${newInstance.pokedexId} during level up.`);
+        return instance; // Return original instance if stats are missing
+    }
+
+    const baseStats: BaseStats = {
+        hp: parseInt(baseStatsRaw.hp, 10) || DEFAULT_BASE_STATS.hp,
+        attack: parseInt(baseStatsRaw.attack, 10) || DEFAULT_BASE_STATS.attack,
+        defense: parseInt(baseStatsRaw.defense, 10) || DEFAULT_BASE_STATS.defense,
+        spAttack: parseInt(baseStatsRaw.sp_attack, 10) || DEFAULT_BASE_STATS.spAttack,
+        spDefense: parseInt(baseStatsRaw.sp_defense, 10) || DEFAULT_BASE_STATS.spDefense,
+        speed: parseInt(baseStatsRaw.speed, 10) || DEFAULT_BASE_STATS.speed,
+    };
 
     // Check for level up possibility (loop in case of multiple level ups)
     while (newInstance.level < 100 && newInstance.xp >= newInstance.xpToNextLevel) {
@@ -233,19 +286,24 @@ export function handleLevelUp(
         newInstance.xp -= newInstance.xpToNextLevel; // Subtract threshold
         newInstance.level += 1;
         newInstance.xpToNextLevel = calculateXpToNextLevel(newInstance.level);
-        console.log(`${newInstance.nickname || `Pokemon ${newInstance.pokedexId}`} leveled up to ${newInstance.level}!`);
+        console.log(
+            `${newInstance.nickname || `Pokemon ${newInstance.pokedexId}`} leveled up to ${newInstance.level}!`
+        );
     }
 
     // If a level up occurred, recalculate stats and HP
     if (didLevelUp) {
         const oldMaxHp = newInstance.maxHp;
-        newInstance.maxHp = calculateMaxHp(newInstance, baseStats);
         newInstance.calculatedStats = calculateStats(newInstance, baseStats);
-        
+        newInstance.maxHp = newInstance.calculatedStats.hp; // HP is part of calculated stats
         // Increase current HP proportionally to max HP increase (common mechanic)
         const hpIncrease = newInstance.maxHp - oldMaxHp;
-        if (newInstance.currentHp > 0) { // Don't revive fainted Pokemon
-           newInstance.currentHp = Math.min(newInstance.maxHp, newInstance.currentHp + hpIncrease);
+        if (newInstance.currentHp > 0) {
+            // Don't revive fainted Pokemon
+            newInstance.currentHp = Math.min(
+                newInstance.maxHp,
+                newInstance.currentHp + hpIncrease
+            );
         }
 
         // TODO: Check for new moves learned at this level

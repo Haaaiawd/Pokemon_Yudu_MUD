@@ -1,4 +1,6 @@
 import { WorldPlace, Location, Route, getLocations } from '../lib/gameData';
+import { getLocations as newGetLocations } from '@/lib/gameData';
+import { Location as NewLocation } from '@/interfaces/database';
 
 /**
  * 管理游戏世界地图数据和地点/路线查找。
@@ -13,30 +15,33 @@ class WorldManager {
    * 加载并初始化世界数据。
    * 必须在使用管理器之前调用。
    */
-  async initialize(): Promise<void> {
+  async initialize(): Promise<boolean> {
     if (this.isInitialized) {
       console.log('WorldManager is already initialized.');
-      return;
+      return true;
     }
+
+    console.log('Initializing WorldManager...');
 
     try {
       console.log('Initializing WorldManager: Loading locations...');
-      const worldData = await getLocations();
+      const worldData = await newGetLocations();
 
       worldData.forEach(place => {
         this.allPlaces.set(place.id, place);
         if (place.type === 'location') {
-          this.locations.set(place.id, place);
+          this.locations.set(place.id, place as Location);
         } else if (place.type === 'route') {
           this.routes.set(place.id, place);
         }
       });
 
+      console.log(`WorldManager initialized with ${this.locations.size} locations`);
       this.isInitialized = true;
-      console.log(`WorldManager initialized successfully. Loaded ${this.allPlaces.size} places (${this.locations.size} locations, ${this.routes.size} routes).`);
+      return true;
     } catch (error) {
       console.error('Failed to initialize WorldManager:', error);
-      throw new Error('Could not load world data for WorldManager.');
+      return false;
     }
   }
 
@@ -68,6 +73,67 @@ class WorldManager {
     this.ensureInitialized();
     const place = this.allPlaces.get(id);
     return place?.type === 'location' ? place : undefined;
+  }
+
+  /**
+   * 获取所有位置ID
+   * @returns 所有位置ID的数组
+   */
+  getAllLocationIds(): string[] {
+    if (!this.isInitialized) {
+      console.warn('WorldManager not initialized, call initialize() first');
+      return [];
+    }
+    
+    return Array.from(this.locations.keys());
+  }
+
+  /**
+   * 在指定位置添加一个物品
+   * @param locationId 位置ID
+   * @param itemId 物品ID
+   * @returns 是否添加成功
+   */
+  addItemToLocation(locationId: string, itemId: string): boolean {
+    const location = this.getLocationById(locationId);
+    
+    if (!location) {
+      return false;
+    }
+    
+    // 确保location.items是一个数组
+    if (!location.items) {
+      location.items = [];
+    }
+    
+    // 添加物品
+    location.items.push(itemId);
+    return true;
+  }
+
+  /**
+   * 从指定位置移除一个物品
+   * @param locationId 位置ID
+   * @param itemId 物品ID
+   * @returns 是否移除成功
+   */
+  removeItemFromLocation(locationId: string, itemId: string): boolean {
+    const location = this.getLocationById(locationId);
+    
+    if (!location || !location.items) {
+      return false;
+    }
+    
+    // 查找物品索引
+    const itemIndex = location.items.indexOf(itemId);
+    
+    if (itemIndex === -1) {
+      return false;
+    }
+    
+    // 移除物品
+    location.items.splice(itemIndex, 1);
+    return true;
   }
 
   // --- 未来可能添加的功能 ---

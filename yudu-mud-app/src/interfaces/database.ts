@@ -1,13 +1,53 @@
 import { PokedexEntry, Move, Ability } from '@/lib/gameData'; // 假设 gameData.ts 在 src/lib 下
 import { PokemonInstance } from './pokemon'; // Import the Pokemon instance type
+import { BattleState } from './battle'; // Import BattleState interface
 
 // --- 玩家状态定义 ---
 
 /**
- * 玩家携带的物品
+ * 本地化名称
+ */
+export interface LocalizedName {
+  zh: string;
+  en?: string;
+}
+
+/**
+ * 地点类型
+ */
+export interface Location {
+  id: string;
+  type: 'location';
+  name: LocalizedName;
+  description: string;
+  inspired_by?: string;
+  environment?: string;
+  architecture?: string;
+  features?: string;
+  exits: { [exitId: string]: string }; // 出口ID -> 目标地点ID的映射
+  npcIds?: string[]; // 该位置上的NPC ID数组
+  items?: string[]; // 该位置上的物品ID数组
+}
+
+/**
+ * 路线类型
+ */
+export interface Route {
+  id: string;
+  type: 'route';
+  name: LocalizedName;
+  connects: [string, string]; // 连接的两个地点ID
+  length_km?: number;
+  features?: string;
+  difficulty?: number;
+  best_season?: string;
+}
+
+/**
+ * 背包物品
  */
 export interface InventoryItem {
-  itemId: string; // 对应 items.json 中的物品 ID
+  itemId: string;
   quantity: number;
 }
 
@@ -44,27 +84,28 @@ export interface OwnedPokemon {
  * 玩家图鉴状态
  */
 export interface PokedexStatus {
-  seen: string[]; // 见过的宝可梦 yudex_id 列表
-  caught: string[]; // 捕捉过的宝可梦 yudex_id 列表
+  seen: string[]; // 已见过的宝可梦ID
+  caught: string[]; // 已捕获的宝可梦ID
 }
 
 /**
  * 玩家主体数据结构
  */
 export interface Player {
-  id: string; // 玩家唯一 ID (例如用户认证 ID)
-  name: string; // 玩家角色名
-  locationId: string; // 当前所在地点 ID (对应 locations.json)
-  currentHp: number; // 玩家自身HP (如果玩家也有HP的话，根据游戏设计)
-  maxHp: number;
-  badges: string[]; // 获得的徽章列表
+  id: string; // 玩家唯一ID
+  name: string; // 玩家名称
+  locationId: string; // 当前位置ID
+  currentHp: number; // 当前HP (用于某些剧情)
+  maxHp: number; // 最大HP
+  badges: string[]; // 已获得的徽章
   money: number; // 金钱
-  creditStatus: number; // 信用状态 (可以用数字表示等级或具体分数)
-  inventory: InventoryItem[]; // 物品栏
-  team: PokemonInstance[]; // 宝可梦队伍 (最多 6 只)
-  pcBox: PokemonInstance[]; // Pokemon stored in the PC boxes
+  creditStatus: number; // 信用状态 (用于某些NPC互动)
+  inventory: InventoryItem[]; // 背包物品
+  team: PokemonInstance[]; // 当前队伍
+  pcBox?: PokemonInstance[]; // PC存储的宝可梦
   pokedex: PokedexStatus; // 图鉴状态
-  questFlags: { [flagName: string]: boolean | number | string }; // 任务/事件标志 (键值对形式)
-  relationshipFlags: { [npcId: string]: number | string }; // 与 NPC 的关系状态 (键值对形式，值可以是数字表示好感度或字符串表示状态)
-  statusConditions?: string[]; // 玩家自身异常状态 (可选)
+  questFlags: { [flagName: string]: boolean | number | string }; // 任务标记
+  relationshipFlags: { [npcId: string]: number | string }; // NPC关系标记
+  statusConditions?: string[]; // 状态条件 (例如: 中毒, 睡眠)
+  currentBattle?: BattleState; // 当前战斗状态
 } 

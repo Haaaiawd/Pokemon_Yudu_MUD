@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { readdir } from 'fs/promises';
 
 // --- 类型定义 (初步，需要根据实际 JSON 结构调整) ---
 
@@ -32,7 +33,7 @@ export interface PokedexEntry {
   egg_moves?: string[];
   tutor_moves?: string[];
   gender_ratio?: { male: number; female: number }; // e.g., { male: 0.875, female: 0.125 }
-  catch_rate?: number;
+  catchRate?: number;
   egg_groups?: string[];
   hatch_steps?: number;
   experienceGroup?: string; // Add optional experience group (e.g., 'medium_fast')
@@ -43,16 +44,21 @@ export interface PokedexEntry {
 export interface Move {
   index: string; // ID 是字符串
   generation: string;
-  name: string;
+  name: string; // 中文名，用作主要标识符
   name_jp: string;
   name_en: string;
   type: string; // 属性
-  category: string; // 物理, 特殊, 变化
-  power: string; // 威力 (可能是数字或 "—" 或 "变化")
-  accuracy: string; // 命中 (可能是数字或 "—" 或 "变化")
-  pp: string; // PP (可能是数字或 "—")
+  category: string; // 物理 (Physical), 特殊 (Special), 变化 (Status)
+  power: number | null; // 威力 (改为 number 或 null)
+  accuracy: number | null; // 命中 (改为 number 或 null, null for '—')
+  pp: number; // PP (改为 number)
   text: string; // 描述
-  [key: string]: any; // 允许其他未知属性
+  effect?: string; // 效果文本 (可选)
+  info?: string[]; // 附加信息 (可选)
+  range?: string; // 作用范围 (可选)
+  priority?: number; // 优先度 (可选, 默认为 0)
+  // 允许其他未知属性, 比如 learnset
+  [key: string]: any; 
 }
 
 export interface Ability {
@@ -83,6 +89,7 @@ export interface Item {
   effect: ItemEffect | null;
   buyPrice: number | null; // null if not buyable
   sellPrice: number | null; // null if not sellable
+  ballBonus?: number; // Added: Modifier for catch rate formula (e.g., 1.0 for PokeBall, 1.5 for GreatBall)
 }
 
 // --- 新增：地点和路线类型定义 ---
@@ -131,7 +138,7 @@ export interface Player { /* ... 保留之前的定义 ... */ id: string; name: 
 // --- 缓存 ---
 let cachedPokedexSummary: Pick<PokedexEntry, 'yudex_id' | 'name' | 'name_en' | 'name_jp' | 'world_gen'>[] | null = null; // Cache only summary
 let cachedPokemonDetails: { [key: string]: PokedexEntry } = {}; // Cache for detailed data, indexed by yudex_id
-let cachedMoves: Move[] | null = null;
+let cachedMoves: Map<string, Move> | null = null;
 let cachedAbilities: Ability[] | null = null;
 let cachedLocations: WorldPlace[] | null = null; 
 let cachedItems: Item[] | null = null; 
@@ -140,16 +147,44 @@ let cachedItems: Item[] | null = null;
 // --- 数据加载函数 ---
 
 /**
+ * 获取数据文件或目录的绝对路径
+ * @param relativePath data目录内的相对路径
+ * @returns 可访问的绝对路径
+ */
+async function getDataPath(relativePath: string): Promise<string> {
+  // 尝试三种可能的路径
+  const possiblePaths = [
+    path.join(process.cwd(), '..', 'data', relativePath),     // 上级目录
+    path.join(process.cwd(), 'data', relativePath),           // 当前目录
+    path.join(process.cwd(), '..', '..', 'data', relativePath) // 上两级目录
+  ];
+
+  // 按顺序尝试每个路径
+  for (const fullPath of possiblePaths) {
+    try {
+      await fs.access(fullPath);
+      console.log(`Found data at: ${fullPath}`);
+      return fullPath;
+    } catch (error) {
+      // 此路径不存在，继续尝试下一个
+      console.log(`Path not found: ${fullPath}`);
+    }
+  }
+
+  // 如果所有路径都不存在，返回最后一个路径并记录警告
+  console.warn(`Warning: No valid data path found for ${relativePath}, using fallback`);
+  return possiblePaths[possiblePaths.length - 1];
+}
+
+/**
  * 泛型函数：加载并解析指定路径的 JSON 文件
  * @param filePath 相对于项目根目录的 data 文件夹内的文件路径 (e.g., 'yudu_pokedex.json')
  * @returns 解析后的 JSON 数据
  */
 async function loadJsonData<T>(filePath: string): Promise<T> {
-  // 构建完整路径，确保在不同环境 (开发/部署) 下都能找到文件
-  // process.cwd() 在 `npm run dev` 时通常是 yudu-mud-app 目录
-  // 因此需要向上返回一级 (`..`) 再进入 `data` 目录
-  const fullPath = path.join(process.cwd(), '..', 'data', filePath);
-  console.log(`Attempting to load data from: ${fullPath}`); // 添加日志方便调试
+  // 获取数据文件的绝对路径
+  const fullPath = await getDataPath(filePath);
+  console.log(`Attempting to load data from: ${fullPath}`);
 
   try {
     const fileContent = await fs.readFile(fullPath, 'utf-8');
@@ -232,14 +267,142 @@ export async function getPokemonSpeciesDetails(pokedexId: string): Promise<Poked
     }
 }
 
-export async function getMoves(): Promise<Move[]> {
+// Updated getMoves function to first check for move_list.json, then fallback to directory
+export async function getMoves(): Promise<Map<string, Move>> {
   if (cachedMoves) {
     // console.log('Returning cached Moves data.');
     return cachedMoves;
   }
-  console.log('Loading Moves data from file...');
-  // 确认 move_list.json 的根是一个数组
-  cachedMoves = await loadJsonData<Move[]>('move_list.json');
+  
+  console.log('Loading Moves data...');
+  cachedMoves = new Map<string, Move>();
+  
+  // 尝试先从move_list.json加载
+  try {
+    // 检查move_list.json是否存在
+    const moveListPath = await getDataPath('move_list.json');
+    try {
+      await fs.access(moveListPath);
+      console.log('Move list file exists, loading from move_list.json');
+      
+      // 从move_list.json加载所有技能
+      const moveListData = await loadJsonData<any>('move_list.json');
+      
+      if (Array.isArray(moveListData)) {
+        console.log(`Found ${moveListData.length} moves in move_list.json`);
+        
+        // 处理每个技能数据
+        for (const moveData of moveListData) {
+          // --- Data Cleaning and Type Conversion ---
+          const power = parseInt(moveData.power, 10);
+          const accuracy = parseInt(moveData.accuracy, 10);
+          const pp = parseInt(moveData.pp, 10);
+  
+          const parsedMove: Move = {
+            index: moveData.index,
+            generation: moveData.generation,
+            name: moveData.name, // Use Chinese name as key
+            name_jp: moveData.name_jp,
+            name_en: moveData.name_en,
+            type: moveData.type,
+            category: moveData.category,
+            power: isNaN(power) ? null : power, // Set to null if parsing fails (e.g., "—")
+            accuracy: isNaN(accuracy) ? null : accuracy, // Set to null if parsing fails (e.g., "—")
+            pp: isNaN(pp) ? 0 : pp, // Default to 0 if PP parsing fails (shouldn't happen ideally)
+            text: moveData.text,
+            effect: moveData.effect,
+            info: moveData.info,
+            range: moveData.range,
+            // Infer priority based on text for common cases (needs improvement)
+            priority: moveData.text?.includes('必定能够先制攻击') ? 1 : (moveData.text?.includes('必定后出') ? -1 : 0),
+            // Keep other fields if they exist
+            ...moveData 
+          };
+          
+          // Cleanup redundant fields after spreading if necessary (optional)
+          delete parsedMove.pokemon; // Remove the large pokemon list from the cached move object
+  
+          if (parsedMove.name) {
+               cachedMoves.set(parsedMove.name, parsedMove);
+          } else {
+              console.warn(`Move missing 'name' property.`);
+          }
+        }
+        
+        console.log(`Successfully loaded and cached ${cachedMoves.size} moves from move_list.json.`);
+        return cachedMoves;
+      } else {
+        console.warn('move_list.json exists but does not contain an array, falling back to directory loading');
+      }
+    } catch (error) {
+      console.warn('Error loading move_list.json, falling back to loading from directory:', error);
+    }
+  } catch (error) {
+    console.warn('move_list.json not found, falling back to loading from directory');
+  }
+  
+  // 如果move_list.json不存在或加载失败，则从move目录加载
+  const moveDirPath = await getDataPath('move');
+  console.log(`Reading moves from directory: ${moveDirPath}`);
+
+  try {
+    const files = await readdir(moveDirPath);
+    const jsonFiles = files.filter(file => file.endsWith('.json'));
+    console.log(`Found ${jsonFiles.length} potential move files.`);
+
+    for (const fileName of jsonFiles) {
+      const filePath = `move/${fileName}`; // Relative path for loadJsonData
+      try {
+        const moveData = await loadJsonData<any>(filePath); // Load as any first for parsing
+
+        // --- Data Cleaning and Type Conversion ---
+        const power = parseInt(moveData.power, 10);
+        const accuracy = parseInt(moveData.accuracy, 10);
+        const pp = parseInt(moveData.pp, 10);
+
+        const parsedMove: Move = {
+          index: moveData.index,
+          generation: moveData.generation,
+          name: moveData.name, // Use Chinese name as key
+          name_jp: moveData.name_jp,
+          name_en: moveData.name_en,
+          type: moveData.type,
+          category: moveData.category,
+          power: isNaN(power) ? null : power, // Set to null if parsing fails (e.g., "—")
+          accuracy: isNaN(accuracy) ? null : accuracy, // Set to null if parsing fails (e.g., "—")
+          pp: isNaN(pp) ? 0 : pp, // Default to 0 if PP parsing fails (shouldn't happen ideally)
+          text: moveData.text,
+          effect: moveData.effect,
+          info: moveData.info,
+          range: moveData.range,
+          // Infer priority based on text for common cases (needs improvement)
+          priority: moveData.text?.includes('必定能够先制攻击') ? 1 : (moveData.text?.includes('必定后出') ? -1 : 0),
+          // Keep other fields if they exist
+          ...moveData 
+        };
+        
+        // Cleanup redundant fields after spreading if necessary (optional)
+        delete parsedMove.pokemon; // Remove the large pokemon list from the cached move object
+
+        if (parsedMove.name) {
+             cachedMoves.set(parsedMove.name, parsedMove);
+        } else {
+            console.warn(`Move file ${fileName} loaded but missing 'name' property.`);
+        }
+
+      } catch (fileError) {
+        console.error(`Error loading or parsing individual move file ${fileName}:`, fileError);
+        // Decide whether to skip the file or stop the whole process
+      }
+    }
+    console.log(`Successfully loaded and cached ${cachedMoves.size} moves from directory.`);
+
+  } catch (dirError) {
+    console.error(`Error reading move directory ${moveDirPath}:`, dirError);
+    cachedMoves = null; // Reset cache on error
+    throw new Error('Failed to read move directory.');
+  }
+
   return cachedMoves;
 }
 
@@ -297,4 +460,5 @@ export async function preloadGameData() {
     // 根据需要处理预加载失败的情况
   }
 }
+
 
