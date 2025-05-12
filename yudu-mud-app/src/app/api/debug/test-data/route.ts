@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { getPokedexSummary, getMoves, getAbilities } from '@/lib/gameData'; // 确认 @/ 指向 src 目录，否则调整路径，例如 ../../src/lib/gameData
+import { NextResponse, NextRequest } from 'next/server';
+import { getPokedexSummary, getMoves, getAbilities } from '@/lib/gameData';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -12,18 +12,15 @@ type Data = {
   samplePokedex?: any[];
   sampleMoves?: any[];
   sampleAbilities?: any[];
-  paths?: { cwd: string, env: string };
+  paths?: { cwd: string, env: string | undefined };
   fileExists?: { [key: string]: boolean };
 };
 
-/**
- * 测试文件是否存在于指定路径
- */
 async function checkFileExists(relativePath: string): Promise<boolean> {
   const possiblePaths = [
-    path.join(process.cwd(), '..', 'data', relativePath),     // 上级目录
-    path.join(process.cwd(), 'data', relativePath),           // 当前目录
-    path.join(process.cwd(), '..', '..', 'data', relativePath) // 上两级目录
+    path.join(process.cwd(), 'data', relativePath), // For Vercel deployment and local `next dev` from project root
+    path.join(process.cwd(), '../data', relativePath), // Potentially for local, if CWD is `yudu-mud-app`
+    path.join(process.cwd(), '../../data', relativePath) // Less likely, but for deeper CWD
   ];
 
   for (const fullPath of possiblePaths) {
@@ -32,59 +29,50 @@ async function checkFileExists(relativePath: string): Promise<boolean> {
       console.log(`File exists at: ${fullPath}`);
       return true;
     } catch (error) {
-      // 此路径不存在，继续尝试下一个
+      // Not found at this path
     }
   }
   
-  console.log(`File not found: ${relativePath}`);
+  console.log(`File not found: ${relativePath} (checked paths: ${possiblePaths.join(', ')})`);
   return false;
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<Data>
-) {
-  console.log('Received request for /api/test-data');
+export async function GET(req: NextRequest): Promise<NextResponse<Data>> {
+  console.log('Received request for /api/debug/test-data');
   try {
-    // 添加一些调试信息
     const processInfo = {
       cwd: process.cwd(),
       env: process.env.NODE_ENV
     };
     console.log('Process info:', processInfo);
 
-    // 检查关键文件是否存在
     const fileExistsResults = {
       'yudu_pokedex.json': await checkFileExists('yudu_pokedex.json'),
       'move_list.json': await checkFileExists('move_list.json'),
       'ability_list.json': await checkFileExists('ability_list.json'),
-      'move目录': await checkFileExists('move')
+      'move目录': await checkFileExists('move') // Check for the directory itself
     };
     console.log('File existence check results:', fileExistsResults);
 
-    // 同时加载所有数据
     console.log('Attempting to load game data...');
     
-    // 分别加载数据以便于调试
     console.log('Loading Pokedex summary...');
     const pokedex = await getPokedexSummary();
     console.log('Pokedex summary loaded:', Array.isArray(pokedex) ? `Array of ${pokedex.length} items` : typeof pokedex);
     
     console.log('Loading Moves...');
-    const moves = await getMoves();
+    const moves = await getMoves(); // Returns a Map
     console.log('Moves loaded:', moves instanceof Map ? `Map with ${moves.size} items` : typeof moves);
     
     console.log('Loading Abilities...');
-    const abilities = await getAbilities();
+    const abilities = await getAbilities(); // Returns an Array
     console.log('Abilities loaded:', Array.isArray(abilities) ? `Array of ${abilities.length} items` : typeof abilities);
     
     console.log('Game data loaded successfully');
 
-    // 将 Map 对象转换为数组以便于序列化
     const movesArray = moves instanceof Map ? Array.from(moves.values()) : [];
 
-    // 返回加载的数据量和样本数据进行验证
-    res.status(200).json({
+    return NextResponse.json({
       message: 'Data loaded successfully!',
       pokedexCount: Array.isArray(pokedex) ? pokedex.length : 0,
       moveCount: moves instanceof Map ? moves.size : 0,
@@ -96,14 +84,14 @@ export default async function handler(
       fileExists: fileExistsResults
     });
   } catch (error: any) {
-    console.error('API Error loading game data in /api/test-data:', error);
-    res.status(500).json({ 
+    console.error('API Error loading game data in /api/debug/test-data:', error);
+    return NextResponse.json({ 
       message: 'Failed to load game data', 
       error: error.message,
       paths: {
         cwd: process.cwd(),
-        env: process.env.NODE_ENV || 'unknown'
+        env: process.env.NODE_ENV
       }
-    });
+    }, { status: 500 });
   }
-} 
+}

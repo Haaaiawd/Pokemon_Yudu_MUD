@@ -1,10 +1,9 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse, NextRequest } from 'next/server';
 import sessionManager from '@/game/sessionManager';
 import stateManager from '@/game/stateManager';
 import commandManager from '@/game/commandManager';
 import { Player } from '@/interfaces/database';
 
-// API 请求类型
 interface GameSessionRequest {
   action: 'create' | 'command' | 'end';
   sessionId?: string;
@@ -12,8 +11,7 @@ interface GameSessionRequest {
   command?: string;
 }
 
-// API 响应类型
-interface GameSessionResponse {
+interface GameSessionResponseData {
   success: boolean;
   message?: string;
   sessionId?: string;
@@ -22,86 +20,72 @@ interface GameSessionResponse {
   error?: string;
 }
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse<GameSessionResponse>
-) {
-  // 只接受POST请求
+async function handler(req: NextRequest): Promise<NextResponse<GameSessionResponseData>> {
   if (req.method !== 'POST') {
-    return res.status(405).json({ 
+    return NextResponse.json({ 
       success: false, 
       error: 'Method Not Allowed. Only POST requests are accepted.' 
-    });
+    }, { status: 405 });
   }
 
   try {
-    // 确保状态管理器已初始化
     await stateManager.initialize();
     
-    const { action, sessionId, playerName, command } = req.body as GameSessionRequest;
+    const body = await req.json() as GameSessionRequest;
+    const { action, sessionId, playerName, command } = body;
     
-    // 处理不同的操作
     switch (action) {
-      // 创建新会话
       case 'create':
-        return handleCreateSession(playerName || 'Trainer', res);
+        return handleCreateSession(playerName || 'Trainer');
       
-      // 处理游戏命令
       case 'command':
         if (!sessionId) {
-          return res.status(400).json({
+          return NextResponse.json({
             success: false,
             error: 'Missing sessionId parameter'
-          });
+          }, { status: 400 });
         }
         
         if (!command) {
-          return res.status(400).json({
+          return NextResponse.json({
             success: false,
             error: 'Missing command parameter'
-          });
+          }, { status: 400 });
         }
         
-        return handleCommand(sessionId, command, res);
+        return handleCommand(sessionId, command);
       
-      // 结束会话
       case 'end':
         if (!sessionId) {
-          return res.status(400).json({
+          return NextResponse.json({
             success: false,
             error: 'Missing sessionId parameter'
-          });
+          }, { status: 400 });
         }
         
-        return handleEndSession(sessionId, res);
+        return handleEndSession(sessionId);
       
-      // 未知操作
       default:
-        return res.status(400).json({
+        return NextResponse.json({
           success: false,
           error: `Unknown action: ${action}`
-        });
+        }, { status: 400 });
     }
   } catch (error: any) {
     console.error('Error in game-session API:', error);
-    return res.status(500).json({
+    return NextResponse.json({
       success: false,
       error: `Internal server error: ${error.message}`
-    });
+    }, { status: 500 });
   }
 }
 
-/**
- * 处理创建新会话
- */
-async function handleCreateSession(playerName: string, res: NextApiResponse<GameSessionResponse>) {
-  // 创建新会话
+export { handler as POST };
+
+async function handleCreateSession(playerName: string): Promise<NextResponse<GameSessionResponseData>> {
   const session = sessionManager.createSession(playerName);
-  
-  // 获取玩家初始状态
   const playerState = await stateManager.getPlayerState(session.playerId, playerName);
   
-  // 生成欢迎消息
   const output = `
 **欢迎来到豫都地区，${playerName}！**
 
@@ -110,7 +94,7 @@ async function handleCreateSession(playerName: string, res: NextApiResponse<Game
 输入 \`look\` 查看周围环境，或输入 \`help\` 查看可用命令。
   `;
   
-  return res.status(200).json({
+  return NextResponse.json({
     success: true,
     sessionId: session.sessionId,
     output: output,
@@ -118,40 +102,32 @@ async function handleCreateSession(playerName: string, res: NextApiResponse<Game
   });
 }
 
-/**
- * 处理游戏命令
- */
-async function handleCommand(sessionId: string, commandText: string, res: NextApiResponse<GameSessionResponse>) {
-  // 获取会话信息
+async function handleCommand(sessionId: string, commandText: string): Promise<NextResponse<GameSessionResponseData>> {
   const session = sessionManager.getSession(sessionId);
   
   if (!session) {
-    return res.status(404).json({
+    return NextResponse.json({
       success: false,
       error: 'Session not found or expired'
-    });
+    }, { status: 404 });
   }
   
-  // 获取玩家状态
   const playerState = await sessionManager.getPlayerStateForSession(sessionId);
   
   if (!playerState) {
-    return res.status(404).json({
+    return NextResponse.json({
       success: false,
       error: 'Player state not found'
-    });
+    }, { status: 404 });
   }
   
-  // 使用命令管理器处理命令
   const result = await commandManager.processCommand(commandText, playerState);
   
-  // 更新玩家状态
   if (Object.keys(result.updatedPlayerState).length > 0) {
     stateManager.updatePlayerState(session.playerId, result.updatedPlayerState);
   }
   
-  // 返回命令处理结果
-  return res.status(200).json({
+  return NextResponse.json({
     success: true,
     output: result.output,
     playerState: {
@@ -161,24 +137,19 @@ async function handleCommand(sessionId: string, commandText: string, res: NextAp
   });
 }
 
-/**
- * 处理结束会话
- */
-async function handleEndSession(sessionId: string, res: NextApiResponse<GameSessionResponse>) {
-  // 获取会话信息
+async function handleEndSession(sessionId: string): Promise<NextResponse<GameSessionResponseData>> {
   const session = sessionManager.getSession(sessionId);
   
   if (!session) {
-    return res.status(404).json({
+    return NextResponse.json({
       success: false,
       error: 'Session not found or expired'
-    });
+    }, { status: 404 });
   }
   
-  // 结束会话
   sessionManager.endSession(sessionId);
   
-  return res.status(200).json({
+  return NextResponse.json({
     success: true,
     message: 'Session ended successfully'
   });

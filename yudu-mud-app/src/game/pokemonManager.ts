@@ -278,13 +278,17 @@ export function addExperience(instance: PokemonInstance, speciesData: PokedexEnt
 
         messages.push(`HP: ${instance.maxHp}, 攻击: ${newStats.attack}, 防御: ${newStats.defense}, 特攻: ${newStats.spAttack}, 特防: ${newStats.spDefense}, 速度: ${newStats.speed}`);
 
-        // TODO: Check for move learning at this new level
-        // const learnedMoves = checkMoveLearning(instance, speciesData);
-        // messages.push(...learnedMoves.map(move => `${instance.nickname || speciesData.name} 学会了 ${move}!`));
+        // 检查是否可以学习新技能
+        const learnedMoves = checkMoveLearning(instance, speciesData, instance.level);
+        if (learnedMoves && learnedMoves.length > 0) {
+            messages.push(...learnedMoves.map(move => `${instance.nickname || speciesData.name} 学会了 ${move}!`));
+        }
 
-        // TODO: Check for evolution at this new level
-        // const evolutionResult = checkEvolution(instance, speciesData);
-        // if (evolutionResult) { messages.push(evolutionResult.message); }
+        // 检查是否满足进化条件
+        const evolutionResult = checkEvolution(instance, speciesData);
+        if (evolutionResult) { 
+            messages.push(evolutionResult.message); 
+        }
 
         // Update xp needed for the *next* potential level up
         if (instance.level < 100) {
@@ -301,4 +305,108 @@ export function addExperience(instance: PokemonInstance, speciesData: PokedexEnt
 }
 
 // --- Other Pokemon related functions can be added here --- 
-// e.g., calculateXpNeeded, getLevelUpMoves, handleEvolution, etc. 
+// e.g., calculateXpNeeded, getLevelUpMoves, handleEvolution, etc.
+
+/**
+ * 检查宝可梦升级后是否可以学习新技能
+ * 
+ * @param instance 宝可梦实例
+ * @param speciesData 宝可梦种类数据
+ * @param newLevel 新等级
+ * @returns 学习的新技能名称数组
+ */
+function checkMoveLearning(
+    instance: PokemonInstance, 
+    speciesData: PokedexEntry, 
+    newLevel: number
+): string[] {
+    const learnedMoves: string[] = [];
+    
+    // 获取等级提升学习技能列表
+    const levelUpMoves = speciesData.moves?.learned?.find((m: any) => m.form === '一般')?.data || [];
+    
+    // 筛选当前等级可学习的技能
+    const newLevelMoves = levelUpMoves
+        .filter((entry: any) => entry.method === '提升等级' && entry.level_learned_at === newLevel)
+        .map((entry: any) => entry.name);
+    
+    if (newLevelMoves.length === 0) {
+        return learnedMoves;
+    }
+
+    // 获取所有技能数据
+    const allMovesMap = await getMoves();
+    if (!allMovesMap) {
+        console.error("Failed to load moves data, cannot assign moves to instance.");
+        return learnedMoves;
+    }
+
+    // 添加新技能到实例
+    for (const moveName of newLevelMoves) {
+        const moveData = allMovesMap.get(moveName);
+        if (moveData) {
+            const instanceMove: PokemonMove = {
+                ...moveData,
+                category: validateMoveCategory(moveData.category),
+                pp: moveData.pp,
+            };
+            instance.moves.push(instanceMove);
+            learnedMoves.push(moveName);
+        } else {
+            console.warn(`Move data not found in cache for: ${moveName} (learned by ${speciesData.name})`);
+        }
+    }
+
+    // 确保技能数量不超过4个
+    if (instance.moves.length > 4) {
+        instance.moves = instance.moves.slice(-4);
+    }
+
+    return learnedMoves;
+}
+
+/**
+ * 检查宝可梦是否满足进化条件
+ * 
+ * @param instance 宝可梦实例
+ * @param speciesData 宝可梦种类数据
+ * @returns 进化结果对象，包含进化信息和消息
+ */
+function checkEvolution(instance: PokemonInstance, speciesData: PokedexEntry): { evolved: boolean, message: string } | null {
+    // TODO: 实现进化逻辑
+    return null;
+}
+
+/**
+ * 计算升到指定等级所需的经验值
+ * 
+ * @param level 等级
+ * @param group 经验组
+ * @returns 所需经验值
+ */
+export function calculateXpNeededForLevel(level: number, group: ExperienceGroup): number {
+    if (level <= 1) return 0;
+    if (level > 100) level = 100; // Cap at level 100 for calculation
+
+    switch (group) {
+        case 'fast':
+            return Math.floor(4 * Math.pow(level, 3) / 5);
+        case 'medium_fast':
+            return Math.floor(Math.pow(level, 3));
+        case 'medium_slow':
+            return Math.floor(6 / 5 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140);
+        case 'slow':
+            return Math.floor(5 * Math.pow(level, 3) / 4);
+        case 'erratic':
+            if (level <= 50) return Math.floor(Math.pow(level, 3) * (100 - level) / 50);
+            if (level <= 68) return Math.floor(Math.pow(level, 3) * (150 - level) / 100);
+            if (level <= 98) return Math.floor(Math.pow(level, 3) * ((1911 - 10 * level) / 3) / 500); // Corrected formula
+            return Math.floor(Math.pow(level, 3) * (160 - level) / 100);
+        case 'fluctuating':
+            if (level <= 15) return Math.floor(Math.pow(level, 3) * (((level + 1) / 3) + 24) / 50);
+            if (level <= 36) return Math.floor(Math.pow(level, 3) * (level + 14) / 50);
+            return Math.floor(Math.pow(level, 3) * ((level / 2) + 32) / 50);
+        default:
+            return Math.floor(Math.pow(level, 3)); // Default to MediumFast if group is unknown
+    }
+}

@@ -56,20 +56,43 @@ export interface PokemonInstance {
   nickname?: string; // 昵称
   level: number; // 等级
   experience: number; // 经验值
+  xp?: number; // 经验值的别名，与experience相同
   currentHp: number; // 当前HP
   maxHp: number; // 最大HP
-  moves: string[]; // 已学会的招式ID
+  moves: (string | Move)[]; // 已学会的招式ID或招式对象
   heldItemId?: string; // 持有物品
   ability: string; // 特性
-  stats: { // 能力值
+  stats: { // 基础能力值
     attack: number;
     defense: number;
     specialAttack: number;
     specialDefense: number;
     speed: number;
   };
+  // 计算后的实际能力值（包含等级、个体值、努力值、性格修正等）
+  calculatedStats?: {
+    hp: number;
+    attack: number;
+    defense: number;
+    spAttack: number;
+    spDefense: number;
+    speed: number;
+  };
   statusCondition?: string; // 异常状态
   speciesName?: string; // 种族名称 (方便显示)
+  speciesDetails?: PokedexEntry; // 宝可梦种族详细信息
+  // 新增属性以解决报错
+  ivs: { hp: number; attack: number; defense: number; spAttack: number; spDefense: number; speed: number };
+  evs: { hp: number; attack: number; defense: number; spAttack: number; spDefense: number; speed: number };
+  natureId?: string; // 性格ID
+  gender?: 'male' | 'female' | 'genderless';
+  shiny?: boolean;
+  xpToNextLevel?: number; // 升级所需经验值
+  isEgg?: boolean;
+  eggSteps?: number;
+  friendship?: number;
+  form?: string; // 形态
+  teraType?: string; // 太晶属性
 }
 
 /**
@@ -127,4 +150,4 @@ export interface Nature {
 //     jolly: { id: 'jolly', name: 'Jolly', increasedStat: 'speed', decreasedStat: 'spAttack' },
 //     timid: { id: 'timid', name: 'Timid', increasedStat: 'speed', decreasedStat: 'attack' },
 //     // ... neutral natures and others
-// }; 
+// };
