@@ -151,18 +151,43 @@ let cachedItems: Item[] | null = null;
  * @param relativePath data目录内的相对路径
  * @returns 可访问的绝对路径
  */
-async function getDataPath(relativePath: string): Promise<string> {
-  // 数据的根目录现在是项目内的 'data' 文件夹
-  const projectDataRoot = path.join(process.cwd(), 'data');
+export async function getDataPath(relativePath: string): Promise<string> {
+  const currentWorkingDirectory = process.cwd();
+  console.log(`[Debug getDataPath] process.cwd(): ${currentWorkingDirectory}`);
+
+  const dataDirName = 'data';
+  const projectDataRoot = path.join(currentWorkingDirectory, dataDirName);
   const fullPath = path.join(projectDataRoot, relativePath);
+
+  console.log(`[Debug getDataPath] Attempting to access: ${fullPath}`);
+  console.log(`[Debug getDataPath] Relative path provided: ${relativePath}`);
+  console.log(`[Debug getDataPath] Calculated projectDataRoot: ${projectDataRoot}`);
+
+  try {
+    // Log contents of CWD
+    const cwdContents = await fs.readdir(currentWorkingDirectory);
+    console.log(`[Debug getDataPath] Contents of ${currentWorkingDirectory} (project root):`, cwdContents.join(', '));
+  } catch (e: any) {
+    console.warn(`[Debug getDataPath] Could not list contents of ${currentWorkingDirectory}: ${e.message}`);
+  }
+
+  try {
+    // Log contents of projectDataRoot (e.g., yudu-mud-app/data)
+    const dataRootContents = await fs.readdir(projectDataRoot);
+    console.log(`[Debug getDataPath] Contents of ${projectDataRoot} ('data' directory):`, dataRootContents.join(', '));
+  } catch (e: any) {
+    console.warn(`[Debug getDataPath] Could not list contents of ${projectDataRoot}: ${e.message}. This directory might not exist or is not accessible.`);
+  }
 
   try {
     await fs.access(fullPath);
-    // console.log(`Found data at: ${fullPath}`); // 在生产环境中可以减少日志输出
+    console.log(`[Debug getDataPath] Successfully accessed: ${fullPath}`);
     return fullPath;
   } catch (error) {
-    console.error(`Data file not accessible at: ${fullPath}. Error: ${error}`);
-    // 如果文件找不到，直接抛出错误，因为现在路径应该是确定的
+    console.error(`[Debug getDataPath] Data file not accessible at: ${fullPath}. Error: ${error}`);
+    if (error && typeof error === 'object' && 'code' in error && error.code === 'ENOENT') {
+        console.error(`[Debug getDataPath] ENOENT error: The file or directory at ${fullPath} was not found.`);
+    }
     throw new Error(`Data file not found: ${relativePath} (resolved to ${fullPath})`);
   }
 }
