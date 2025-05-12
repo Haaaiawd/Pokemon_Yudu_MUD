@@ -494,7 +494,7 @@ async function handler(req: NextRequest): Promise<NextResponse<GameResponseData>
                             const activePokemon = playerParticipant.activePokemon; // This is PokemonInstance
 
                             if (activePokemon.speciesDetails) { // Guard for speciesDetails
-                                const result = addExperience(activePokemon, activePokemon.speciesDetails as GameDataPokedexEntry, expGained); // Cast to GameDataPokedexEntry if addExperience expects it
+                                const result = await addExperience(activePokemon, activePokemon.speciesDetails as GameDataPokedexEntry, expGained); // Cast to GameDataPokedexEntry if addExperience expects it
                                 expMessages.push(...result.messages);
                             } else {
                                 expMessages.push(`无法为 ${activePokemon.nickname || activePokemon.speciesName || '宝可梦'} 计算经验值，缺少物种详情。`);

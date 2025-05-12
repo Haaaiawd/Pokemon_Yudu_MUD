@@ -22,7 +22,6 @@ function calculateStats(instance: PokemonInstance, speciesData: PokedexEntry): {
     speed: number; 
 } {
     const { level, ivs, evs, natureId } = instance;
-    // --- 获取基础属性 --- 
     const baseStatsData = speciesData.stats?.find(s => s.form === '一般')?.data;
 
     if (!baseStatsData) {
@@ -30,34 +29,32 @@ function calculateStats(instance: PokemonInstance, speciesData: PokedexEntry): {
         return { hp: 1, attack: 1, defense: 1, spAttack: 1, spDefense: 1, speed: 1 };
     }
 
-    // --- HP Calculation --- (Convert base stat from string to number)
     const hpIV = ivs.hp || 0;
     const hpEV = evs.hp || 0;
-    const hpBase = parseInt(baseStatsData.hp, 10) || 1; // Convert string to number
+    const hpBase = parseInt(baseStatsData.hp, 10) || 1;
     const calculatedHp = Math.floor(((2 * hpBase + hpIV + Math.floor(hpEV / 4)) * level) / 100) + level + 10;
 
-    // --- Other Stats Calculation ---
-    // Define mapping for stat keys used in IVs/EVs/Nature vs keys in baseStatsData
-    const statKeyMapping: { [key in Exclude<StatName, 'hp'>]: keyof typeof baseStatsData } = {
+    // Corrected type for statKeyMapping keys to match PokedexEntry base stats keys
+    const statKeyMapping: { [key in Exclude<StatName, 'hp'>]: keyof Omit<typeof baseStatsData, 'hp'> } = {
         attack: 'attack',
         defense: 'defense',
-        spAttack: 'sp_attack', // Map to underscore version
-        spDefense: 'sp_defense', // Map to underscore version
+        spAttack: 'sp_attack', 
+        spDefense: 'sp_defense', 
         speed: 'speed'
     };
 
     const calculateOtherStat = (statKey: Exclude<StatName, 'hp'>) => {
-        const baseStatKey = statKeyMapping[statKey]; // Get the key for the base stats data
-        if (!baseStatKey) return 1; // Should not happen with current mapping
+        const baseStatKey = statKeyMapping[statKey]; 
+        if (!baseStatKey || !baseStatsData[baseStatKey]) return 1; 
 
-        const base = parseInt(baseStatsData[baseStatKey], 10) || 1; // Convert string to number
+        const base = parseInt(baseStatsData[baseStatKey]!, 10) || 1; // Added non-null assertion for baseStatsData[baseStatKey]
         const iv = ivs[statKey] || 0;
         const ev = evs[statKey] || 0;
         
-        const natureMultiplier = getNatureModifier(natureId, statKey);
+        const natureMultiplier = getNatureModifier(natureId || 'hardy', statKey);
 
         const statValue = Math.floor((Math.floor(((2 * base + iv + Math.floor(ev / 4)) * level) / 100) + 5) * natureMultiplier);
-        return Math.max(1, statValue); // Ensure stat is at least 1
+        return Math.max(1, statValue); 
     };
 
     const calculatedAttack = calculateOtherStat('attack');
@@ -153,24 +150,35 @@ export async function createPokemonInstance(
     const natureIds = Object.keys(NATURES);
     const randomNatureId = natureIds[Math.floor(Math.random() * natureIds.length)] || 'hardy';
 
-    // --- Build Base Instance --- 
+    // Assuming speciesData.experienceGroup is the correct field for experience group string
+    const experienceGroupString = speciesData.experienceGroup;
+    const experienceGroup = getExperienceGroupFromString(experienceGroupString);
+
+    // Initialize stats for instanceBase according to PokemonInstance type
+    const initialInstanceStats: PokemonInstance['stats'] = {
+        attack: parseInt(normalStats.attack, 10) || 1,
+        defense: parseInt(normalStats.defense, 10) || 1,
+        specialAttack: parseInt(normalStats.sp_attack, 10) || 1, // map sp_attack to specialAttack
+        specialDefense: parseInt(normalStats.sp_defense, 10) || 1, // map sp_defense to specialDefense
+        speed: parseInt(normalStats.speed, 10) || 1,
+    };
+
     const instanceBase: Omit<PokemonInstance, 'calculatedStats' | 'maxHp' | 'currentHp'> = {
-        instanceId: options.instanceId || `inst_${pokedexId}_${Date.now()}_${Math.random().toString(16).slice(2)}`,
+        instanceId: options.instanceId || uuidv4(), // Use uuidv4 for unique ID
         pokedexId: pokedexId,
-        speciesName: speciesData.name, // Add species name for convenience
-        speciesDetails: speciesData, // Store the full details for easy access later
-        nickname: options.nickname || null,
+        speciesName: speciesData.name, 
+        speciesDetails: speciesData, 
+        nickname: options.nickname || undefined, 
         level: level,
-        moves: initialMoves, // Assign the determined moves
-        abilityId: options.abilityId || speciesData.ability?.find((a: any) => !a.is_hidden)?.name || '', // TODO: Improve ability selection
-        // Calculate XP for current level based on experience group
-        xp: options.xp !== undefined ? options.xp : getTotalExperienceForLevel(getExperienceGroupFromString(speciesData.experienceGroup), level),
-        xpToNextLevel: getTotalExperienceForLevel(getExperienceGroupFromString(speciesData.experienceGroup), level + 1),
-        statusCondition: options.statusCondition || null, // Default to null (healthy)
+        moves: initialMoves, 
+        ability: options.ability || speciesData.ability?.find((a: any) => !a.is_hidden)?.name || '', 
+        experience: getTotalExperienceForLevel(experienceGroup, level), // Store total XP for current level
+        xp: options.xp ?? getTotalExperienceForLevel(experienceGroup, level), // xp alias for experience
+        xpToNextLevel: getTotalExperienceForLevel(experienceGroup, level + 1),
+        statusCondition: options.statusCondition || undefined, 
         ivs: options.ivs || defaultIVs,
         evs: options.evs || defaultEVs,
         natureId: options.natureId || randomNatureId,
-        // Determine gender based on species ratio
         gender: options.gender || (() => { 
             const ratio = speciesData.gender_ratio; 
             if (!ratio || typeof ratio.male !== 'number' || typeof ratio.female !== 'number') return 'genderless';
@@ -178,12 +186,13 @@ export async function createPokemonInstance(
             if (ratio.female === 0) return 'male';
             return Math.random() < ratio.male ? 'male' : 'female'; 
         })(),
-        shiny: options.shiny || (Math.random() < 1 / 4096), // Example shiny chance
-        heldItemId: options.heldItemId || null,
+        shiny: options.shiny || (Math.random() < 1 / 4096), 
+        heldItemId: options.heldItemId || undefined, 
+        stats: initialInstanceStats, // Assign the correctly typed stats object
     };
 
     // --- Calculate Stats and Finalize Instance --- 
-    const tempInstanceForCalc = { ...instanceBase, calculatedStats: { hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0 }, maxHp: 0, currentHp: 0 };
+    const tempInstanceForCalc = { ...instanceBase, calculatedStats: { hp: 0, attack: 0, defense: 0, spAttack: 0, spDefense: 0, speed: 0 }, maxHp: 0, currentHp: 0, /* ensure all PokemonInstance props are here if needed by calculateStats */ };
     const calculatedStats = calculateStats(tempInstanceForCalc, speciesData);
 
     const finalInstance: PokemonInstance = {
@@ -225,17 +234,18 @@ function validateMoveCategory(category: string): 'Physical' | 'Special' | 'Statu
  * Helper function to convert string to ExperienceGroup
  */
 function getExperienceGroupFromString(groupName?: string): ExperienceGroup {
-    if (!groupName) return 'medium_fast';
+    if (!groupName) return 'medium_fast'; // Default if no group name provided
     
-    switch(groupName.toLowerCase()) {
-        case 'fast': return 'fast';
-        case 'medium_fast': return 'medium_fast';
-        case 'medium_slow': return 'medium_slow';
-        case 'slow': return 'slow';
-        default:
-            console.warn(`Unknown experience group "${groupName}", defaulting to "medium_fast"`);
-            return 'medium_fast';
-    }
+    const lowerGroupName = groupName.toLowerCase();
+    // Only include cases that are valid ExperienceGroup types
+    if (lowerGroupName === 'fast') return 'fast';
+    if (lowerGroupName === 'medium_fast') return 'medium_fast';
+    if (lowerGroupName === 'medium_slow') return 'medium_slow';
+    if (lowerGroupName === 'slow') return 'slow';
+    // 'erratic' and 'fluctuating' are not in ExperienceGroup type based on experience.ts
+    
+    console.warn(`Unknown experience group "${groupName}", defaulting to "medium_fast"`);
+    return 'medium_fast'; // Fallback for unknown groups
 }
 
 /**
@@ -246,16 +256,14 @@ function getExperienceGroupFromString(groupName?: string): ExperienceGroup {
  * @param amount The amount of experience points gained.
  * @returns An object containing messages about level ups and potentially learned moves/evolutions in the future.
  */
-export function addExperience(instance: PokemonInstance, speciesData: PokedexEntry, amount: number): { messages: string[] } {
+export async function addExperience(instance: PokemonInstance, speciesData: PokedexEntry, amount: number): Promise<{ messages: string[] }> { // 添加 async 和 Promise 返回类型
     if (instance.level >= 100) {
-        return { messages: [] }; // Already max level
+        return { messages: [] }; 
     }
 
-    instance.xp += amount;
+    instance.xp = (instance.xp || 0) + amount; // Ensure instance.xp is not undefined
     const messages: string[] = [`${instance.nickname || speciesData.name} 获得了 ${amount} 点经验值！`];
 
-    // Determine experience group (using placeholder function for now)
-    // TODO: Load actual experienceGroup from speciesData when available
     const expGroup = speciesData.experienceGroup ? 
         getExperienceGroupFromString(speciesData.experienceGroup) : 
         getExperienceGroupForPokemon(instance.pokedexId);
@@ -263,42 +271,35 @@ export function addExperience(instance: PokemonInstance, speciesData: PokedexEnt
     let leveledUp = false;
     let xpForNextLevel = getTotalExperienceForLevel(expGroup, instance.level + 1);
 
-    // Level up loop
-    while (instance.xp >= xpForNextLevel && instance.level < 100) {
+    while ((instance.xp || 0) >= xpForNextLevel && instance.level < 100) { // Ensure instance.xp is not undefined
         instance.level++;
         leveledUp = true;
         messages.push(`**${instance.nickname || speciesData.name} 升到了 ${instance.level} 级！**`);
 
-        // Recalculate stats
         const newStats = calculateStats(instance, speciesData);
         instance.calculatedStats = newStats;
         instance.maxHp = newStats.hp;
-        // Heal fully on level up (common game mechanic)
         instance.currentHp = instance.maxHp; 
 
         messages.push(`HP: ${instance.maxHp}, 攻击: ${newStats.attack}, 防御: ${newStats.defense}, 特攻: ${newStats.spAttack}, 特防: ${newStats.spDefense}, 速度: ${newStats.speed}`);
 
-        // 检查是否可以学习新技能
-        const learnedMoves = checkMoveLearning(instance, speciesData, instance.level);
-        if (learnedMoves && learnedMoves.length > 0) {
-            messages.push(...learnedMoves.map(move => `${instance.nickname || speciesData.name} 学会了 ${move}!`));
+        const learnedMovesMessages = await checkMoveLearning(instance, speciesData, instance.level); // 使用 await
+        if (learnedMovesMessages && learnedMovesMessages.length > 0) {
+            messages.push(...learnedMovesMessages.map(move => `${instance.nickname || speciesData.name} 学会了 ${move}!`));
         }
 
-        // 检查是否满足进化条件
         const evolutionResult = checkEvolution(instance, speciesData);
         if (evolutionResult) { 
             messages.push(evolutionResult.message); 
         }
 
-        // Update xp needed for the *next* potential level up
         if (instance.level < 100) {
             xpForNextLevel = getTotalExperienceForLevel(expGroup, instance.level + 1);
         } else {
-            break; // Reached max level
+            break; 
         }
     }
 
-    // Update the xpToNextLevel field on the instance (optional, but can be useful display)
     instance.xpToNextLevel = xpForNextLevel;
 
     return { messages };
@@ -315,11 +316,11 @@ export function addExperience(instance: PokemonInstance, speciesData: PokedexEnt
  * @param newLevel 新等级
  * @returns 学习的新技能名称数组
  */
-function checkMoveLearning(
+async function checkMoveLearning( // 添加 async 关键字
     instance: PokemonInstance, 
     speciesData: PokedexEntry, 
     newLevel: number
-): string[] {
+): Promise<string[]> { // 返回值需要是 Promise<string[]>
     const learnedMoves: string[] = [];
     
     // 获取等级提升学习技能列表
@@ -397,16 +398,10 @@ export function calculateXpNeededForLevel(level: number, group: ExperienceGroup)
             return Math.floor(6 / 5 * Math.pow(level, 3) - 15 * Math.pow(level, 2) + 100 * level - 140);
         case 'slow':
             return Math.floor(5 * Math.pow(level, 3) / 4);
-        case 'erratic':
-            if (level <= 50) return Math.floor(Math.pow(level, 3) * (100 - level) / 50);
-            if (level <= 68) return Math.floor(Math.pow(level, 3) * (150 - level) / 100);
-            if (level <= 98) return Math.floor(Math.pow(level, 3) * ((1911 - 10 * level) / 3) / 500); // Corrected formula
-            return Math.floor(Math.pow(level, 3) * (160 - level) / 100);
-        case 'fluctuating':
-            if (level <= 15) return Math.floor(Math.pow(level, 3) * (((level + 1) / 3) + 24) / 50);
-            if (level <= 36) return Math.floor(Math.pow(level, 3) * (level + 14) / 50);
-            return Math.floor(Math.pow(level, 3) * ((level / 2) + 32) / 50);
+        // Removed 'erratic' and 'fluctuating' cases as they are not in the ExperienceGroup type
         default:
+            // This default should ideally not be reached if groupName in getExperienceGroupFromString is handled correctly
+            console.warn(`calculateXpNeededForLevel called with unhandled group: ${group}. Defaulting to medium_fast logic.`);
             return Math.floor(Math.pow(level, 3)); // Default to MediumFast if group is unknown
     }
 }
