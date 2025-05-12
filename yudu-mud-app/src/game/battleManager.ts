@@ -266,7 +266,7 @@ export async function endBattle(
         
         // 添加经验值并处理升级
         if (speciesDetails) {
-          const result = addExperience(updatedTeam[battlePokemonIndex], speciesDetails, expGained);
+          const result = await addExperience(updatedTeam[battlePokemonIndex], speciesDetails, expGained); // 添加 await
           
           // 添加升级消息
           result.messages.forEach(msg => messages.push(msg));

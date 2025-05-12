@@ -1,6 +1,7 @@
 import { Player } from '@/interfaces/database';
 import worldManager from './worldManager';
-import { getPokedexSummary, getPokemonSpeciesDetails } from '@/lib/gameData';
+import { getPokemonSpeciesDetails } from '@/lib/gameData'; // Keep for direct use if needed elsewhere, or remove if truly unused
+import { createPokemonInstance } from './pokemonUtils'; // Import createPokemonInstance
 import { v4 as uuidv4 } from 'uuid';
 
 // 默认起始地点ID
@@ -150,47 +151,24 @@ const stateManager = {
     }
     
     try {
-      // 获取宝可梦图鉴信息
-      const pokemonDetails = await getPokemonSpeciesDetails(pokemonId);
+      // 获取宝可梦图鉴信息 (createPokemonInstance will do this, but we might want to check existence first or get name)
+      const pokemonDetails = await getPokemonSpeciesDetails(pokemonId); 
       if (!pokemonDetails) {
-        console.error(`Pokemon details not found for ID: ${pokemonId}`);
+        console.error(`Pokemon details not found for ID: ${pokemonId} before creating instance.`);
         return false;
       }
-      
-      // 获取宝可梦基础属性
-      const baseStats = pokemonDetails.stats?.find(s => s.form === "一般")?.data;
-      if (!baseStats) {
-        console.error(`Base stats not found for Pokemon: ${pokemonId}`);
-        return false;
-      }
-      
+
       // 创建玩家的宝可梦实例（5级初始宝可梦）
-      const starterPokemon = {
-        instanceId: uuidv4(), // 生成唯一ID
-        pokedexId: pokemonId,
-        nickname: "", // 默认无昵称
-        level: 5, // 初始等级
-        experience: 0,
-        currentHp: 20, // 简化处理，实际应基于种族值和等级计算
-        maxHp: 20,
-        moves: pokemonDetails.level_up_moves
-          ?.filter(move => move.level <= 5)
-          ?.slice(0, 4)
-          ?.map(move => move.moveId) || [],
-        ability: pokemonDetails.abilities?.[0] || "unknown",
-        stats: {
-          attack: parseInt(baseStats.attack) || 10,
-          defense: parseInt(baseStats.defense) || 10,
-          specialAttack: parseInt(baseStats.sp_attack) || 10,
-          specialDefense: parseInt(baseStats.sp_defense) || 10,
-          speed: parseInt(baseStats.speed) || 10
-        },
-        speciesName: pokemonDetails.name
-      };
-      
+      const starterPokemonInstance = await createPokemonInstance(pokemonId, 5);
+
+      if (!starterPokemonInstance) {
+        console.error(`Failed to create starter Pokemon instance for ID: ${pokemonId}`);
+        return false;
+      }
+
       // 更新玩家队伍
       const player = gameStates[playerId];
-      player.team.push(starterPokemon);
+      player.team.push(starterPokemonInstance); // Push the instance created by createPokemonInstance
       
       // 更新图鉴状态
       player.pokedex.seen.push(pokemonId);
@@ -207,4 +185,4 @@ const stateManager = {
   }
 };
 
-export default stateManager; 
+export default stateManager;
