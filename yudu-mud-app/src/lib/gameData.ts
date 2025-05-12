@@ -152,28 +152,19 @@ let cachedItems: Item[] | null = null;
  * @returns 可访问的绝对路径
  */
 async function getDataPath(relativePath: string): Promise<string> {
-  // 尝试三种可能的路径
-  const possiblePaths = [
-    path.join(process.cwd(), '..', 'data', relativePath),     // 上级目录
-    path.join(process.cwd(), 'data', relativePath),           // 当前目录
-    path.join(process.cwd(), '..', '..', 'data', relativePath) // 上两级目录
-  ];
+  // 数据的根目录现在是项目内的 'data' 文件夹
+  const projectDataRoot = path.join(process.cwd(), 'data');
+  const fullPath = path.join(projectDataRoot, relativePath);
 
-  // 按顺序尝试每个路径
-  for (const fullPath of possiblePaths) {
-    try {
-      await fs.access(fullPath);
-      console.log(`Found data at: ${fullPath}`);
-      return fullPath;
-    } catch (error) {
-      // 此路径不存在，继续尝试下一个
-      console.log(`Path not found: ${fullPath}`);
-    }
+  try {
+    await fs.access(fullPath);
+    // console.log(`Found data at: ${fullPath}`); // 在生产环境中可以减少日志输出
+    return fullPath;
+  } catch (error) {
+    console.error(`Data file not accessible at: ${fullPath}. Error: ${error}`);
+    // 如果文件找不到，直接抛出错误，因为现在路径应该是确定的
+    throw new Error(`Data file not found: ${relativePath} (resolved to ${fullPath})`);
   }
-
-  // 如果所有路径都不存在，返回最后一个路径并记录警告
-  console.warn(`Warning: No valid data path found for ${relativePath}, using fallback`);
-  return possiblePaths[possiblePaths.length - 1];
 }
 
 /**
