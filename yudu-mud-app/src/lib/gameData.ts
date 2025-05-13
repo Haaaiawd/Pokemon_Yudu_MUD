@@ -462,22 +462,44 @@ export async function getItems(): Promise<Item[]> {
 // --- (可选) 预加载函数 ---
 // 可以在服务器启动时调用此函数来预热缓存
 
+export async function preloadGameData() {
+  console.log('[Vercel Debug] preloadGameData: Execution STARTED.');
+  try {
+    console.log('[Vercel Debug] preloadGameData: Attempting to load PokedexSummary...');
+    await getPokedexSummary();
+    console.log('[Vercel Debug] preloadGameData: PokedexSummary loaded SUCCESSFULLY.');
 
-//export async function preloadGameData() {
-//  try {
-//console.log('Preloading game data...');
-//    await Promise.all([
-//      getPokedexSummary(), // Preload only summary now
-//      getMoves(),
-//      getAbilities(),
-//      getLocations(), 
-//      getItems() 
-//    ]);
-//    console.log('Game data preloaded successfully.');
-//  } catch (error) {
-//    console.error('Failed to preload game data:', error);
-    // 根据需要处理预加载失败的情况
-//  }
-//}
+    console.log('[Vercel Debug] preloadGameData: Attempting to load Moves...');
+    await getMoves();
+    console.log('[Vercel Debug] preloadGameData: Moves loaded SUCCESSFULLY.');
+
+    console.log('[Vercel Debug] preloadGameData: Attempting to load Abilities...');
+    await getAbilities();
+    console.log('[Vercel Debug] preloadGameData: Abilities loaded SUCCESSFULLY.');
+
+    console.log('[Vercel Debug] preloadGameData: Attempting to load Locations...');
+    await getLocations();
+    console.log('[Vercel Debug] preloadGameData: Locations loaded SUCCESSFULLY.');
+
+    console.log('[Vercel Debug] preloadGameData: Attempting to load Items...');
+    await getItems();
+    console.log('[Vercel Debug] preloadGameData: Items loaded SUCCESSFULLY.');
+
+    console.log('[Vercel Debug] preloadGameData: All game data preloaded successfully.');
+  } catch (error: any) {
+    console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    console.error('[Vercel Debug] preloadGameData: CRITICAL ERROR during data preloading:', error);
+    if (error.stack) {
+      console.error('[Vercel Debug] preloadGameData: Error STACK:', error.stack);
+    }
+    console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    // 在Vercel环境中，通常不应该在这里抛出错误导致进程退出，
+    // 而是记录错误，让应用尝试以无数据或部分数据的状态启动（如果可能），
+    // 或者让Vercel的错误处理机制接管。
+    // 如果这个函数是在构建阶段被调用，抛出错误可能会导致构建失败，这反而是期望的行为。
+    // 如果是在运行时（如API路由），则取决于你的错误处理策略。
+    // throw error; // 暂时注释掉，以便观察日志
+  }
+}
 
 
