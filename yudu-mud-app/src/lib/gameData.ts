@@ -1,8 +1,8 @@
+console.log('[gameData.ts] MODULE EXECUTION STARTED - TOP OF FILE'); // Add this line
+
 import fs from 'fs/promises';
 import path from 'path';
 import { readdir } from 'fs/promises';
-
-// --- 类型定义 (初步，需要根据实际 JSON 结构调整) ---
 
 export interface PokedexEntry {
   yudex_id: string; // 根据文件，ID 是 Y 开头的字符串
