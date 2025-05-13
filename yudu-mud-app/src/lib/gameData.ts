@@ -461,21 +461,23 @@ export async function getItems(): Promise<Item[]> {
 
 // --- (可选) 预加载函数 ---
 // 可以在服务器启动时调用此函数来预热缓存
-export async function preloadGameData() {
-  try {
-    console.log('Preloading game data...');
-    await Promise.all([
-      getPokedexSummary(), // Preload only summary now
-      getMoves(),
-      getAbilities(),
-      getLocations(), 
-      getItems() 
-    ]);
-    console.log('Game data preloaded successfully.');
-  } catch (error) {
-    console.error('Failed to preload game data:', error);
+
+
+//export async function preloadGameData() {
+//  try {
+//console.log('Preloading game data...');
+//    await Promise.all([
+//      getPokedexSummary(), // Preload only summary now
+//      getMoves(),
+//      getAbilities(),
+//      getLocations(), 
+//      getItems() 
+//    ]);
+//    console.log('Game data preloaded successfully.');
+//  } catch (error) {
+//    console.error('Failed to preload game data:', error);
     // 根据需要处理预加载失败的情况
-  }
-}
+//  }
+//}
 
 
