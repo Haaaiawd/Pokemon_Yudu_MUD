@@ -156,12 +156,13 @@ export async function getDataPath(relativePath: string): Promise<string> {
   console.log(`[Debug getDataPath] process.cwd(): ${currentWorkingDirectory}`);
 
   const dataDirName = 'data';
-  const projectDataRoot = path.join(currentWorkingDirectory, dataDirName);
+  // 调整路径，使其查找当前工作目录（在Vercel上是应用根目录）的上一级目录中的 'data' 文件夹
+  const projectDataRoot = path.resolve(currentWorkingDirectory, '..', dataDirName);
   const fullPath = path.join(projectDataRoot, relativePath);
 
   console.log(`[Debug getDataPath] Attempting to access: ${fullPath}`);
   console.log(`[Debug getDataPath] Relative path provided: ${relativePath}`);
-  console.log(`[Debug getDataPath] Calculated projectDataRoot: ${projectDataRoot}`);
+  console.log(`[Debug getDataPath] Calculated projectDataRoot (using path.resolve with '..'): ${projectDataRoot}`);
 
   try {
     // Log contents of CWD
