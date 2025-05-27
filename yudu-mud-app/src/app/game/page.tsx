@@ -177,15 +177,14 @@ export default function GamePage() {
     } else if (message.type === 'output') {
       className = 'text-white';
     }
-    
-    // 处理Markdown风格的文本
+      // 处理Markdown风格的文本和地图特殊字符
     const formattedContent = message.content
       .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') // 粗体
       .replace(/\n/g, '<br />'); // 换行符
     
     return (
       <div key={index} className={`mb-2 ${className}`}>
-        <div dangerouslySetInnerHTML={{ __html: formattedContent }} />
+        <div dangerouslySetInnerHTML={{ __html: formattedContent }} className="whitespace-pre-wrap font-mono" />
       </div>
     );
   };

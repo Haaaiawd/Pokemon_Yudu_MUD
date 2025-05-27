@@ -10,6 +10,7 @@ import { getPotentialWildPokemon, loadEncounterData, shouldEncounterWildPokemon,
 import { startBattle, processTurn } from '@/game/battleManager';
 import { BattleAction, BattleState } from '@/interfaces/battle';
 import { addExperience } from '@/game/pokemonManager';
+import { getLocationMapOverview } from '@/lib/mapUtils';  // 新增导入
 
 interface GameRequestPayload {
   command: string;
@@ -154,11 +155,22 @@ async function handler(req: NextRequest): Promise<NextResponse<GameResponseData>
         const targetLocationId = currentLocation.exits[targetDirection];
         if (targetLocationId) {
             const nextLocation = worldManager.getLocationById(targetLocationId);
-            if (nextLocation) {
-                playerState.locationId = targetLocationId;
+            if (nextLocation) {                playerState.locationId = targetLocationId;
                 output = `You move ${targetDirection}.\n\n`;
                 output += `**${nextLocation.name.zh} (${nextLocation.name.en || ''})**\n`;
                 output += `${nextLocation.description}\n`;
+
+                // 添加地图信息 - 使用位置ID构建一个临时Map
+                const locationsMap = new Map();
+                worldManager.getAllLocationIds().forEach(id => {
+                  const loc = worldManager.getLocationById(id);
+                  if (loc) locationsMap.set(id, loc);
+                });
+                
+                const mapOverview = getLocationMapOverview(nextLocation, locationsMap);
+                if (mapOverview) {
+                    output += `\n${mapOverview}\n`;
+                }
 
                 if (shouldEncounterWildPokemon(targetLocationId) && playerState.team && playerState.team.length > 0) {
                     const wildPokemon = await generateWildPokemon(targetLocationId);
@@ -192,8 +204,7 @@ async function handler(req: NextRequest): Promise<NextResponse<GameResponseData>
         if (!currentLocation) {
             output = `Error: Cannot find current location with ID: ${playerState.locationId}`;
         } else {
-            const target = argument;
-            if (!target || target === currentLocation.id || target === currentLocation.name.zh.toLowerCase() || target === (currentLocation.name.en || '').toLowerCase()) {
+            const target = argument;            if (!target || target === currentLocation.id || target === currentLocation.name.zh.toLowerCase() || target === (currentLocation.name.en || '').toLowerCase()) {
                 output = `**${currentLocation.name.zh} (${currentLocation.name.en || ''})**\n`;
                 output += `${currentLocation.description}\n`;
                 if (currentLocation.items && currentLocation.items.length > 0) {
@@ -214,8 +225,21 @@ async function handler(req: NextRequest): Promise<NextResponse<GameResponseData>
                     });
                     output += pokemonNames.join('、') + '\n';
                 }
-                const availableExits = Object.keys(currentLocation.exits).join(', ');
-                output += `\nExits: ${availableExits || 'None'}`;
+                
+                // 添加地图信息
+                const locationsMap = new Map();
+                worldManager.getAllLocationIds().forEach(id => {
+                  const loc = worldManager.getLocationById(id);
+                  if (loc) locationsMap.set(id, loc);
+                });
+                
+                const mapOverview = getLocationMapOverview(currentLocation, locationsMap);
+                if (mapOverview) {
+                    output += `\n${mapOverview}\n`;
+                } else {
+                    const availableExits = Object.keys(currentLocation.exits).join(', ');
+                    output += `\nExits: ${availableExits || 'None'}`;
+                }
             } else if (target === 'pokemon' || target === 'wild' || target === '宝可梦') {
                 const potentialPokemon = getPotentialWildPokemon(currentLocation.id);
                 if (potentialPokemon.length > 0) {

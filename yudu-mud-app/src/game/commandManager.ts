@@ -3,6 +3,7 @@ import worldManager from './worldManager';
 import { getPokedexSummary, getItems } from '@/lib/gameData';
 import { PokemonInstance } from '@/interfaces/pokemon';
 import { getPotentialWildPokemon } from './encounterManager';
+import { getLocationMapOverview } from '@/lib/mapUtils';  // 导入地图工具
 
 // 定义物品数据接口，确保类型安全
 interface ItemData {
@@ -99,6 +100,10 @@ const commandManager = {
       case 'ex':
         return this.handleLook(argument, playerState);
         
+      case 'map':
+      case '地图':
+        return this.handleMap(argument, playerState);
+        
       case 'inventory':
       case 'inv':
       case 'i':
@@ -163,15 +168,26 @@ const commandManager = {
         updatedPlayerState: {}
       };
     }
-    
-    // 构建移动信息
+      // 构建移动信息
     let output = `你向 ${direction} 方向移动。\n\n`;
     output += `**${nextLocation.name.zh} (${nextLocation.name.en || ''})**\n`;
     output += `${nextLocation.description}\n`;
     
-    // 显示可用出口
-    const availableExits = Object.keys(nextLocation.exits).join(', ');
-    output += `\n出口: ${availableExits || '无'}`;
+    // 构建位置地图信息
+    const locationsMap = new Map();
+    worldManager.getAllLocationIds().forEach(id => {
+      const loc = worldManager.getLocationById(id);
+      if (loc) locationsMap.set(id, loc);
+    });
+    
+    const mapOverview = getLocationMapOverview(nextLocation, locationsMap);
+    if (mapOverview) {
+      output += `\n${mapOverview}\n`;
+    } else {
+      // 如果地图生成失败，仍然显示基本的出口信息
+      const availableExits = Object.keys(nextLocation.exits).join(', ');
+      output += `\n出口: ${availableExits || '无'}`;
+    }
     
     // 返回移动结果
     return {
@@ -201,8 +217,7 @@ const commandManager = {
       // 构建位置描述
       let output = `**${currentLocation.name.zh} (${currentLocation.name.en || ''})**\n`;
       output += `${currentLocation.description}\n`;
-      
-      // 显示位置上的物品
+        // 显示位置上的物品
       if (currentLocation.items && currentLocation.items.length > 0) {
         const allItems = await getItems();
         output += "\n你看到地上有：";
@@ -222,9 +237,21 @@ const commandManager = {
         output += itemNames.join('、') + '\n';
       }
       
-      // 显示可用出口
-      const availableExits = Object.keys(currentLocation.exits).join(', ');
-      output += `\n出口: ${availableExits || '无'}`;
+      // 构建位置地图信息
+      const locationsMap = new Map();
+      worldManager.getAllLocationIds().forEach(id => {
+        const loc = worldManager.getLocationById(id);
+        if (loc) locationsMap.set(id, loc);
+      });
+      
+      const mapOverview = getLocationMapOverview(currentLocation, locationsMap);
+      if (mapOverview) {
+        output += `\n${mapOverview}\n`;
+      } else {
+        // 如果地图生成失败，仍然显示基本的出口信息
+        const availableExits = Object.keys(currentLocation.exits).join(', ');
+        output += `\n出口: ${availableExits || '无'}`;
+      }
       
       return {
         output,
@@ -582,6 +609,49 @@ const commandManager = {
       output,
       updatedPlayerState: {}
     };
+  },
+
+  /**
+   * 处理地图命令
+   */
+  async handleMap(args: string, playerState: Player): Promise<CommandResult> {
+    // 第一步，解析参数，确定是否是请求区域地图
+    const isAreaMap = args.includes('area') || args.includes('区域');
+
+    try {
+      // 调用我们创建的地图API
+      const response = await fetch('/api/map', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          command: isAreaMap ? 'map area' : 'map',
+          playerState
+        }),
+      });
+
+      const data = await response.json();
+      
+      if (data.error) {
+        return {
+          output: `地图显示错误: ${data.error}`,
+          updatedPlayerState: {}
+        };
+      }
+
+      // 返回地图数据
+      return {
+        output: `${data.output}\n\n${data.mapData?.mapString || ''}`,
+        updatedPlayerState: {}
+      };
+    } catch (error: any) {
+      console.error('获取地图数据失败:', error);
+      return {
+        output: `无法获取地图数据: ${error.message}`,
+        updatedPlayerState: {}
+      };
+    }
   }
 };
 
