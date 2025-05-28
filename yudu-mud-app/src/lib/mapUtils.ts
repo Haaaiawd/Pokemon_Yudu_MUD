@@ -632,7 +632,7 @@ export function getLocationMapOverview(currentLocation: GameLocation | LocationD
     if (standardDirections.includes(dirId)) {
       directionalExits[dirId] = destName;
     } else {
-      specialExits.push(`${direction}:${destName}`);
+      specialExits.push(`${getDirectionDisplay(direction)}: ${destName}`);
     }
   });
 
@@ -641,8 +641,10 @@ export function getLocationMapOverview(currentLocation: GameLocation | LocationD
     if (name.length > maxLength) {
       return name.substring(0, maxLength - 1) + '…';
     }
-    const padding = Math.floor((maxLength - name.length) / 2);
-    return ' '.repeat(padding) + name + ' '.repeat(maxLength - name.length - padding);
+    // 调整为左对齐，如果需要居中，则取消注释下一行
+    // const padding = Math.floor((maxLength - name.length) / 2);
+    // return ' '.repeat(padding) + name + ' '.repeat(maxLength - name.length - padding);
+    return name.padEnd(maxLength, ' ');
   }
 
   // 构建增强版地图，在箭头周围显示地点名称
@@ -670,8 +672,7 @@ export function getLocationMapOverview(currentLocation: GameLocation | LocationD
   } else {
     mapString += '                        \n';
   }
-  
-  // 第3行：西方地名 + 西箭头 + 玩家 + 东箭头 + 东方地名
+    // 第3行：西方地名 + 西箭头 + 玩家 + 东箭头 + 东方地名
   let middleLine = '';
   if (directionalExits.west) {
     middleLine += `${westName} ← `;
@@ -679,7 +680,7 @@ export function getLocationMapOverview(currentLocation: GameLocation | LocationD
     middleLine += '         ';
   }
   
-  middleLine += ' ☺ ';
+  middleLine += ' @ ';  // 使用经典的 @ 符号代替 ☺
   
   if (directionalExits.east) {
     middleLine += `→ ${eastName}`;
@@ -721,4 +722,245 @@ export function getLocationMapOverview(currentLocation: GameLocation | LocationD
   }
   
   return mapString;
+}
+
+/**
+ * 改进版地图显示函数，使用传统MUD风格的ASCII艺术
+ * 创建更美观和专业的地图布局
+ */
+export function getEnhancedLocationMap(currentLocation: GameLocation | LocationData, allLocations: Map<string, GameLocation> | {[key: string]: GameLocation | LocationData}): string {
+  if (!currentLocation) {
+    return "";
+  }
+
+  const location = convertToMapLocation(currentLocation);
+  const locations = convertToMapLocations(allLocations);
+
+  // 获取所有出口
+  const exits = Object.entries(location.exits);
+  if (exits.length === 0) {
+    return `┌─ 【${location.name.zh}】 ─┐\n│     没有出口     │\n└──────────────────┘`;
+  }
+
+  // 收集各方向的出口信息
+  const directionalExits: {[direction: string]: string} = {};
+  const specialExits: string[] = [];
+  
+  // 处理所有出口
+  exits.forEach(([direction, exitId]) => {
+    const destination = locations[exitId];
+    const destName = destination ? destination.name.zh : exitId;
+    const dirId = getDirectionIdentifier(direction);
+    
+    const standardDirections = ['north', 'south', 'east', 'west', 'up', 'down'];
+    if (standardDirections.includes(dirId)) {
+      directionalExits[dirId] = destName;
+    } else {
+      specialExits.push(`${getDirectionDisplay(direction)}: ${destName}`);
+    }
+  });
+  // 辅助函数：安全截断地名
+  function safeTruncate(name: string, maxLength: number): string {
+    if (name.length <= maxLength) return name;
+    return name.substring(0, maxLength - 1) + '…';
+  }
+
+  // 辅助函数：精确居中文本
+  function centerText(text: string, width: number): string {
+    const chineseChars = text.match(/[\u4e00-\u9fa5]/g)?.length || 0;
+    const effectiveLength = text.length + chineseChars; // 每个中文字符算两个宽度
+    if (effectiveLength >= width) return text.substring(0, width - (text.substring(0, width).match(/[\u4e00-\u9fa5]/g)?.length || 0) );
+    const leftPad = Math.floor((width - effectiveLength) / 2);
+    const rightPad = width - effectiveLength - leftPad;
+    return ' '.repeat(leftPad) + text + ' '.repeat(rightPad);
+  }
+
+  // 构建现代化的地图布局 - 固定宽度19字符
+  const mapWidth = 19;
+  let mapLines: string[] = [];
+  
+  // 标题行 - 动态调整标题长度
+  const title = `【${location.name.zh}】`;
+  const titlePadding = Math.max(0, mapWidth - title.length - 4); // 减去 "┌─" 和 " ─┐"
+  const leftDash = Math.floor(titlePadding / 2);
+  const rightDash = titlePadding - leftDash;
+  mapLines.push(`┌${'─'.repeat(leftDash + 1)} ${title} ${'─'.repeat(rightDash + 1)}┐`);
+  
+  // 北方区域
+  if (directionalExits.north) {
+    const northName = safeTruncate(directionalExits.north, mapWidth - 4);
+    mapLines.push(`│ ${centerText(northName, mapWidth - 2)} │`);
+    mapLines.push(`│ ${centerText('↑', mapWidth - 2)} │`);
+  } else {
+    mapLines.push(`│${' '.repeat(mapWidth)}│`);
+    mapLines.push(`│${' '.repeat(mapWidth)}│`);
+  }
+
+  // 中央区域（西-玩家-东）
+  let centralContent = '';
+  
+  if (directionalExits.west) {
+    const westName = safeTruncate(directionalExits.west, 6);
+    centralContent += westName + '←';
+  } else {
+    centralContent += '       ';
+  }
+  
+  centralContent += ' @ ';  // 玩家位置
+  
+  if (directionalExits.east) {
+    const eastName = safeTruncate(directionalExits.east, 6);
+    centralContent += '→' + eastName;
+  } else {
+    centralContent += '       ';
+  }
+  
+  // 确保中央行正好是mapWidth长度
+  if (centralContent.length > mapWidth) {
+    centralContent = centralContent.substring(0, mapWidth);
+  } else if (centralContent.length < mapWidth) {
+    const padding = mapWidth - centralContent.length;
+    const leftPad = Math.floor(padding / 2);
+    const rightPad = padding - leftPad;
+    centralContent = ' '.repeat(leftPad) + centralContent + ' '.repeat(rightPad);
+  }
+  
+  mapLines.push(`│${centralContent}│`);
+
+  // 南方区域
+  if (directionalExits.south) {
+    mapLines.push(`│ ${centerText('↓', mapWidth - 2)} │`);
+    const southName = safeTruncate(directionalExits.south, mapWidth - 4);
+    mapLines.push(`│ ${centerText(southName, mapWidth - 2)} │`);
+  } else {
+    mapLines.push(`│${' '.repeat(mapWidth)}│`);
+    mapLines.push(`│${' '.repeat(mapWidth)}│`);
+  }
+  // 上下方向
+  if (directionalExits.up || directionalExits.down) {
+    mapLines.push(`├${'─'.repeat(mapWidth)}┤`);
+    let verticalContent = '';
+    
+    if (directionalExits.up) {
+      const upName = safeTruncate(directionalExits.up, 7);
+      verticalContent += `↗${upName}`;
+    }
+    
+    if (directionalExits.down) {
+      if (verticalContent.length > 0) verticalContent += ' ';
+      const downName = safeTruncate(directionalExits.down, 7);
+      verticalContent += `↙${downName}`;
+    }
+    
+    mapLines.push(`│ ${centerText(verticalContent, mapWidth - 2)} │`);
+  }
+
+  // 特殊出口
+  if (specialExits.length > 0) {
+    mapLines.push(`├${'─'.repeat(mapWidth)}┤`);
+    mapLines.push(`│ ${centerText('特殊通道:', mapWidth - 2)} │`);
+    
+    specialExits.forEach(exit => {
+      const exitText = safeTruncate(exit, mapWidth - 4);
+      mapLines.push(`│ ${centerText(exitText, mapWidth - 2)} │`);
+    });
+  }
+
+  // 底部边框
+  mapLines.push(`└${'─'.repeat(mapWidth)}┘`);
+
+  return mapLines.join('\n');
+}
+
+/**
+ * 生成区域地图，显示当前区域内的多个地点布局
+ * 提供更大视野的地图视图
+ */
+export function getAreaMap(currentLocation: GameLocation | LocationData, allLocations: Map<string, GameLocation> | {[key: string]: GameLocation | LocationData}, radius: number = 1): string { // Default radius to 1 for direct connections
+  if (!currentLocation) {
+    return "";
+  }
+  const playerCurrentLocation = convertToMapLocation(currentLocation);
+  const locationsData = convertToMapLocations(allLocations);
+
+  // 辅助函数：精确居中文本
+  function centerText(text: string, width: number): string {
+    const chineseChars = text.match(/[\u4e00-\u9fa5]/g)?.length || 0;
+    const effectiveLength = text.length + chineseChars; // 每个中文字符算两个宽度
+    if (effectiveLength >= width) return text.substring(0, width - (text.substring(0, width).match(/[\u4e00-\u9fa5]/g)?.length || 0) );
+    const leftPad = Math.floor((width - effectiveLength) / 2);
+    const rightPad = width - effectiveLength - leftPad;
+    return ' '.repeat(leftPad) + text + ' '.repeat(rightPad);
+  }
+
+  let mapLines: string[] = [];
+  const currentAreaId = playerCurrentLocation.area || playerCurrentLocation.id; // 如果地点本身就是区域，则使用其ID
+  const currentAreaName = locationsData[currentAreaId]?.name.zh || '未知区域';
+
+  const titleWidth = 35; // 增加宽度以容纳更多信息
+  mapLines.push(`╔${'═'.repeat(titleWidth)}╗`);
+  mapLines.push(`║ ${centerText(`区域概览 - ${currentAreaName}`, titleWidth - 2)} ║`);
+  mapLines.push(`╠${'═'.repeat(titleWidth)}╣`);
+
+  // 1. 收集当前区域内的所有地点及其出口
+  const locationsInCurrentArea: LocationData[] = [];
+  const connectedAreas = new Map<string, { name: string, entryPointName: string }>(); // areaId -> { areaName, entryPointName }
+
+  Object.values(locationsData).forEach(loc => {
+    if (loc.area === currentAreaId || loc.id === currentAreaId) { // 地点属于当前区域，或者本身就是当前区域
+      locationsInCurrentArea.push(loc);
+      // 检查这些地点的出口是否连接到其他区域
+      Object.values(loc.exits).forEach(exitId => {
+        const exitLocation = locationsData[exitId];
+        if (exitLocation && exitLocation.area && exitLocation.area !== currentAreaId) {
+          if (!connectedAreas.has(exitLocation.area)) {
+            connectedAreas.set(exitLocation.area, {
+              name: locationsData[exitLocation.area]?.name.zh || '未知区域',
+              entryPointName: exitLocation.name.zh
+            });
+          }
+        } else if (exitLocation && !exitLocation.area && exitLocation.id !== currentAreaId && exitLocation.type === 'area') {
+          // 如果出口直接是一个区域ID，并且不是当前区域
+          if(!connectedAreas.has(exitLocation.id)){
+             connectedAreas.set(exitLocation.id, {
+                name: exitLocation.name.zh || '未知区域',
+                entryPointName: loc.name.zh // 连接点是当前区域的这个地点
+             });
+          }
+        }
+      });
+    }
+  });
+
+  // 2. 显示当前区域的地点 (简化)
+  mapLines.push(`║ ${centerText(`当前区域: ${currentAreaName}`, titleWidth -2)} ║`);
+  if (locationsInCurrentArea.length > 0) {
+    const displayLimit = 3;
+    locationsInCurrentArea.slice(0, displayLimit).forEach(loc => {
+      let locDisplay = `  - ${loc.name.zh}`;
+      if (loc.id === playerCurrentLocation.id) {
+        locDisplay += ' (@)';
+      }
+      mapLines.push(`║ ${locDisplay.padEnd(titleWidth - 3)} ║`);
+    });
+    if (locationsInCurrentArea.length > displayLimit) {
+      mapLines.push(`║   ...等 ${locationsInCurrentArea.length} 个地点 ...`.padEnd(titleWidth - 3) + " ║");
+    }
+  } else {
+    mapLines.push(`║ ${centerText('(此区域内无详细地点信息)', titleWidth - 2)} ║`);
+  }
+
+  // 3. 显示连接到的其他区域
+  if (connectedAreas.size > 0) {
+    mapLines.push(`╠${'═'.repeat(titleWidth)}╣`);
+    mapLines.push(`║ ${centerText('连接的区域:', titleWidth - 2)} ║`);
+    connectedAreas.forEach((areaInfo, areaId) => {
+      const areaLine = `  -> ${areaInfo.name} (通过 ${areaInfo.entryPointName})`;
+      mapLines.push(`║ ${areaLine.padEnd(titleWidth - 3)} ║`);
+    });
+  }
+
+  mapLines.push(`╚${'═'.repeat(titleWidth)}╝`);
+  
+  return mapLines.join('\n');
 }

@@ -3,7 +3,7 @@ import worldManager from './worldManager';
 import { getPokedexSummary, getItems } from '@/lib/gameData';
 import { PokemonInstance } from '@/interfaces/pokemon';
 import { getPotentialWildPokemon } from './encounterManager';
-import { getLocationMapOverview } from '@/lib/mapUtils';  // 导入地图工具
+import { getLocationMapOverview, getEnhancedLocationMap, getAreaMap } from '@/lib/mapUtils';  // 导入地图工具
 
 // 定义物品数据接口，确保类型安全
 interface ItemData {
@@ -179,8 +179,7 @@ const commandManager = {
       const loc = worldManager.getLocationById(id);
       if (loc) locationsMap.set(id, loc);
     });
-    
-    const mapOverview = getLocationMapOverview(nextLocation, locationsMap);
+      const mapOverview = getEnhancedLocationMap(nextLocation, locationsMap);
     if (mapOverview) {
       output += `\n${mapOverview}\n`;
     } else {
@@ -243,8 +242,7 @@ const commandManager = {
         const loc = worldManager.getLocationById(id);
         if (loc) locationsMap.set(id, loc);
       });
-      
-      const mapOverview = getLocationMapOverview(currentLocation, locationsMap);
+        const mapOverview = getEnhancedLocationMap(currentLocation, locationsMap);
       if (mapOverview) {
         output += `\n${mapOverview}\n`;
       } else {
@@ -411,6 +409,12 @@ const commandManager = {
 - \`team\` 或 \`pokemon\` - 查看当前队伍
 - \`status\` 或 \`stats\` - 查看玩家状态
 - \`help\` 或 \`h\` - 显示帮助信息
+
+**地图命令:**
+- \`map\` 或 \`地图\` - 显示增强版地图（默认）
+- \`map area\` 或 \`map 区域\` - 显示区域地图
+- \`map simple\` 或 \`map 简单\` - 显示简单版地图
+- \`map enhanced\` 或 \`map 增强\` - 显示详细增强版地图
 
 **特殊地点:**
 - \`pc\` 或 \`center\` - 前往宝可梦中心
@@ -614,45 +618,44 @@ const commandManager = {
   /**
    * 处理地图命令
    */
-  async handleMap(args: string, playerState: Player): Promise<CommandResult> {
-    // 第一步，解析参数，确定是否是请求区域地图
-    const isAreaMap = args.includes('area') || args.includes('区域');
-
-    try {
-      // 调用我们创建的地图API
-      const response = await fetch('/api/map', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          command: isAreaMap ? 'map area' : 'map',
-          playerState
-        }),
-      });
-
-      const data = await response.json();
-      
-      if (data.error) {
-        return {
-          output: `地图显示错误: ${data.error}`,
-          updatedPlayerState: {}
-        };
-      }
-
-      // 返回地图数据
+  async handleMap(argument: string, playerState: Player): Promise<CommandResult> {
+    const currentLocation = worldManager.getLocationById(playerState.locationId);
+    
+    if (!currentLocation) {
       return {
-        output: `${data.output}\n\n${data.mapData?.mapString || ''}`,
-        updatedPlayerState: {}
-      };
-    } catch (error: any) {
-      console.error('获取地图数据失败:', error);
-      return {
-        output: `无法获取地图数据: ${error.message}`,
+        output: `错误：无法找到当前位置，ID: ${playerState.locationId}`,
         updatedPlayerState: {}
       };
     }
-  }
+
+    // 构建位置地图信息
+    const locationsMap = new Map();
+    worldManager.getAllLocationIds().forEach(id => {
+      const loc = worldManager.getLocationById(id);
+      if (loc) locationsMap.set(id, loc);
+    });
+
+    let mapDisplay = '';
+    let message = '';
+    const args = argument.trim().toLowerCase();
+    
+    if (args === '' || args === 'area' || args === '区域' || args === 'region' || args === '地区') {
+      mapDisplay = getAreaMap(currentLocation, locationsMap);
+      message = `区域概览地图。\n提示：使用 "map simple" 查看详细的本地地图。`;
+    } else if (args === 'simple' || args === '简单' || args === 'basic' || args === '基本') {
+      mapDisplay = getLocationMapOverview(currentLocation, locationsMap);
+      message = `简单本地地图。\n提示：使用 "map area" 查看区域概览。`;
+    } else {
+      // 对于无法识别的参数，默认显示简单本地地图并给出帮助信息
+      mapDisplay = getLocationMapOverview(currentLocation, locationsMap);
+      message = `地图选项: \n • "map" 或 "map area" - 查看区域概览 \n • "map simple" - 查看简单本地地图 (当前显示)\n未知参数 '${args}'. 显示简单本地地图。`;
+    }
+
+    return {
+      output: `${mapDisplay}\n\n${message}`,
+      updatedPlayerState: {}
+    };
+  },
 };
 
 export default commandManager;

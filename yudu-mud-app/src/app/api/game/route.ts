@@ -10,7 +10,7 @@ import { getPotentialWildPokemon, loadEncounterData, shouldEncounterWildPokemon,
 import { startBattle, processTurn } from '@/game/battleManager';
 import { BattleAction, BattleState } from '@/interfaces/battle';
 import { addExperience } from '@/game/pokemonManager';
-import { getLocationMapOverview } from '@/lib/mapUtils';  // 新增导入
+import { getLocationMapOverview, getEnhancedLocationMap, getAreaMap } from '@/lib/mapUtils';  // 新增导入
 
 interface GameRequestPayload {
   command: string;
@@ -166,8 +166,7 @@ async function handler(req: NextRequest): Promise<NextResponse<GameResponseData>
                   const loc = worldManager.getLocationById(id);
                   if (loc) locationsMap.set(id, loc);
                 });
-                
-                const mapOverview = getLocationMapOverview(nextLocation, locationsMap);
+                  const mapOverview = getEnhancedLocationMap(nextLocation, locationsMap);
                 if (mapOverview) {
                     output += `\n${mapOverview}\n`;
                 }
@@ -232,8 +231,7 @@ async function handler(req: NextRequest): Promise<NextResponse<GameResponseData>
                   const loc = worldManager.getLocationById(id);
                   if (loc) locationsMap.set(id, loc);
                 });
-                
-                const mapOverview = getLocationMapOverview(currentLocation, locationsMap);
+                  const mapOverview = getEnhancedLocationMap(currentLocation, locationsMap);
                 if (mapOverview) {
                     output += `\n${mapOverview}\n`;
                 } else {
